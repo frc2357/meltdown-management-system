@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Constants from 'expo-constants';
 
-export default function App() {
+function App() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
@@ -18,3 +19,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+// Default to rendering your app
+let AppEntryPoint = App;
+
+// Render Storybook if storybookEnabled is true
+if (Constants.expoConfig.extra.storybookEnabled === 'true') {
+  AppEntryPoint = require('./.storybook').default;
+}
+
+export default AppEntryPoint;
