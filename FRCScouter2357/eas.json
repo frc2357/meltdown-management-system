@@ -1,8 +1,13 @@
 {
   "cli": {
-    "version": ">= 3.12.1"
+    "version": ">= 3.12.1",
+    "requireCommit": true
   },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
       "android": {
         "buildType": "apk"
