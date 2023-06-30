@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nolanc1223.FRCScouter2357"
+      "package": "com.frc2357.FRCScouter2357"
     },
     "web": {
       "favicon": "./assets/favicon.png"

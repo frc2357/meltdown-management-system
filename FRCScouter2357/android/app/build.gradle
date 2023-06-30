@@ -113,9 +113,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.nolanc1223.FRCScouter2357'
+    namespace 'com.frc2357.FRCScouter2357'
     defaultConfig {
-        applicationId 'com.nolanc1223.FRCScouter2357'
+        applicationId 'com.frc2357.FRCScouter2357'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

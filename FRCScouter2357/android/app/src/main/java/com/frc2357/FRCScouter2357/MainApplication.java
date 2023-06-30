@@ -1,4 +1,4 @@
-package com.nolanc1223.FRCScouter2357;
+package com.frc2357.FRCScouter2357;
 
 import android.app.Application;
 import android.content.res.Configuration;
