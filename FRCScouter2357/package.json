@@ -5,13 +5,8 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web",
-    "storybook-generate": "sb-rn-get-stories",
-    "storybook-watch": "sb-rn-watcher",
-    "storybook": "cross-env STORYBOOK_ENABLED='true' expo start",
-    "storybook:ios": "sb-rn-get-stories && set STORYBOOK_ENABLED='true' expo ios",
-    "storybook:android": "sb-rn-get-stories && set STORYBOOK_ENABLED='true' expo android"
-  },
+    "web": "expo start --web"
+    },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "1.17.11",
@@ -33,11 +28,6 @@
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/datetimepicker": "^7.1.0",
     "@react-native-community/slider": "^4.4.2",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-controls": "^6.5.16",
-    "@storybook/addon-ondevice-actions": "^6.5.3",
-    "@storybook/addon-ondevice-controls": "^6.5.3",
-    "@storybook/react-native": "^6.5.3",
     "babel-loader": "^8.3.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.40.0",
