@@ -30,6 +30,7 @@
         "projectId": "fcb7793b-c50b-4a8f-831a-ccd8916dd4b8"
       }
     },
+    "plugins": ["@config-plugins/react-native-ble-plx"],
     "owner": "systemmeltdown2357"
   }
 }
