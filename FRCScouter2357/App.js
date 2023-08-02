@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@react-native-material/core';
+import TeleopLayout from './components/layouts/TeleopLayout';
 
 function App() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
+      <TeleopLayout></TeleopLayout>
     </View>
   ); 
 }
