@@ -1,12 +1,13 @@
+import { Provider } from '@react-native-material/core';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import TeleopLayout from './components/layouts/TeleopLayout';
 
 function App() {
   return (
-    <View style={styles.container}>
+    <Provider style={styles.container}>
       <TeleopLayout/>
-    </View>
+    </Provider>
   ); 
 }
 

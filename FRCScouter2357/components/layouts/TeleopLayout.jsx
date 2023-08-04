@@ -1,14 +1,51 @@
-import React from 'react';
-import { Box, Button, HStack, VStack } from '@react-native-material/core';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogHeader,
+  HStack,
+  Switch,
+  Text,
+  VStack,
+} from '@react-native-material/core';
 import { Image, Dimensions, StyleSheet } from 'react-native';
 
 const windowDimensions = Dimensions.get('window');
 
 export default () => {
+  const [autoVisible, setAutoVisible] = useState(false);
+  const [hasMobility, setMobility] = useState(false);
+
   return (
     <Box>
+      <Dialog visible={autoVisible} onDismiss={() => setAutoVisible(false)}>
+        <DialogHeader title="Auto" />
+        <DialogContent>
+          <VStack>
+            <HStack>
+              <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
+              <Text>Mobility</Text>
+            </HStack>
+            <HStack>
+              <Button></Button>
+              <Text>Engaged</Text>
+            </HStack>
+            <HStack>
+              <Button></Button>
+              <Text>Docked</Text>
+            </HStack>
+          </VStack>
+        </DialogContent>
+        <DialogActions>
+          <Button title="Cancel" compact variant="text" onPress={() => setAutoVisible(false)} />
+          <Button title="Ok" compact variant="text" onPress={() => setAutoVisible(false)} />
+        </DialogActions>
+      </Dialog>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" />
+        <Button variant="contained" title="Auto" onPress={() => setAutoVisible(true)} />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
       </HStack>
@@ -50,14 +87,14 @@ const styles = StyleSheet.create({
   },
   doubleSub: {
     width: windowDimensions.width * (1 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
+    height: windowDimensions.height / 2 - 32.5,
   },
   floor: {
     width: windowDimensions.width * (0.5 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
+    height: windowDimensions.height / 2 - 32.5,
   },
   singleSub: {
     width: windowDimensions.width * (0.5 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
+    height: windowDimensions.height / 2 - 32.5,
   },
 });
