@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, Image, Text, View, StyleSheet } from 'react-native';
+import { Animated, Easing, Image, View, StyleSheet } from 'react-native';
 
 const LoadingSymbol = () => {
   const spinValue = new Animated.Value(0);
