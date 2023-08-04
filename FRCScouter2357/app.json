@@ -3,7 +3,7 @@
     "name": "FRCScouter2357",
     "slug": "FRCScouter2357",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
