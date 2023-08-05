@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, HStack, VStack } from '@react-native-material/core';
 import { Image, Dimensions, StyleSheet } from 'react-native';
+import AutoDialog from '../screens/AutoScreen';
 
 const windowDimensions = Dimensions.get('window');
 
-export default () => {
+export default function TeleopLayout() {
+  const [autoVisible, setAutoVisible] = useState(false);
+
   return (
     <Box>
+      <AutoDialog visible={autoVisible} setVisible={setAutoVisible} />
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" />
+        <Button variant="contained" title="Auto" onPress={() => setAutoVisible(true)} />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
       </HStack>
@@ -45,19 +49,19 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   columns: {
-    width: windowDimensions.width * (2 / 3),
     height: windowDimensions.height - 65,
+    width: windowDimensions.width * (2 / 3),
   },
   doubleSub: {
+    height: windowDimensions.height / 2 - 32.5,
     width: windowDimensions.width * (1 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
   },
   floor: {
+    height: windowDimensions.height / 2 - 32.5,
     width: windowDimensions.width * (0.5 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
   },
   singleSub: {
+    height: windowDimensions.height / 2 - 32.5,
     width: windowDimensions.width * (0.5 / 3),
-    height: (windowDimensions.height / 2) - 32.5,
   },
 });
