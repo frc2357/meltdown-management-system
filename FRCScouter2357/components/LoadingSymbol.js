@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, Easing, Image, View, StyleSheet } from 'react-native';
 
-const LoadingSymbol = () => {
+export default function LoadingSymbol() {
   const spinValue = new Animated.Value(0);
 
   // First set up animation
@@ -30,21 +30,19 @@ const LoadingSymbol = () => {
   );
 };
 
-export default LoadingSymbol;
-
 const styles = StyleSheet.create({
-  view: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   gear: {
-    width: 300,
     height: 300,
     position: 'absolute',
+    width: 300,
   },
   radioactiveSymbol: {
-    width: 200,
     height: 200,
     position: 'relative',
+    width: 200,
    },
+  view: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 });
