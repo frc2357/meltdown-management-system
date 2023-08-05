@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Button, HStack, VStack } from '@react-native-material/core';
-import { Image, Dimensions, StyleSheet } from 'react-native';
+import { Box, Button, HStack } from '@react-native-material/core';
+import { Image, StyleSheet } from 'react-native';
 import AutoDialog from '../screens/AutoScreen';
-
-const windowDimensions = Dimensions.get('window');
 
 export default function TeleopLayout() {
   const [autoVisible, setAutoVisible] = useState(false);
@@ -16,15 +14,13 @@ export default function TeleopLayout() {
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
       </HStack>
-      <HStack>
+      <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
-        <VStack>
           <Image
             alt="double substation"
             source={require('../../images/doubleSub.png')}
             style={styles.doubleSub}
           />
-          <HStack>
             <Image
               alt="floor intake"
               source={require('../../images/floor.png')}
@@ -35,9 +31,7 @@ export default function TeleopLayout() {
               source={require('../../images/singleSub.png')}
               style={styles.singleSub}
             />
-          </HStack>
-        </VStack>
-      </HStack>
+          </Box>
     </Box>
   );
 };
@@ -49,19 +43,31 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   columns: {
-    height: windowDimensions.height - 65,
-    width: windowDimensions.width * (2 / 3),
+    height: 484,
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: 680,
   },
   doubleSub: {
-    height: windowDimensions.height / 2 - 32.5,
-    width: windowDimensions.width * (1 / 3),
+    height: 250,
+    left: 685,
+    position: 'absolute',
+    top: 0,
+    width: 340,
   },
   floor: {
-    height: windowDimensions.height / 2 - 32.5,
-    width: windowDimensions.width * (0.5 / 3),
+    height: 230,
+    left: 685,
+    position: 'absolute',
+    top: 255,
+    width: 167.5,
   },
   singleSub: {
-    height: windowDimensions.height / 2 - 32.5,
-    width: windowDimensions.width * (0.5 / 3),
+    height: 230,
+    left: 857.5,
+    position: 'absolute',
+    top: 255,
+    width: 167.5,
   },
 });
