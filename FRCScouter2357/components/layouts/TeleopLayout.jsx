@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack, VStack } from '@react-native-material/core';
 import { Image, Dimensions, StyleSheet } from 'react-native';
-import AutoDialog from '../screens/autoScreen';
+import AutoDialog from '../screens/AutoScreen';
 
 const windowDimensions = Dimensions.get('window');
 
-export default function teleopLayout() {
+export default function TeleopLayout() {
   const [autoVisible, setAutoVisible] = useState(false);
 
   return (

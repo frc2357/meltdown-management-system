@@ -1,25 +1,44 @@
 import React from 'react';
-import { Provider, Stack } from '@react-native-material/core';
+import { Provider } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
-import teleopLayout from './components/layouts/teleopLayout';
-import prematchScreen from './components/screens/prematchScreen';
-import autoScreen from './components/screens/autoScreen';
-import endgameScreen from './components/screens/endgameScreen';
-import { NavigationContainer, createNativeStackNavigator } from '@react-navigation/native';
+import TeleopLayout from './components/layouts/TeleopLayout';
+import PrematchScreen from './components/screens/PrematchScreen';
+import AutoScreen from './components/screens/AutoScreen';
+import EndgameScreen from './components/screens/EndgameScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
   return (
     <Provider style={styles.container}>
-      {/* <NavigationContainer>
-        <NavStack.Navigator initialRouteName="teleop">
-          <Stack.screen name="teleop" component={teleopLayout} />
-          <Stack.screen name="prematch" component={prematchScreen} />
-          <Stack.screen name="autoScreen" component={autoScreen} />
-          <Stack.screen name="endgameScreen" component={endgameScreen} />
-        </NavStack.Navigator>
-      </NavigationContainer> */}
+      {
+        <NavigationContainer>
+          <NavStack.Navigator initialRouteName="teleop">
+            <NavStack.Screen
+              name="teleop"
+              component={TeleopLayout}
+              options={{ headerShown: false }}
+            />
+            <NavStack.Screen
+              name="prematch"
+              component={PrematchScreen}
+              options={{ headerShown: false }}
+            />
+            <NavStack.Screen
+              name="autoScreen"
+              component={AutoScreen}
+              options={{ headerShown: false }}
+            />
+            <NavStack.Screen
+              name="endgameScreen"
+              component={EndgameScreen}
+              options={{ headerShown: false }}
+            />
+          </NavStack.Navigator>
+        </NavigationContainer>
+      }
     </Provider>
   );
 }
