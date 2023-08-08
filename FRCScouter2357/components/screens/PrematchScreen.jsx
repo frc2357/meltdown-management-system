@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function PrematchScreen() {
+export default function PrematchScreen({navigation}) {
     return (
         <></>
     )
