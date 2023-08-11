@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { VStack, HStack, Switch, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
+import RadioButtonList from '../basics/RadioButtonList';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -13,17 +14,10 @@ export default function AutoScreen({ navigation }) {
       <VStack>
         <HStack>
           <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
-          <Text>Mobility and some really long text</Text>
+          <Text>Mobility</Text>
         </HStack>
-        <HStack>
-          <Button></Button>
-          <Text>Engaged</Text>
-        </HStack>
-        <HStack>
-          <Button></Button>
-          <Text>Docked</Text>
-        </HStack>
-      </VStack>
+       <RadioButtonList labels={["Engaged", "Docked"]}/>
+       </VStack>
       <Button title="Cancel" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
       <Button title="Ok" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
     </Box>
