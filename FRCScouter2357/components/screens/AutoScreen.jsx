@@ -26,6 +26,8 @@ export default function AutoScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   autoContainer: {
+    alignContent: 'center',
+    alignItems: 'center',
     height: windowDimensions.height,
     width: windowDimensions.width,
   },
