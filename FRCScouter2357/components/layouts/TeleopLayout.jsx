@@ -1,14 +1,31 @@
-import React from 'react';
-import { Box, Button, HStack } from '@react-native-material/core';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, HStack, Text } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
+import AutoDialog from '../screens/AutoScreen';
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
-export default function TeleopLayout({navigation}) {
+export default function TeleopLayout() {
+  const [autoVisible, setAutoVisible] = useState(false);
+
+  const [device, setDevice] = useState({});
+
+  useEffect(() => {
+    const subscription = RNBluetoothClassic.onDeviceConnected((event) => {
+      setDevice({ device: event.device });
+    });
+
+    return () => {
+      subscription.remove();
+    }
+  }, [])
+
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
         <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
+        <Text>{device}</Text>
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
