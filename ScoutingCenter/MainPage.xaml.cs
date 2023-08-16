@@ -85,6 +85,8 @@ namespace ScoutingCenter
 
                 bool isCompatibleVersion = await IsCompatibleVersionAsync(service);
 
+                Debug.WriteLine("Is compatible: " + isCompatibleVersion);
+
                 // Check that the service meets this App's minimum requirement
                 if (SupportsProtection(service) && isCompatibleVersion)
                 {
@@ -97,6 +99,14 @@ namespace ScoutingCenter
                         _service.ConnectionServiceName,
                         SocketProtectionLevel
                             .BluetoothEncryptionAllowNullAuthentication);
+
+                    var outputStream = _socket.OutputStream.AsStreamForWrite();
+
+                    var streamWriter = new StreamWriter(outputStream);
+
+                    await streamWriter.WriteLineAsync("Hello Device");
+
+                    Debug.WriteLine("Completed");
                     // The socket is connected. At this point the App can wait for
                     // the user to take some action, for example, click a button to send a
                     // file to the device, which could invoke the Picker and then
@@ -111,6 +121,7 @@ namespace ScoutingCenter
         // whether it's authenticated.
         bool SupportsProtection(RfcommDeviceService service)
         {
+            Debug.WriteLine(service.ProtectionLevel);
             switch (service.ProtectionLevel)
             {
                 case SocketProtectionLevel.PlainSocket:
@@ -139,13 +150,16 @@ namespace ScoutingCenter
         }
 
         // This App relies on CRC32 checking available in version 2.0 of the service.
-        const uint SERVICE_VERSION_ATTRIBUTE_ID = 0x0300;
+        const uint SERVICE_VERSION_ATTRIBUTE_ID = 0;
         const byte SERVICE_VERSION_ATTRIBUTE_TYPE = 0x0A;   // UINT32
         const uint MINIMUM_SERVICE_VERSION = 200;
         async Task<bool> IsCompatibleVersionAsync(RfcommDeviceService service)
         {
             var attributes = await service.GetSdpRawAttributesAsync(
                 BluetoothCacheMode.Uncached);
+
+            var keys = attributes.Keys;
+
             var attribute = attributes[SERVICE_VERSION_ATTRIBUTE_ID];
             var reader = DataReader.FromBuffer(attribute);
 
