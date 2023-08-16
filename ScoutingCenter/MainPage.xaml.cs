@@ -158,8 +158,6 @@ namespace ScoutingCenter
             var attributes = await service.GetSdpRawAttributesAsync(
                 BluetoothCacheMode.Uncached);
 
-            var keys = attributes.Keys;
-
             var attribute = attributes[SERVICE_VERSION_ATTRIBUTE_ID];
             var reader = DataReader.FromBuffer(attribute);
 
