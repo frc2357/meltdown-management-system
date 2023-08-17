@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, HStack, Text } from '@react-native-material/core';
+import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import AutoDialog from '../screens/AutoScreen';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
@@ -7,17 +7,27 @@ import RNBluetoothClassic from 'react-native-bluetooth-classic';
 export default function TeleopLayout() {
   const [autoVisible, setAutoVisible] = useState(false);
 
-  const [device, setDevice] = useState({});
+  const [device, setDevice] = useState({ device: null });
+
+  const [paired, setPaired] = useState([]);
 
   useEffect(() => {
     const subscription = RNBluetoothClassic.onDeviceConnected((event) => {
       setDevice({ device: event.device });
     });
 
+    RNBluetoothClassic.getBondedDevices().then((devices) => {
+      console.log(devices);
+      setPaired(devices);
+      // devices[0].onDataReceived((data) => {
+      //   console.log(data);
+      // })
+    });
+
     return () => {
       subscription.remove();
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <Box>
@@ -25,29 +35,26 @@ export default function TeleopLayout() {
         <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
-        <Text>{device}</Text>
+        {console.log(device)}
+        {console.log(JSON.stringify(paired))}
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
-          <Image
-            alt="double substation"
-            source={require('../../images/doubleSub.png')}
-            style={styles.doubleSub}
-          />
-            <Image
-              alt="floor intake"
-              source={require('../../images/floor.png')}
-              style={styles.floor}
-            />
-            <Image
-              alt="Single substation"
-              source={require('../../images/singleSub.png')}
-              style={styles.singleSub}
-            />
-          </Box>
+        <Image
+          alt="double substation"
+          source={require('../../images/doubleSub.png')}
+          style={styles.doubleSub}
+        />
+        <Image alt="floor intake" source={require('../../images/floor.png')} style={styles.floor} />
+        <Image
+          alt="Single substation"
+          source={require('../../images/singleSub.png')}
+          style={styles.singleSub}
+        />
+      </Box>
     </Box>
   );
-};
+}
 
 const styles = StyleSheet.create({
   buttonStack: {

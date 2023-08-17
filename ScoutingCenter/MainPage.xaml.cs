@@ -36,6 +36,8 @@ namespace ScoutingCenter
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        TestB testB = new TestB();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -44,9 +46,12 @@ namespace ScoutingCenter
 
         private void sendFile(object sender, RoutedEventArgs e)
         {
-            var testB = new TestB();
             testB.Initialize();
+        }
 
+        private void sendMsg(Object sender, RoutedEventArgs e)
+        {
+            testB.writeMessage();
         }
     }
 
@@ -55,6 +60,15 @@ namespace ScoutingCenter
 
         Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService _service;
         Windows.Networking.Sockets.StreamSocket _socket;
+
+        public async void writeMessage()
+        {
+            var outputStream = _socket.OutputStream.AsStreamForWrite();
+
+            var streamWriter = new StreamWriter(outputStream);
+
+            await streamWriter.WriteLineAsync("Hello Device");
+        }
 
         public async void Initialize()
         {
@@ -99,12 +113,6 @@ namespace ScoutingCenter
                         _service.ConnectionServiceName,
                         SocketProtectionLevel
                             .BluetoothEncryptionAllowNullAuthentication);
-
-                    var outputStream = _socket.OutputStream.AsStreamForWrite();
-
-                    var streamWriter = new StreamWriter(outputStream);
-
-                    await streamWriter.WriteLineAsync("Hello Device");
 
                     Debug.WriteLine("Completed");
                     // The socket is connected. At this point the App can wait for
