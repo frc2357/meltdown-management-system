@@ -1,41 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Platform } from 'react-native';
 import AutoDialog from '../screens/AutoScreen';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 export default function TeleopLayout() {
   const [autoVisible, setAutoVisible] = useState(false);
 
-  const [device, setDevice] = useState({ device: null });
-
   const [paired, setPaired] = useState([]);
 
   useEffect(() => {
-    const subscription = RNBluetoothClassic.onDeviceConnected((event) => {
-      setDevice({ device: event.device });
-    });
-
     RNBluetoothClassic.getBondedDevices().then((devices) => {
       console.log(devices);
       setPaired(devices);
-      // devices[0].onDataReceived((data) => {
-      //   console.log(data);
-      // })
-    });
-
-    return () => {
-      subscription.remove();
-    };
+     });    
   }, []);
 
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
-        <Button variant="contained" title="Drop" />
-        <Button variant="contained" title="Endgame" />
-        {console.log(device)}
+        <Button variant="contained" title="Auto" onPress={() => setAutoVisible(true)} />
+        <Button
+          variant="contained"
+          title="Drop"
+          onPress={() => {
+            paired[0].connect({
+              CONNECTOR_TYPE: "rfcomm",
+              DELIMITER: "\n",
+              DEVICE_CHARSET: "ascii" /* Platform.OS === "ios" ? 1536 : "utf-8" */,
+              READ_TIMEOUT: 300,
+              SECURE_SOCKET: false
+            }).then((connected) => {
+              if (connected) {
+                console.log('Device connected');
+                paired[0].onDataReceived((data) => {
+                  console.log(data);
+                });
+              
+              } else {
+                console.log('Device not connected ');
+              }
+            });
+          }}
+        />
+        <Button
+          variant="contained"
+          title="Endgame"
+          onPress={() => {
+
+            paired[0].isConnected().then((connected) => {
+              console.log(connected);
+            })
+
+            paired[0].available().then((messages) => {
+              if (messages.length > 0) {
+                console.log('Message available');
+                paired[0].read().then((message) => {
+                  console.log('Printing: ' + message);
+                }).catch((error) => {
+                  console.log(error);
+                });
+              } else {
+                console.log('Nothing available');
+              }
+            });
+          }}
+        />
         {console.log(JSON.stringify(paired))}
       </HStack>
       <Box>

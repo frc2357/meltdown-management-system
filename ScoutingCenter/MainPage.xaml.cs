@@ -36,28 +36,29 @@ namespace ScoutingCenter
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        TestB testB = new TestB();
+        Client testB = new Client();
+        Server server = new Server();
 
         public MainPage()
         {
             this.InitializeComponent();
-            
         }
 
         private void sendFile(object sender, RoutedEventArgs e)
         {
-            testB.Initialize();
+            //  testB.Initialize();
+            server.Initialize();
         }
 
         private void sendMsg(Object sender, RoutedEventArgs e)
         {
-            testB.writeMessage();
+            // testB.writeMessage();
+            server.writeMessage();
         }
     }
 
-    public sealed partial class TestB
+    public sealed partial class Client
     {
-
         Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService _service;
         Windows.Networking.Sockets.StreamSocket _socket;
 
@@ -178,6 +179,85 @@ namespace ScoutingCenter
                 return version >= MINIMUM_SERVICE_VERSION;
             }
             else return false;
+        }
+    }
+
+    public sealed partial class Server
+    {
+        Windows.Devices.Bluetooth.Rfcomm.RfcommServiceProvider _provider;
+        Windows.Networking.Sockets.StreamSocket _socket;
+
+        public async void writeMessage()
+        {
+            if (_socket == null)
+            {
+                Debug.WriteLine("Socket null");
+                return;
+            }
+            var outputStream = _socket.OutputStream.AsStreamForWrite();
+
+            var streamWriter = new StreamWriter(outputStream);
+
+            await streamWriter.WriteLineAsync("Hello Device");
+            Debug.WriteLine("Message send");
+        }
+
+        public async void Initialize()
+        {
+            // Initialize the provider for the hosted RFCOMM service
+            _provider =
+                await Windows.Devices.Bluetooth.Rfcomm.RfcommServiceProvider.CreateAsync(
+                    RfcommServiceId.SerialPort);
+
+            // Create a listener for this service and start listening
+            StreamSocketListener listener = new StreamSocketListener();
+            listener.ConnectionReceived += OnConnectionReceivedAsync;
+            await listener.BindServiceNameAsync(
+                _provider.ServiceId.AsString(),
+                SocketProtectionLevel
+                    .BluetoothEncryptionAllowNullAuthentication);
+
+            // Set the SDP attributes and start advertising
+            InitializeServiceSdpAttributes(_provider);
+            _provider.StartAdvertising(listener);
+
+            Debug.WriteLine("Init complete");
+        }
+
+        const uint SERVICE_VERSION_ATTRIBUTE_ID = 0;
+        const byte SERVICE_VERSION_ATTRIBUTE_TYPE = 0x0A;   // UINT32
+        const uint MINIMUM_SERVICE_VERSION = 200;
+
+        public void InitializeServiceSdpAttributes(RfcommServiceProvider provider)
+        {
+            Windows.Storage.Streams.DataWriter writer = new Windows.Storage.Streams.DataWriter();
+
+            // First write the attribute type
+            writer.WriteByte(SERVICE_VERSION_ATTRIBUTE_TYPE);
+            // Then write the data
+            writer.WriteUInt32(MINIMUM_SERVICE_VERSION);
+
+            IBuffer data = writer.DetachBuffer();
+            provider.SdpRawAttributes.Add(SERVICE_VERSION_ATTRIBUTE_ID, data);
+        }
+
+        public void OnConnectionReceivedAsync(
+            StreamSocketListener listener,
+            StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            // Stop advertising/listening so that we're only serving one client
+            Debug.WriteLine("Picked up a device");
+            _provider.StopAdvertising();
+            listener.Dispose();
+            _socket = args.Socket;
+            Debug.WriteLine("Socket created");
+
+            // The client socket is connected. At this point the App can wait for
+            // the user to take some action, for example, click a button to receive a file
+            // from the device, which could invoke the Picker and then save the
+            // received file to the picked location. The transfer itself would use
+            // the Sockets API and not the Rfcomm API, and so is omitted here for
+            // brevity.
         }
     }
 }
