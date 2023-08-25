@@ -13,53 +13,69 @@ export default function TeleopLayout() {
     RNBluetoothClassic.getBondedDevices().then((devices) => {
       console.log(devices);
       setPaired(devices);
-     });    
+    });
   }, []);
 
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" onPress={() => setAutoVisible(true)} />
+        <Button
+          variant="contained"
+          title="Auto"
+          onPress={() => {
+            paired[0]
+              .write('Hello max\n', 'ascii')
+              .then((success) => {
+                console.log('Success: ' + success);
+              })
+              .catch((error) => {
+                console.log('failure' + error);
+              });
+          }}
+        />
         <Button
           variant="contained"
           title="Drop"
           onPress={() => {
-            paired[0].connect({
-              CONNECTOR_TYPE: "rfcomm",
-              DELIMITER: "\n",
-              DEVICE_CHARSET: "ascii" /* Platform.OS === "ios" ? 1536 : "utf-8" */,
-              READ_TIMEOUT: 300,
-              SECURE_SOCKET: false
-            }).then((connected) => {
-              if (connected) {
-                console.log('Device connected');
-                paired[0].onDataReceived((data) => {
-                  console.log(data);
-                });
-              
-              } else {
-                console.log('Device not connected ');
-              }
-            });
+            paired[0]
+              .connect({
+                CONNECTOR_TYPE: 'rfcomm',
+                DELIMITER: '\n',
+                DEVICE_CHARSET: Platform.OS === "ios" ? 1536 : "utf-8",
+                READ_TIMEOUT: 300,
+                SECURE_SOCKET: true,
+              })
+              .then((connected) => {
+                if (connected) {
+                  console.log('Device connected');
+                  paired[0].onDataReceived((data) => {
+                    console.log(data);
+                  });
+                } else {
+                  console.log('Device not connected ');
+                }
+              });
           }}
         />
         <Button
           variant="contained"
           title="Endgame"
           onPress={() => {
-
             paired[0].isConnected().then((connected) => {
               console.log(connected);
-            })
+            });
 
             paired[0].available().then((messages) => {
               if (messages.length > 0) {
                 console.log('Message available');
-                paired[0].read().then((message) => {
-                  console.log('Printing: ' + message);
-                }).catch((error) => {
-                  console.log(error);
-                });
+                paired[0]
+                  .read()
+                  .then((message) => {
+                    console.log('Printing: ' + message);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               } else {
                 console.log('Nothing available');
               }
