@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import AutoDialog from '../screens/AutoScreen';
 
-export default function TeleopLayout() {
-  const [autoVisible, setAutoVisible] = useState(false);
-
+export default function TeleopLayout({navigation}) {
   return (
     <Box>
-      <AutoDialog visible={autoVisible} setVisible={setAutoVisible} />
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" onPress={() => setAutoVisible(true)} />
+        <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
       </HStack>

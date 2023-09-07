@@ -17,22 +17,22 @@ function App() {
         <NavigationContainer>
           <NavStack.Navigator initialRouteName="teleop">
             <NavStack.Screen
-              name="teleop"
+              name="TeleopLayout"
               component={TeleopLayout}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
-              name="prematch"
+              name="Prematch"
               component={PrematchScreen}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
-              name="autoScreen"
+              name="AutoScreen"
               component={AutoScreen}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
-              name="endgameScreen"
+              name="EndgameScreen"
               component={EndgameScreen}
               options={{ headerShown: false }}
             />

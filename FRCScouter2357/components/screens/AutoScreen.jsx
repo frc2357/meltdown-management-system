@@ -1,53 +1,34 @@
 import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogActions,
-  VStack,
-  HStack,
-  Switch,
-  Text,
-  Button
-} from '@react-native-material/core';
+import { VStack, HStack, Switch, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
+import RadioButtonList from '../basics/RadioButtonList';
 
 const windowDimensions = Dimensions.get('window');
 
-export default function AutoScreen() {
+export default function AutoScreen({ navigation }) {
   const [hasMobility, setMobility] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   return (
-    <Dialog style={styles.dialog} visible={visible} onDismiss={() => setVisible(false)}>
-      <DialogHeader title="Auto" />
-      <DialogContent>
-        <VStack>
-          <HStack>
-            <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
-            <Text>Mobility and some really long text</Text>
-          </HStack>
-          <HStack>
-            <Button></Button>
-            <Text>Engaged</Text>
-          </HStack>
-          <HStack>
-            <Button></Button>
-            <Text>Docked</Text>
-          </HStack>
-        </VStack>
-      </DialogContent>
-      <DialogActions>
-        <Button title="Cancel" compact variant="text" onPress={() => setVisible(false)} />
-        <Button title="Ok" compact variant="text" onPress={() => setVisible(false)} />
-      </DialogActions>
-    </Dialog>
+    <Box style={styles.autoContainer}>
+      <Text title="Auto" />
+      <VStack>
+        <HStack>
+          <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
+          <Text>Mobility</Text>
+        </HStack>
+       <RadioButtonList labels={["Engaged", "Docked"]}/>
+       </VStack>
+      <Button title="Cancel" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
+      <Button title="Ok" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
+    </Box>
   );
-};
+}
 
 const styles = StyleSheet.create({
-    dialog: {
-      height: windowDimensions.height,
-      width: windowDimensions.width,
-    },  
-})  
+  autoContainer: {
+    alignContent: 'center',
+    alignItems: 'center',
+    height: windowDimensions.height,
+    width: windowDimensions.width,
+  },
+});
