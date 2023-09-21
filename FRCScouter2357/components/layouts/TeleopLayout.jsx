@@ -1,106 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
-import { Image, StyleSheet, Platform } from 'react-native';
-import AutoDialog from '../screens/AutoScreen';
-import RNBluetoothClassic from 'react-native-bluetooth-classic';
+import { Image, StyleSheet } from 'react-native';
 
-export default function TeleopLayout() {
-  const [autoVisible, setAutoVisible] = useState(false);
-
-  const [paired, setPaired] = useState([]);
-
-  useEffect(() => {
-    RNBluetoothClassic.getBondedDevices().then((devices) => {
-      console.log(devices);
-      setPaired(devices);
-    });
-  }, []);
-
+export default function TeleopLayout({navigation}) {
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button
-          variant="contained"
-          title="Auto"
-          onPress={() => {
-            paired[0]
-              .write('Hello max\n', 'ascii')
-              .then((success) => {
-                console.log('Success: ' + success);
-              })
-              .catch((error) => {
-                console.log('failure' + error);
-              });
-          }}
-        />
-        <Button
-          variant="contained"
-          title="Drop"
-          onPress={() => {
-            paired[0]
-              .connect({
-                CONNECTOR_TYPE: 'rfcomm',
-                DELIMITER: '\n',
-                DEVICE_CHARSET: Platform.OS === "ios" ? 1536 : "utf-8",
-                READ_TIMEOUT: 300,
-                SECURE_SOCKET: true,
-              })
-              .then((connected) => {
-                if (connected) {
-                  console.log('Device connected');
-                  paired[0].onDataReceived((data) => {
-                    console.log(data);
-                  });
-                } else {
-                  console.log('Device not connected ');
-                }
-              });
-          }}
-        />
-        <Button
-          variant="contained"
-          title="Endgame"
-          onPress={() => {
-            paired[0].isConnected().then((connected) => {
-              console.log(connected);
-            });
-
-            paired[0].available().then((messages) => {
-              if (messages.length > 0) {
-                console.log('Message available');
-                paired[0]
-                  .read()
-                  .then((message) => {
-                    console.log('Printing: ' + message);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              } else {
-                console.log('Nothing available');
-              }
-            });
-          }}
-        />
-        {console.log(JSON.stringify(paired))}
+        <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
+        <Button variant="contained" title="Drop" />
+        <Button variant="contained" title="Endgame" />
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
-        <Image
-          alt="double substation"
-          source={require('../../images/doubleSub.png')}
-          style={styles.doubleSub}
-        />
-        <Image alt="floor intake" source={require('../../images/floor.png')} style={styles.floor} />
-        <Image
-          alt="Single substation"
-          source={require('../../images/singleSub.png')}
-          style={styles.singleSub}
-        />
-      </Box>
+          <Image
+            alt="double substation"
+            source={require('../../images/doubleSub.png')}
+            style={styles.doubleSub}
+          />
+            <Image
+              alt="floor intake"
+              source={require('../../images/floor.png')}
+              style={styles.floor}
+            />
+            <Image
+              alt="Single substation"
+              source={require('../../images/singleSub.png')}
+              style={styles.singleSub}
+            />
+          </Box>
     </Box>
   );
-}
+};
 
 const styles = StyleSheet.create({
   buttonStack: {
