@@ -9,6 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button x:Name="sendBtn" Content="send" Click="sendFile" ClickMode="Press"/>
+        <StackPanel>
+        <Button x:Name="sendBtn" Content="connect" Click="sendFile" ClickMode="Press"/>
+        <Button x:Name="sendMsgBtn" Content="Send message" Click="sendMsg" ClickMode="Press"/>
+        </StackPanel>
     </Grid>
+   
 </Page>

@@ -49,6 +49,11 @@
     <DeviceCapability Name="bluetooth.rfcomm">
       <Device Id="any">
         <Function Type="name:serialPort"/>
+        <Function Type="name:PhoneBookAccessPce"/>
+        <Function Type="name:GenericFileTransfer"/>
+        <Function Type="name:PhoneBookAccessPse"/>
+        <Function Type="name:ObexFileTransfer"/>
+        <Function Type="name:ObexObjectPush"/>
       </Device>
     </DeviceCapability>
   </Capabilities>
