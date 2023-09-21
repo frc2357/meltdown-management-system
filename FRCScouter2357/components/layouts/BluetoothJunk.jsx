@@ -41,7 +41,7 @@ export default function TeleopLayout() {
               .connect({
                 CONNECTOR_TYPE: 'rfcomm',
                 DELIMITER: '\n',
-                DEVICE_CHARSET: Platform.OS === "ios" ? 1536 : "utf-8",
+                DEVICE_CHARSET: "ascii",
                 READ_TIMEOUT: 300,
                 SECURE_SOCKET: true,
               })
