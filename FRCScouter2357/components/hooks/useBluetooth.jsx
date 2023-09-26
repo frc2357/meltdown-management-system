@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import RNBluetoothClassic, { BluetoothDevice } from 'react-native-bluetooth-classic';
+import { useEffect, useState, useRef } from 'react';
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 export default function BluetoothManager() {
   const [device, setDevice] = useState();
@@ -32,7 +32,7 @@ export default function BluetoothManager() {
     };
   }, []);
 
-  const getNextMatch = () => {
+  const getMatch = () => {
     return currentMatch;
   };
 
@@ -42,12 +42,12 @@ export default function BluetoothManager() {
 
   const upload = (matchLog) => {
     JSON.stringify(matchLog);
-    device.write(matchLog, "ascii");
+    device.write(matchLog, 'ascii');
   };
 
   return {
     isInit: device !== null,
-    getNextMatch,
+    getMatch,
     getAssignment,
     upload,
   };

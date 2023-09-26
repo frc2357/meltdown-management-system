@@ -7,6 +7,8 @@ import AutoScreen from './components/screens/AutoScreen';
 import EndgameScreen from './components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import useBluetooth from "./components/hooks/useBluetooth"
+import SplashScreen from './components/screens/SplashScreen';
 
 const NavStack = createNativeStackNavigator();
 
@@ -16,10 +18,12 @@ function App() {
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="teleop">
+          <NavStack.Navigator initialRouteName="SplashScreen">
+            <NavStack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <NavStack.Screen
               name="TeleopLayout"
               component={TeleopLayout}
+              initialParams={{useBluetooth}}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
