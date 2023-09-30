@@ -1,21 +1,19 @@
 import { Box, Text } from '@react-native-material/core';
 import LoadingSymbol from '../basics/LoadingSymbol';
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import useBluetooth from '../hooks/useBluetooth';
+import { useDispatch } from 'react-redux';
+import { init } from '../../state/bluetoothSlice';
 
 SplashScreen.propTypes = {
   route: PropTypes.object,
 };
 
 export default function SplashScreen({ navigation, route }) {
-  const {useBluetooth} = route.params;
-  const bluetooth = useBluetooth();
+  const dispatch = useDispatch
 
-  console.log(bluetooth);
-
-  if (bluetooth.isInit) {
-     navigation.navigate("TeleopLayout", useBluetooth);
+  if (dispatch(init())) {
+     navigation.navigate("TeleopLayout");
    }
 
   return (

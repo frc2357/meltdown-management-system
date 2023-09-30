@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
 import TeleopLayout from './components/layouts/TeleopLayout';
@@ -7,28 +7,32 @@ import AutoScreen from './components/screens/AutoScreen';
 import EndgameScreen from './components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import useBluetooth from './components/hooks/useBluetooth';
 import SplashScreen from './components/screens/SplashScreen';
+import { useDispatch } from 'react-redux';
+import { init } from './state/bluetoothSlice';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(init());
+  }, []);
 
   return (
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="SplashScreen" >
+          <NavStack.Navigator initialRouteName="SplashScreen">
             <NavStack.Screen
               name="SplashScreen"
               component={SplashScreen}
-              initialParams={{ useBluetooth }}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
               name="TeleopLayout"
               component={TeleopLayout}
-              initialParams={{ useBluetooth }}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
