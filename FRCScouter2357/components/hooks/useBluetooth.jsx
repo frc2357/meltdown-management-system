@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
-export default function BluetoothManager() {
+export default function useBluetooth() {
   const [device, setDevice] = useState();
   const [currentMatch, setCurrentMatch] = useState();
   const [assignment, setAssignment] = useState();
@@ -46,7 +46,7 @@ export default function BluetoothManager() {
   };
 
   return {
-    isInit: device !== null,
+    isInit: false, // device !== null,
     getMatch,
     getAssignment,
     upload,

@@ -23,9 +23,9 @@ export default function LoadingSymbol() {
     <View style={styles.view}>
       <Animated.Image
         style={{ transform: [{ rotate: spin,}], ...styles.gear }}
-        source={require('../images/gear.png')}
+        source={require('../../images/gear.png')}
       />
-      <Image style={styles.radioactiveSymbol} source={require('../images/radioactive.png')} />
+      <Image style={styles.radioactiveSymbol} source={require('../../images/radioactive.png')} />
     </View>
   );
 };
@@ -37,9 +37,11 @@ const styles = StyleSheet.create({
     width: 300,
   },
   radioactiveSymbol: {
-    height: 200,
+    height: 210,
+    margin: 0,
+    padding: 0,
     position: 'relative',
-    width: 200,
+    width: 210,
    },
   view: {
     alignItems: 'center',
