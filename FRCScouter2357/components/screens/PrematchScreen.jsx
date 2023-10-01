@@ -1,46 +1,34 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Text } from '@react-native-material/core';
+import { Box, Text, Button, VStack } from '@react-native-material/core';
+import AwaitMatchScreen from './AwaitMatchScreen';
 
 export default function PrematchScreen({ navigation }) {
   const assignment = useSelector((state) => state.bluetooth.assignment);
   const match = useSelector((state) => state.bluetooth.currentMatch);
 
+  const scouter = assignment?.scouter ? assignment.scouter : '';
+  const id = assignment?.id ? assignment.id : '';
+
+  const teamNum = match?.teamNum ? assignment.teamNum : '';
+  const matchNum = match?.matchNum ? assignment.matchNum : '';
+
+    if (!match) {
+      return <AwaitMatchScreen />;
+    }
+
   return (
     <Box>
-      <Text variant="h1">Pre-Match</Text>
-      <table>
-        <tr>
-          <th>
-            <Text variant="p">Scouter</Text>
-          </th>
-          <th>
-            <Text variant="p">ID</Text>
-          </th>
-          <th>
-            <Text variant="p">Team</Text>
-          </th>
-          <th>
-            <Text variant="p">match #</Text>
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <Text variant="p">{assignment.scouter}</Text>
-          </td>
+      <Text variant="h2">Pre-Match</Text>
 
-          <td>
-            <Text variant="p">{assignment.id}</Text>
-          </td>
+      <VStack m={4} spacing={1} divider={true}>
+          <Text variant="p">Scouter: {scouter}</Text>
+          <Text variant="p">ID: {id}</Text>
+          <Text variant="p">Team #: {teamNum}</Text>
+          <Text variant="p">Match #: {matchNum}</Text>
+       </VStack>
 
-          <td>
-            <Text variant="p">{match.teamNum}</Text>
-          </td>
-          <td>
-            <Text variant="p">{match.matchNum}</Text>
-          </td>
-        </tr>
-      </table>
+       <Button title="Confirm" variant="contained" onPress={()=> navigation.navigate("TeleopLayout")}></Button>
     </Box>
   );
 }

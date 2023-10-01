@@ -33,20 +33,15 @@ function App() {
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="AwaitMatch">
-            <NavStack.screen
-              name="AwaitMatch"
-              component={AwaitMatchScreen}
+          <NavStack.Navigator initialRouteName="PreMatch">
+            <NavStack.Screen
+              name="Prematch"
+              component={PrematchScreen}
               options={{ headerShown: false }}
             />
             <NavStack.Screen
               name="TeleopLayout"
               component={TeleopLayout}
-              options={{ headerShown: false }}
-            />
-            <NavStack.Screen
-              name="Prematch"
-              component={PrematchScreen}
               options={{ headerShown: false }}
             />
             <NavStack.Screen

@@ -32,19 +32,20 @@ export default function LoadingSymbol() {
 
 const styles = StyleSheet.create({
   gear: {
-    height: 300,
+    height: 200,
     position: 'absolute',
-    width: 300,
+    width: 200 
   },
   radioactiveSymbol: {
-    height: 210,
+    height: 140,
     margin: 0,
     padding: 0,
     position: 'relative',
-    width: 210,
+    width: 140,
    },
   view: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 50,
   },
 });

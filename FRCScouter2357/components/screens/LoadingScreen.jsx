@@ -11,7 +11,7 @@ export default function LoadingScreen({ message }) {
   return (
     <Box>
       <LoadingSymbol />
-      <Text variant="h1">{message}</Text>
+      <Text variant="h5">{message}</Text>
     </Box>
   );
 }

@@ -5,12 +5,15 @@ import LoadingScreen from './LoadingScreen';
 export default function AwaitMatchScreen() {
   const assignment = useSelector((state) => state.bluetooth.assignment);
 
+  const scouter = assignment?.scouter ? assignment.scouter : "";
+  const id = assignment?.id ? assignment.id : "";
+
   const message =
     'Hello ' +
-    assignment.scouter +
+    scouter +
     ', you are assigned to ' +
-    assignment.id +
-    '.\nWaiting for next match assignment';
-    
+    id +
+    '.Waiting for next match assignment.';
+
   return <LoadingScreen message={message} />;
 }

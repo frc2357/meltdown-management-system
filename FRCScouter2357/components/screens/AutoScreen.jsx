@@ -27,7 +27,7 @@ export default function AutoScreen({ navigation }) {
       <Button
         title="Ok"
         compact
-        variant="text"
+        variant="outline"
         onPress={() => navigation.navigate('TeleopLayout')}
       />
     </Box>
