@@ -8,11 +8,13 @@ export const bluetoothSlice = createSlice({
     currentMatch: null,
     assignment: null,
     bluetoothSub: null,
+    isInit: false,
   },
   reducers: {
     init: (state) => {
-      state.bluetoothSub  = RNBluetoothClassic.onDeviceConnected((event) => {
+      state.bluetoothSub = RNBluetoothClassic.onDeviceConnected((event) => {
         state.device = event.device;
+        state.isInit = true;
         if (state.device.isConnected()) {
           state.device.onDataReceived((event) => {
             const data = event.data;
@@ -28,16 +30,6 @@ export const bluetoothSlice = createSlice({
           });
         }
       });
-      return true;
-    },
-    isInit: (state) => {
-      return state.device != null;
-    },
-    getMatch: (state) => {
-      return state.currentMatch;
-    },
-    getAssignment: (state) => {
-      return state.assignment;
     },
     upload: (state, action) => {
       const matchLog = JSON.stringify(action.payload);
@@ -45,7 +37,12 @@ export const bluetoothSlice = createSlice({
     },
     cleanup: (state) => {
       state.bluetoothSub.remove();
-      return true;
+
+      state.device = null;
+      state.currentMatch = null;
+      state.assignment = null;
+      state.bluetoothSub = null;
+      state.isInit = false;
     },
   },
 });

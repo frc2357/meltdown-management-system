@@ -7,9 +7,10 @@ import AutoScreen from './components/screens/AutoScreen';
 import EndgameScreen from './components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from './components/screens/SplashScreen';
-import { useDispatch } from 'react-redux';
-import { cleanup, init, isInit } from './state/bluetoothSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { cleanup, init } from './state/bluetoothSlice';
+import AwaitAssignmentScreen from './components/screens/AwaitAssignmentScreen';
+import AwaitMatchScreen from './components/screens/AwaitMatchScreen';
 
 const NavStack = createNativeStackNavigator();
 
@@ -17,22 +18,27 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-     dispatch(init());
+    dispatch(init());
 
-     return () => {
-      dispatch(cleanup())
-     }
+    return () => {
+      dispatch(cleanup());
+    };
   }, []);
 
-  if(dispatch(isInit())) {
-    return <SplashScreen/>;
+  if (useSelector((state) => state.bluetooth.isInit)) {
+    return <AwaitAssignmentScreen />;
   }
 
   return (
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="TeleopLayout">
+          <NavStack.Navigator initialRouteName="AwaitMatch">
+            <NavStack.screen
+              name="AwaitMatch"
+              component={AwaitMatchScreen}
+              options={{ headerShown: false }}
+            />
             <NavStack.Screen
               name="TeleopLayout"
               component={TeleopLayout}

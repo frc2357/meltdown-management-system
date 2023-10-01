@@ -3,15 +3,15 @@ import LoadingSymbol from '../basics/LoadingSymbol';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-SplashScreen.propTypes = {
-  route: PropTypes.object,
+LoadingScreen.propTypes = {
+  message: PropTypes.string.isRequired,
 };
 
-export default function SplashScreen() {
+export default function LoadingScreen({ message }) {
   return (
     <Box>
       <LoadingSymbol />
-      <Text variant="h1">Waiting for Scouting Center to Assign Me</Text>
+      <Text variant="h1">{message}</Text>
     </Box>
   );
 }

@@ -1,6 +1,25 @@
 # scouting-software
 Repository for scouting software
 
+### Structure of values that Scouting Center will send to Tablets:
+
+### Initial assignment
+            {
+                type: "assignment",
+                info: {
+                    id: "", // red1, ..., blue3
+                    scouter: "",
+                }
+            }
+
+### Match
+            {
+                type: "match",
+                info: {
+                    matchNum: 0,
+                    teamNum: 0000,
+                }
+            }
 
 ### Event Definitions
 All events must have a `type` field

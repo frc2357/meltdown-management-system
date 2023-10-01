@@ -16,10 +16,20 @@ export default function AutoScreen({ navigation }) {
           <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
           <Text>Mobility</Text>
         </HStack>
-       <RadioButtonList labels={["Engaged", "Docked"]}/>
-       </VStack>
-      <Button title="Cancel" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
-      <Button title="Ok" compact variant="text" onPress={() => navigation.navigate('TeleopLayout')} />
+        <RadioButtonList labels={['Engaged', 'Docked']} />
+      </VStack>
+      <Button
+        title="Cancel"
+        compact
+        variant="text"
+        onPress={() => navigation.navigate('TeleopLayout')}
+      />
+      <Button
+        title="Ok"
+        compact
+        variant="text"
+        onPress={() => navigation.navigate('TeleopLayout')}
+      />
     </Box>
   );
 }
