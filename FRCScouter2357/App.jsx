@@ -24,7 +24,7 @@ function App() {
     };
   }, []);
 
-  if (useSelector((state) => state.bluetooth.isInit)) {
+  if (!useSelector((state) => state.bluetooth.isInit)) {
     return <AwaitAssignmentScreen />;
   }
 
