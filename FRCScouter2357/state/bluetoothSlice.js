@@ -11,7 +11,7 @@ export const bluetoothSlice = createSlice({
   },
   reducers: {
     init: (state) => {
-      state.bluetoothSub = RNBluetoothClassic.onDeviceConnected((event) => {
+      state.bluetoothSub  = RNBluetoothClassic.onDeviceConnected((event) => {
         state.device = event.device;
         if (state.device.isConnected()) {
           state.device.onDataReceived((event) => {
@@ -28,6 +28,7 @@ export const bluetoothSlice = createSlice({
           });
         }
       });
+      return true;
     },
     isInit: (state) => {
       return state.device != null;
@@ -44,6 +45,7 @@ export const bluetoothSlice = createSlice({
     },
     cleanup: (state) => {
       state.bluetoothSub.remove();
+      return true;
     },
   },
 });

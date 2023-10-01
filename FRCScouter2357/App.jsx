@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './components/screens/SplashScreen';
 import { useDispatch } from 'react-redux';
-import { init } from './state/bluetoothSlice';
+import { cleanup, init, isInit } from './state/bluetoothSlice';
 
 const NavStack = createNativeStackNavigator();
 
@@ -17,19 +17,22 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(init());
+     dispatch(init());
+
+     return () => {
+      dispatch(cleanup())
+     }
   }, []);
+
+  if(dispatch(isInit())) {
+    return <SplashScreen/>;
+  }
 
   return (
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="SplashScreen">
-            <NavStack.Screen
-              name="SplashScreen"
-              component={SplashScreen}
-              options={{ headerShown: false }}
-            />
+          <NavStack.Navigator initialRouteName="TeleopLayout">
             <NavStack.Screen
               name="TeleopLayout"
               component={TeleopLayout}
