@@ -3,7 +3,6 @@ import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 
 export default function TeleopLayout({ navigation }) {
-
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
@@ -13,7 +12,11 @@ export default function TeleopLayout({ navigation }) {
           onPress={() => navigation.navigate('AutoScreen')}
         />
         <Button variant="contained" title="Drop" />
-        <Button variant="contained" title="Endgame" />
+        <Button
+          variant="contained"
+          title="Endgame"
+          onPress={() => navigation.navigate('EndgameScreen')}
+        />
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />

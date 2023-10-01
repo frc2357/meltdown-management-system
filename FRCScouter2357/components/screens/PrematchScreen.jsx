@@ -51,7 +51,7 @@ export default function PrematchScreen({ navigation }) {
       })}
       <Button
         title="Confirm"
-        variant="outlined"
+        variant="contained"
         style={styles.confirm}
         onPress={() => navigation.navigate('TeleopLayout')}
       />

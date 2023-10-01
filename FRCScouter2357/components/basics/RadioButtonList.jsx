@@ -5,13 +5,14 @@ import RadioButton from './RadioButton';
 
 RadioButtonList.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string),
+  direction: PropTypes.string,
 };
 
-export default function RadioButtonList({ labels }) {
+export default function RadioButtonList({ labels, direction = 'column' }) {
   const [pressed, setPressed] = useState(new Array(labels.length).fill(false));
 
   return (
-    <Stack>
+    <Stack direction={direction}>
       {labels.map((label, i) => {
         return (
           <RadioButton

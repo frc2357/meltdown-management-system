@@ -32,9 +32,9 @@ function App() {
     <Provider style={styles.container}>
       {
         <NavigationContainer>
-          <NavStack.Navigator initialRouteName="PreMatch">
+          <NavStack.Navigator initialRouteName="PrematchScreen">
             <NavStack.Screen
-              name="Prematch"
+              name="PrematchScreen"
               component={PrematchScreen}
               options={{ headerShown: false }}
             />
