@@ -10,7 +10,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanup, init } from './state/bluetoothSlice';
 import AwaitAssignmentScreen from './components/screens/AwaitAssignmentScreen';
-import AwaitMatchScreen from './components/screens/AwaitMatchScreen';
 
 const NavStack = createNativeStackNavigator();
 

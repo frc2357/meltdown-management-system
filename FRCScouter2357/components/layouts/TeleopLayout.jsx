@@ -2,35 +2,36 @@ import React from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 
-export default function TeleopLayout({navigation}) {
+export default function TeleopLayout({ navigation }) {
+
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button variant="contained" title="Auto" onPress={() => navigation.navigate('AutoScreen')} />
+        <Button
+          variant="contained"
+          title="Auto"
+          onPress={() => navigation.navigate('AutoScreen')}
+        />
         <Button variant="contained" title="Drop" />
         <Button variant="contained" title="Endgame" />
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
-          <Image
-            alt="double substation"
-            source={require('../../images/doubleSub.png')}
-            style={styles.doubleSub}
-          />
-            <Image
-              alt="floor intake"
-              source={require('../../images/floor.png')}
-              style={styles.floor}
-            />
-            <Image
-              alt="Single substation"
-              source={require('../../images/singleSub.png')}
-              style={styles.singleSub}
-            />
-          </Box>
+        <Image
+          alt="double substation"
+          source={require('../../images/doubleSub.png')}
+          style={styles.doubleSub}
+        />
+        <Image alt="floor intake" source={require('../../images/floor.png')} style={styles.floor} />
+        <Image
+          alt="Single substation"
+          source={require('../../images/singleSub.png')}
+          style={styles.singleSub}
+        />
+      </Box>
     </Box>
   );
-};
+}
 
 const styles = StyleSheet.create({
   buttonStack: {
