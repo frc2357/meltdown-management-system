@@ -18,6 +18,7 @@ Repository for scouting software
                 info: {
                     matchNum: 0,
                     teamNum: 0000,
+                    alliancePos: 0
                 }
             }
 
@@ -46,17 +47,16 @@ All events must have a `type` field
                 points: 0
             }
 
-#### Auto
+#### mobility
             {
-                type: "auto",
+                type: "mobility",
                 hasMobility: "true or false",
-                loc: "engaged, docked, none",
                 points: 0
             }
 
-#### Endgame
+#### Chargestation
             {
-                type: "endgame",
+                type: "Chargestation",
                 loc: "engaged, docked, parked, none",
                 points: 0
             }
