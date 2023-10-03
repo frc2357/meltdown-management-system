@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Provider } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
-import TeleopLayout from './components/layouts/TeleopLayout';
-import PrematchScreen from './components/screens/PrematchScreen';
-import AutoScreen from './components/screens/AutoScreen';
-import EndgameScreen from './components/screens/EndgameScreen';
+import TeleopLayout from './src/components/layouts/TeleopLayout';
+import PrematchScreen from './src/components/screens/PrematchScreen';
+import AutoScreen from './src/components/screens/AutoScreen';
+import EndgameScreen from './src/components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanup, init } from './state/bluetoothSlice';
-import AwaitAssignmentScreen from './components/screens/AwaitAssignmentScreen';
+import { cleanup, init } from './src/state/bluetoothSlice';
+import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScreen';
 
 const NavStack = createNativeStackNavigator();
 

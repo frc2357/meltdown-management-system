@@ -40,6 +40,7 @@ export default function PrematchScreen({ navigation }) {
         return (
           <Pressable
             key={i}
+            // eslint-disable-next-line react-native/no-color-literals, react-native/no-inline-styles
             style={{ ...style, backgroundColor: pressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)' }}
             onPress={() => {
               const newArr = new Array(4).fill(false);
@@ -76,7 +77,6 @@ const styles = StyleSheet.create({
     width: 450,
   },
   posFour: {
-    backgroundColor: 'rgba(0,0,0,0.0)',
     height: 130,
     left: communityLeft + 122 + 210,
     position: 'absolute',
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
     width: 118,
   },
   posOne: {
-    backgroundColor: 'rgba(0,0,0,0.0)',
     height: 150,
     left: communityLeft + 17,
     position: 'absolute',
@@ -92,7 +91,6 @@ const styles = StyleSheet.create({
     width: 105,
   },
   posThree: {
-    backgroundColor: 'rgba(0,0,0,0.0)',
     height: 150,
     left: communityLeft + 122 + 210,
     position: 'absolute',
@@ -100,7 +98,6 @@ const styles = StyleSheet.create({
     width: 118,
   },
   posTwo: {
-    backgroundColor: 'rgba(0,0,0,0.0)',
     height: 120,
     left: communityLeft + 122,
     position: 'absolute',
