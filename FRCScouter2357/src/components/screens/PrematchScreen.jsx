@@ -14,6 +14,7 @@ export default function PrematchScreen({ navigation }) {
 
   const teamNum = match?.teamNum ? assignment.teamNum : '';
   const matchNum = match?.matchNum ? assignment.matchNum : '';
+  const alliance = match?.alliancePos ? assignment.alliancePos : '';
 
   if (!match) {
     return <AwaitMatchScreen />;
@@ -27,6 +28,7 @@ export default function PrematchScreen({ navigation }) {
         <Text variant="p">ID: {id}</Text>
         <Text variant="p">Team #: {teamNum}</Text>
         <Text variant="p">Match #: {matchNum}</Text>
+        <Text variant="p">Alliance #: {alliance}</Text>
         <></>
       </VStack>
       <Text variant="h5">Press start location:</Text>
