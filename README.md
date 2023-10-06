@@ -18,24 +18,35 @@ Repository for scouting software
                 info: {
                     matchNum: 0,
                     teamNum: 0000,
-                    alliancePos: 0
+                    alliancePos: pos0,
                 }
             }
 
 ### Event Definitions
 All events must have a `type` field
+
+#### Matchinf 
+            {
+                matchNum
+                teamNum
+                scouterName
+                preload:
+                notes
+            }
 #### Pickup
 
             {
                 type: "pickup",
                 piece: "cone or cube",
-                location: "left double, right double, single, floor"
+                location: "left double, right double, single, floor",
+                iaAuto
             }
 
 #### Drop
             {
                 type: "drop",
                 piece: "cone or cube"
+                iAuto,
             }
 
 #### Score
@@ -44,19 +55,20 @@ All events must have a `type` field
                 piece: "cone or cube",
                 row: "0, 1, 2",
                 col: "0, 1, ..., 8",
-                points: 0
+                isAuto: ""
             }
 
-#### mobility
+#### Auto
             {
-                type: "mobility",
+                type: "auto",
                 hasMobility: "true or false",
-                points: 0
+                loc: "engaged, docked, none",
             }
 
-#### Chargestation
+#### Endgame
             {
-                type: "Chargestation",
+                type: "endgame",
                 loc: "engaged, docked, parked, none",
-                points: 0
             }
+
+#### Full event

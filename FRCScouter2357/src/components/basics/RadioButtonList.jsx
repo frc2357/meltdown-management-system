@@ -1,7 +1,7 @@
-import { Stack } from '@react-native-material/core';
+import { Stack, Text, HStack } from '@react-native-material/core';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from './RadioButton';
+import { RadioButton } from 'react-native-paper';
 
 RadioButtonList.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string),
@@ -9,24 +9,20 @@ RadioButtonList.propTypes = {
 };
 
 export default function RadioButtonList({ labels, direction = 'column' }) {
-  const [pressed, setPressed] = useState(new Array(labels.length).fill(false));
+  const [value, setValue] = useState(labels[0]);
 
   return (
-    <Stack direction={direction}>
+    <RadioButton.Group direction={direction} onValueChange={newValue => setValue(newValue)} value={value}>
+      <Stack direction={direction}>
       {labels.map((label, i) => {
         return (
-          <RadioButton
-            key={label}
-            label={label}
-            isPressed={pressed[i]}
-            onPress={() => {
-              const newArr = new Array(labels.length).fill(false);
-              newArr[i] = true;
-              setPressed(newArr);
-            }}
-          />
+          <HStack key={label}>
+            <RadioButton value={label} />
+            <Text>{label}</Text>
+          </HStack>
         );
       })}
-    </Stack>
+      </Stack>
+    </RadioButton.Group>
   );
 }

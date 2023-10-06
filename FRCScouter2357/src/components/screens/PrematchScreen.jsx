@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Text, Button, VStack, Pressable } from '@react-native-material/core';
+import { Box, Text, Button, Pressable } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import AwaitMatchScreen from './AwaitMatchScreen';
+import { DataTable } from 'react-native-paper';
+import RadioButtonList from '../basics/RadioButtonList';
 
 export default function PrematchScreen({ navigation }) {
   const [pressed, setPressed] = useState(new Array(4).fill(false));
@@ -23,14 +25,45 @@ export default function PrematchScreen({ navigation }) {
   return (
     <Box>
       <Text variant="h2">Pre-Match</Text>
-      <VStack m={4} spacing={1} divider={true}>
-        <Text variant="p">Scouter: {scouter}</Text>
-        <Text variant="p">ID: {id}</Text>
-        <Text variant="p">Team #: {teamNum}</Text>
-        <Text variant="p">Match #: {matchNum}</Text>
-        <Text variant="p">Alliance #: {alliance}</Text>
-        <></>
-      </VStack>
+      <DataTable>
+        <DataTable.Header>
+          <DataTable.Title>
+            <Text>Scouter</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text>ID</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text>Team #</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text>Match #</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text>Alliance #</Text>
+          </DataTable.Title>
+        </DataTable.Header>
+
+        <DataTable.Row>
+          <DataTable.Cell>
+            <Text>{scouter}</Text>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <Text>{id}</Text>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <Text>{teamNum}</Text>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <Text>{matchNum}</Text>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <Text>{alliance}</Text>
+          </DataTable.Cell>
+        </DataTable.Row>
+      </DataTable>
+      <Text variant='h10'>Pre-Load</Text>
+      <RadioButtonList direction='row' labels={['Cone', 'Cube', 'None']} />
       <Text variant="h5">Press start location:</Text>
       <Image
         alt="Starting position"

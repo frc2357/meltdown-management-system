@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 
+const robotStates = {
+  cube: require('../../images/cube.png'),
+  cone: require('../../images/cone.png'),
+  none: require(''),
+};
+
 export default function TeleopLayout({ navigation }) {
+  const [ robotState, setRobotState ] = useState(robotStates.cube);
+
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
@@ -17,7 +25,13 @@ export default function TeleopLayout({ navigation }) {
           title="Endgame"
           onPress={() => navigation.navigate('EndgameScreen')}
         />
+        <Image
+          style={styles.robotState}
+          alt="robotState"
+          source={robotState}
+        />
       </HStack>
+
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
         <Image
@@ -39,6 +53,7 @@ export default function TeleopLayout({ navigation }) {
 const styles = StyleSheet.create({
   buttonStack: {
     alignItems: 'center',
+    height: 40,
     justifyContent: 'center',
     margin: 4,
   },
@@ -62,6 +77,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 255,
     width: 167.5,
+  },
+  robotState: {
+     height: 50,
+     width: 50,
   },
   singleSub: {
     height: 230,

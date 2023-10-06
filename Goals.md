@@ -16,7 +16,7 @@
 2. Handwrite importable file with match information (C# component?) (Include scouter)
 3. Pair tablets to laptop, designate tablets as blue1, red1 etc. 
    1. Laptop tell tablet what match #, alliance station, robot team number/name, 
-4. Pre-match dialogue - go to pre-match after submitting end game - show match info: tablet id, team, scout name, match number, start position, show image of field with buttons where they go.
+4. Pre-match dialogue - go to pre-match after submitting end game - show match info: tablet id, team, scout name, match number, start position, show image of field with buttons where they go, auto-preload.
 5. Show connected device on laptop, indicator it receives a file
 6. Button presses on UI are log of events (CSV?)
    - array for each type of event
