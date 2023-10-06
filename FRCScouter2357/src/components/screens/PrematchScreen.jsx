@@ -62,8 +62,8 @@ export default function PrematchScreen({ navigation }) {
           </DataTable.Cell>
         </DataTable.Row>
       </DataTable>
-      <Text variant='h10'>Pre-Load</Text>
-      <RadioButtonList direction='row' labels={['Cone', 'Cube', 'None']} />
+      <Text variant="h10">Pre-Load</Text>
+      <RadioButtonList direction="row" labels={['Cone', 'Cube', 'None']} />
       <Text variant="h5">Press start location:</Text>
       <Image
         alt="Starting position"

@@ -8,7 +8,7 @@ import EndgameScreen from './src/components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanup, init } from './src/state/bluetoothSlice';
+import { init } from './src/state/bluetoothSlice';
 import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScreen';
 
 const NavStack = createNativeStackNavigator();
@@ -18,10 +18,6 @@ function App() {
 
   useEffect(() => {
     dispatch(init());
-
-    return () => {
-      dispatch(cleanup());
-    };
   }, []);
 
   if (!useSelector((state) => state.bluetooth.isInit)) {

@@ -7,45 +7,58 @@ export const bluetoothSlice = createSlice({
     device: null,
     currentMatch: null,
     assignment: null,
-    bluetoothSub: null,
     isInit: false,
   },
   reducers: {
     init: (state) => {
-      state.bluetoothSub = RNBluetoothClassic.onDeviceConnected((event) => {
-        state.device = event.device;
-        state.isInit = true;
-        if (state.device.isConnected()) {
-          state.device.onDataReceived((event) => {
-            const data = event.data;
+      RNBluetoothClassic.getBondedDevices().then((devices) => {
+        console.log(devices);
 
-            switch (data.type) {
-              case 'match':
-                state.currentMatch = data.info;
-                break;
-              case 'assignment':
-                state.assignment = data.info;
-                break;
-            }
-          });
-        }
+        const connect = () => {
+          devices[0]
+            .connect({
+              CONNECTOR_TYPE: 'rfcomm',
+              DELIMITER: '\n',
+              DEVICE_CHARSET: 'ascii',
+              READ_TIMEOUT: 300,
+              SECURE_SOCKET: true,
+            })
+            .then((connected) => {
+              if (connected) {
+                console.log('Device connected');
+                state.isInit = true;
+                devices[0].onDataReceived((event) => {
+                  console.log(JSON.stringify(event));
+
+                  const data = event.data;
+
+                  switch (data.type) {
+                    case 'match':
+                      state.currentMatch = data.info;
+                      break;
+                    case 'assignment':
+                      state.assignment = data.info;
+                      break;
+                  }
+                });
+              } else {
+                console.log('Device not connected ');
+                connect();
+              }
+            });
+        };
+
+        connect();
+
+        state.device = devices[0];
       });
     },
     upload: (state, action) => {
       const matchLog = JSON.stringify(action.payload);
       state.device.write(matchLog, 'ascii');
     },
-    cleanup: (state) => {
-      state.bluetoothSub.remove();
-
-      state.device = null;
-      state.currentMatch = null;
-      state.assignment = null;
-      state.bluetoothSub = null;
-      state.isInit = false;
-    },
   },
 });
 
-export const { init, isInit, getMatch, getAssignment, upload, cleanup } = bluetoothSlice.actions;
+export const { init, upload } = bluetoothSlice.actions;
 export default bluetoothSlice.reducer;

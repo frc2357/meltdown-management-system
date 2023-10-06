@@ -9,7 +9,7 @@ const robotStates = {
 };
 
 export default function TeleopLayout({ navigation }) {
-  const [ robotState, setRobotState ] = useState(robotStates.cube);
+  const [robotState, setRobotState] = useState(robotStates.cube);
 
   return (
     <Box>
@@ -25,11 +25,7 @@ export default function TeleopLayout({ navigation }) {
           title="Endgame"
           onPress={() => navigation.navigate('EndgameScreen')}
         />
-        <Image
-          style={styles.robotState}
-          alt="robotState"
-          source={robotState}
-        />
+        <Image style={styles.robotState} alt="robotState" source={robotState} />
       </HStack>
 
       <Box>
@@ -79,8 +75,8 @@ const styles = StyleSheet.create({
     width: 167.5,
   },
   robotState: {
-     height: 50,
-     width: 50,
+    height: 50,
+    width: 50,
   },
   singleSub: {
     height: 230,

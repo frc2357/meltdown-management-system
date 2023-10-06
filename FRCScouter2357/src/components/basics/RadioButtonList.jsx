@@ -12,16 +12,20 @@ export default function RadioButtonList({ labels, direction = 'column' }) {
   const [value, setValue] = useState(labels[0]);
 
   return (
-    <RadioButton.Group direction={direction} onValueChange={newValue => setValue(newValue)} value={value}>
+    <RadioButton.Group
+      direction={direction}
+      onValueChange={(newValue) => setValue(newValue)}
+      value={value}
+    >
       <Stack direction={direction}>
-      {labels.map((label, i) => {
-        return (
-          <HStack key={label}>
-            <RadioButton value={label} />
-            <Text>{label}</Text>
-          </HStack>
-        );
-      })}
+        {labels.map((label, i) => {
+          return (
+            <HStack key={label}>
+              <RadioButton value={label} />
+              <Text>{label}</Text>
+            </HStack>
+          );
+        })}
       </Stack>
     </RadioButton.Group>
   );
