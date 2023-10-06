@@ -28,8 +28,6 @@ namespace ScoutingCenter
         public BluetoothListener listener;
 
         // for now, put all mac addresses here, so they get used by the program.
-        public String[] macAddresses = { "b8:5f:98:f0:56:57" };
-
         public List<BluetoothAddress> bluetoothAddresses;
         public List<BluetoothClient> connectedBluetoothClients = new List<BluetoothClient>();
         public StreamReader sr;
@@ -39,7 +37,7 @@ namespace ScoutingCenter
             client = new BluetoothClient();
             listener = new BluetoothListener(BluetoothService.SerialPort);
             listener.Start();
-            bluetoothAddresses = makeBluetoothAdressList(macAddresses);
+            client = listenForConnection(listener);
         }
 
         public void connectToDevicesForButton(object sender, RoutedEventArgs aakjshfkjh)
@@ -140,9 +138,9 @@ namespace ScoutingCenter
             return adressList;
         }
 
-        public void listenForConnection(BluetoothListener listener)
+        public BluetoothClient listenForConnection(BluetoothListener listener)
         {
-            listener.AcceptBluetoothClient();
+            return listener.AcceptBluetoothClient();
         }
 
         /**
