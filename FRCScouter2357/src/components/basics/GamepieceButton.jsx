@@ -4,7 +4,7 @@ import { Image } from 'react-native';
 
 export default function GamepieceButton({ gamepiece, isHidden, setHidden, style = {} }) {
   const renderImage = () => {
-    return isHidden ? <></> : <Image source={gamepiece} style={style} />;
+    return isHidden ? <></> : <Image source={gamepiece} style={{...style, position: "relative", top: 0, left: 0}} />;
   };
 
   return (
