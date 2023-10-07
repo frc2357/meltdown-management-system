@@ -60,6 +60,27 @@ export default function TeleopLayout({ navigation }) {
           style={styles.singleSub}
         />
         {buttons}
+        <GamepieceButton
+         style={buttonStyles.doubleSub}
+         gamepiece={cone}
+         isHidden={false}
+         setHidden={(isHidden) => {
+           }}
+       />
+       <GamepieceButton
+         style={buttonStyles.singleSub}
+         gamepiece={cone}
+         isHidden={false}
+         setHidden={(isHidden) => {
+           }}
+       />
+       <GamepieceButton
+         style={buttonStyles.floor}
+         gamepiece={cone}
+         isHidden={false}
+         setHidden={(isHidden) => {
+           }}
+       />
       </Box>
     </Box>
   );
@@ -78,7 +99,7 @@ const buttonStyles = StyleSheet.create({
   button1: {
     ...baseStyles.gamepiece,
     left: 13,
-    top: 110,
+    top: 130,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button2: {
@@ -89,171 +110,171 @@ const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   button3: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 170,
+    top: 150,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button4: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 245,
+    top: 170,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button5: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 325,
+    top: 190,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button6: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 405,
+    top: 190,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button7: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 480,
+    top: 200,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button8: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 560,
+    top: 230,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button10: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: -5, //-18
+    top: 200, //+70
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button9: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 635,
+    top: 230,
   },
 
   // eslint-disable-next-line react-native/no-unused-styles
   button11: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 72,
+    top: 220,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button12: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 152,
+    top: 220,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button13: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 227,
+    top: 240,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button14: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 307,
+    top: 260,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button15: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 387,
+    top: 260,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button16: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 462,
+    top: 270,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button17: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 542,
+    top: 300,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button18: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 617,
+    top: 300,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button19: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: -23, //-15
+    top: 290, //+100
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button20: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 51,
+    top: 320,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button21: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 131,
+    top: 320,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button22: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 208,
+    top: 333,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button23: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 285,
+    top: 360,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button24: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 365,
+    top: 360,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button25: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 445,
+    top: 370,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button26: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 522,
+    top: 400,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button27: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 602,
+    top: 400,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   singleSub: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 750,
+    top: 350,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   doubleSub: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 800,
+    top: 80,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   floor: {
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 110,
+    left: 900,
+    top: 350,
   },
 });
 
