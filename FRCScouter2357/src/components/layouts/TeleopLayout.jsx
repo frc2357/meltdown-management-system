@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-
-const robotStates = {
-  cube: require('../../images/cube.png'),
-  cone: require('../../images/cone.png'),
-  none: require(''),
-};
+import cone from '../../images/cone.png';
+import cube from '../../images/cube.png';
+import empty from '../../images/empty.png'
+import GamepieceButton from '../basics/GamepieceButton';
 
 export default function TeleopLayout({ navigation }) {
-  const [robotState, setRobotState] = useState(robotStates.cube);
-
+  const [robotState, setRobotState] = useState(empty);
+  const [isHidden, setHidden] = useState(false);
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
@@ -41,12 +39,21 @@ export default function TeleopLayout({ navigation }) {
           source={require('../../images/singleSub.png')}
           style={styles.singleSub}
         />
+
+        <GamepieceButton style={styles.buttonOne} gamepiece={cone} isHidden={isHidden} setHidden={setHidden}/>
       </Box>
     </Box>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonOne: {
+    height: 100,
+    width: 100,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
   buttonStack: {
     alignItems: 'center',
     height: 40,

@@ -45,6 +45,9 @@ export const bluetoothSlice = createSlice({
                 console.log('Device not connected ');
                 connect();
               }
+            }).catch((error) => {
+              //console.log(error);
+              connect();
             });
         };
 
