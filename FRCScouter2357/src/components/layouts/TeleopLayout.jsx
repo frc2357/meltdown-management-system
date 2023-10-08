@@ -1,30 +1,73 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import cone from '../../images/cone.png';
-import cube from '../../images/cube.png';
-import empty from '../../images/empty.png';
+import coneImage from '../../images/cone.png';
+import cubeImage from '../../images/cube.png';
+import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
 
-export default function TeleopLayout({ navigation }) {
-  const [robotState, setRobotState] = useState(empty);
-  const [isScored, setScored] = useState(new Array(27).fill(false));
+const gamepiece = {
+  cone: 'cone',
+  cube: 'cube',
+};
 
-  const gamepieceRow = [cone, cube, cone, cone, cube, cone, cone, cube, cone];
+export default function TeleopLayout({ navigation }) {
+  const [robotState, setRobotState] = useState(emptyImage);
+  const [isScored, setScored] = useState(new Array(27).fill(false));
+  const [hybridStates, setHybridStates] = useState(new Array(9).fill(gamepiece.cone));
+
+  const gamepieceRow = [
+    coneImage,
+    cubeImage,
+    coneImage,
+    coneImage,
+    cubeImage,
+    coneImage,
+    coneImage,
+    cubeImage,
+    coneImage,
+  ];
   const gamepieceOrder = [...gamepieceRow, ...gamepieceRow, ...gamepieceRow];
 
   const buttons = [];
-  for (let i = 0; i < 27; i++) {
+  for (let i = 0; i < 18; i++) {
     buttons.push(
       <GamepieceButton
         key={i}
         style={buttonStyles['button' + (i + 1)]}
         gamepiece={gamepieceOrder[i]}
-        isHidden={isScored[i]}
+        isHidden={!isScored[i]}
         setHidden={(isHidden) => {
-          const newScore = [...isScored];
-          newScore[i] = isHidden;
-          setScored(newScore);
+          if (isHidden === isScored[i]) {
+            const newScore = [...isScored];
+            newScore[i] = !isHidden;
+            setScored(newScore);
+          }
+        }}
+      />
+    );
+  }
+
+  for (let i = 18; i < 27; i++) {
+    buttons.push(
+      <GamepieceButton
+        key={i}
+        style={buttonStyles['button' + (i + 1)]}
+        gamepiece={hybridStates[i % 18] === gamepiece.cone ? coneImage : cubeImage}
+        isHidden={!isScored[i]}
+        setHidden={(isHidden) => {
+          if (!isHidden) {
+            const newHybridStates = [...hybridStates];
+            newHybridStates[i % 18] =
+              newHybridStates[i % 18] === gamepiece.cone ? gamepiece.cube : gamepiece.cone;
+            setHybridStates(newHybridStates);
+          }
+
+          if (isHidden === isScored[i]) {
+            const newScore = [...isScored];
+            newScore[i] = !isHidden;
+            setScored(newScore);
+          }
         }}
       />
     );
@@ -61,26 +104,23 @@ export default function TeleopLayout({ navigation }) {
         />
         {buttons}
         <GamepieceButton
-         style={buttonStyles.doubleSub}
-         gamepiece={cone}
-         isHidden={false}
-         setHidden={(isHidden) => {
-           }}
-       />
-       <GamepieceButton
-         style={buttonStyles.singleSub}
-         gamepiece={cone}
-         isHidden={false}
-         setHidden={(isHidden) => {
-           }}
-       />
-       <GamepieceButton
-         style={buttonStyles.floor}
-         gamepiece={cone}
-         isHidden={false}
-         setHidden={(isHidden) => {
-           }}
-       />
+          style={buttonStyles.doubleSub}
+          gamepiece={coneImage}
+          isHidden={false}
+          setHidden={(isHidden) => {}}
+        />
+        <GamepieceButton
+          style={buttonStyles.singleSub}
+          gamepiece={coneImage}
+          isHidden={false}
+          setHidden={(isHidden) => {}}
+        />
+        <GamepieceButton
+          style={buttonStyles.floor}
+          gamepiece={coneImage}
+          isHidden={false}
+          setHidden={(isHidden) => {}}
+        />
       </Box>
     </Box>
   );
