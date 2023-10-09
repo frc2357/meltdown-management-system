@@ -15,7 +15,7 @@
         </Grid.Background>
         <Button x:Name="connectButton"  Content="Connect to Devices" HorizontalAlignment="Center" Margin="0,0,400,0" VerticalAlignment="Top" Height="200" Width="200" Click="connectToDevicesForButton" FontSize="16"/>
         <Button x:Name="readButton" Content="Read from Buffer" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="200" Click="readFromBufferForButton" FontSize="16"/>
-        <Button x:Name="writeButton" Content="Write to Sream" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="200" Margin="400,0,0,0" Click="writeToStreamForButton" FontSize="16"/>
+        <Button x:Name="writeButton" Content="Write to Stream" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="200" Margin="400,0,0,0" Click="writeToStreamForButton" FontSize="16"/>
 
     </Grid>
 </Window>

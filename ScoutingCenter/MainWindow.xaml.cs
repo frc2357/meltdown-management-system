@@ -1,15 +1,13 @@
-﻿using System;
-using InTheHand.Net;
-using System.IO;
+﻿using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
-using System.Windows;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections;
-using System.Net;
+using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows;
 namespace ScoutingCenter
 {
     /// <summary>
@@ -40,7 +38,7 @@ namespace ScoutingCenter
             client = listenForConnection(listener);
         }
 
-        public void connectToDevicesForButton(object sender, RoutedEventArgs aakjshfkjh)
+        public void connectToDevicesForButton(object sender, RoutedEventArgs eventArgs)
         {
             for (int i = 0; i < bluetoothAddresses.Count; i++)
             {
@@ -53,22 +51,23 @@ namespace ScoutingCenter
             connectedBluetoothClients.Add(new BluetoothClient());
             Debug.WriteLine("Connecting to device...");
             connectedBluetoothClients.Last().Connect(deviceAddress, BluetoothService.SerialPort);
-            Debug.WriteLine("Conection status: " + connectedBluetoothClients.Last().Connected);
+            Debug.WriteLine("Connection status: " + connectedBluetoothClients.Last().Connected);
         }
 
-        public void readFromBufferForButton(object sender, RoutedEventArgs aakjshfkjh)
+        public void readFromBufferForButton(object sender, RoutedEventArgs eventArgs)
         {
             Debug.WriteLine("Reading...");
             Debug.Write("Stream Buffer that was read: ");
-            string line; line = sr.ReadLine(); Debug.WriteLine(line);
+            String line = sr.ReadLine(); 
+            Debug.WriteLine(line);
         }
 
-        public void writeToStreamForButton(object sender, RoutedEventArgs asdjkaFJKEF)
+        public void writeToStreamForButton(object sender, RoutedEventArgs eventArgs)
         {
             try
             {
                 writeToStream(workingClient, "hello");
-                Debug.WriteLine("Write succedded");
+                Debug.WriteLine("Write successful");
             }
             catch (Exception e)
             {
@@ -116,26 +115,26 @@ namespace ScoutingCenter
 
         /**
          * <summary>
-         *  Processes a string mac adress into a bluetooth adress that can be used for an endpoint
+         *  Processes a string mac address into a Bluetooth address that can be used for an endpoint
          * </summary>
          */
-        public BluetoothAddress macAdressToBluetoothAddress(String macAddress)
+        public BluetoothAddress macAddressToBluetoothAddress(String macAddress)
         {
             return new BluetoothAddress(Convert.ToUInt64(macAddress.Replace(":", ""), 16));
         }
         /**
          * <summary>
-         *  Makes a list of bluetooth addresses from a list of mac addresses, proccessed or not.
+         *  Makes a list of Bluetooth addresses from a list of mac addresses, processed or not.
          * </summary>
          */
-        public List<BluetoothAddress> makeBluetoothAdressList(String[] macAddressList)
+        public List<BluetoothAddress> makeBluetoothAddressList(String[] macAddressList)
         {
-            List<BluetoothAddress> adressList = new List<BluetoothAddress>();
+            List<BluetoothAddress> addressList = new List<BluetoothAddress>();
             for (int i = 0; i < macAddressList.Length; i++)
             {
-                adressList.Add(macAdressToBluetoothAddress(macAddressList[i]));
+                addressList.Add(macAddressToBluetoothAddress(macAddressList[i]));
             }
-            return adressList;
+            return addressList;
         }
 
         public BluetoothClient listenForConnection(BluetoothListener listener)
@@ -145,10 +144,34 @@ namespace ScoutingCenter
 
         /**
          * <summary>
-         * Satisfies the con requirment
+         * Processes the values in a CSV file and returns them in a string array.
          * </summary>
          */
-        public void con(object sender, RoutedEventArgs aakjshfkjh)
+        public string[] processCSVFile(string fileAddress)
+        {
+            using (TextFieldParser parser = new TextFieldParser(fileAddress))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                while (!parser.EndOfData)
+                {
+                    //Process row
+                    string[] fields = parser.ReadFields();
+                    foreach (string field in fields)
+                    {
+                        //TODO: Process field
+                    }
+                }
+            }
+            return new string[] { };
+        }
+
+        /**
+         * <summary>
+         * Satisfies the con requirement
+         * </summary>
+         */
+        public void con(object sender, RoutedEventArgs eventArgs)
         {
 
         }
