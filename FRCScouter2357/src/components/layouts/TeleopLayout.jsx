@@ -6,15 +6,28 @@ import cubeImage from '../../images/cube.png';
 import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
 
-const gamepiece = {
+const robotStates = {
   cone: 'cone',
   cube: 'cube',
+  empty: 'empty',
 };
 
 export default function TeleopLayout({ navigation }) {
-  const [robotState, setRobotState] = useState(emptyImage);
+  const [robotState, setRobotState] = useState(robotStates.empty);
   const [isScored, setScored] = useState(new Array(27).fill(false));
-  const [hybridStates, setHybridStates] = useState(new Array(9).fill(gamepiece.cone));
+  const [hybridStates, setHybridStates] = useState(new Array(9).fill(robotStates.empty));
+  const [pickupStates, setPickupStates] = useState(new Array(3).fill(robotStates.empty));
+
+  const robotStateToImage = (state) => {
+    switch (state) {
+      case robotStates.cone:
+        return coneImage;
+      case robotStates.cube:
+        return cubeImage;
+      default:
+        return emptyImage;
+    }
+  };
 
   const gamepieceRow = [
     coneImage,
@@ -30,7 +43,7 @@ export default function TeleopLayout({ navigation }) {
   const gamepieceOrder = [...gamepieceRow, ...gamepieceRow, ...gamepieceRow];
 
   const buttons = [];
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 27; i++) {
     buttons.push(
       <GamepieceButton
         key={i}
@@ -38,6 +51,35 @@ export default function TeleopLayout({ navigation }) {
         gamepiece={gamepieceOrder[i]}
         isHidden={!isScored[i]}
         setHidden={(isHidden) => {
+          // TODO: What to do if robotState empty??
+          if (!isHidden) {
+            setRobotState(robotState.empty);
+          }
+
+          if (isHidden === isScored[i]) {
+            const newScore = [...isScored];
+            newScore[i] = !isHidden;
+            setScored(newScore);
+          }
+        }}
+      />
+    );
+  }
+  for (let i = 18; i < 27; i++) {
+    buttons.push(
+      <GamepieceButton
+        key={i}
+        style={buttonStyles['button' + (i + 1)]}
+        gamepiece={robotStateToImage(hybridStates[i % 18])}
+        isHidden={!isScored[i]}
+        setHidden={(isHidden) => {
+          if (!isHidden) {
+            const newHybridStates = [...hybridStates];
+            hybridStates[i] = robotState;
+            setHybridStates(newHybridStates);
+            setRobotState(robotState.empty);
+          }
+
           if (isHidden === isScored[i]) {
             const newScore = [...isScored];
             newScore[i] = !isHidden;
@@ -48,26 +90,28 @@ export default function TeleopLayout({ navigation }) {
     );
   }
 
-  for (let i = 18; i < 27; i++) {
-    buttons.push(
+  const pickupStationStyles = [buttonStyles.doubleSub, buttonStyles.singleSub, buttonStyles.floor];
+  const pickupStations = [];
+
+  for (let i = 0; i < 3; i++) {
+    pickupStations.push(
       <GamepieceButton
-        key={i}
-        style={buttonStyles['button' + (i + 1)]}
-        gamepiece={hybridStates[i % 18] === gamepiece.cone ? coneImage : cubeImage}
-        isHidden={!isScored[i]}
+        style={pickupStationStyles[i]}
+        gamepiece={robotStateToImage(pickupStates[0])}
+        isHidden={pickupStates[i] === robotStates.empty}
         setHidden={(isHidden) => {
-          if (!isHidden) {
-            const newHybridStates = [...hybridStates];
-            newHybridStates[i % 18] =
-              newHybridStates[i % 18] === gamepiece.cone ? gamepiece.cube : gamepiece.cone;
-            setHybridStates(newHybridStates);
+          const newPickupStates = [...pickupStates];
+
+          if (isHidden) {
+            newPickupStates[i] = robotStates.empty;
+          } else {
+            newPickupStates[i] =
+              newPickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
           }
 
-          if (isHidden === isScored[i]) {
-            const newScore = [...isScored];
-            newScore[i] = !isHidden;
-            setScored(newScore);
-          }
+          setRobotState(newPickupStates[i]);
+
+          setPickupStates(newPickupStates);
         }}
       />
     );
@@ -87,7 +131,7 @@ export default function TeleopLayout({ navigation }) {
           title="Endgame"
           onPress={() => navigation.navigate('EndgameScreen')}
         />
-        <Image style={styles.robotState} alt="robotState" source={robotState} />
+        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
       </HStack>
       <Box>
         <Image alt="Columns" source={require('../../images/grid.png')} style={styles.columns} />
@@ -103,24 +147,7 @@ export default function TeleopLayout({ navigation }) {
           style={styles.singleSub}
         />
         {buttons}
-        <GamepieceButton
-          style={buttonStyles.doubleSub}
-          gamepiece={coneImage}
-          isHidden={false}
-          setHidden={(isHidden) => {}}
-        />
-        <GamepieceButton
-          style={buttonStyles.singleSub}
-          gamepiece={coneImage}
-          isHidden={false}
-          setHidden={(isHidden) => {}}
-        />
-        <GamepieceButton
-          style={buttonStyles.floor}
-          gamepiece={coneImage}
-          isHidden={false}
-          setHidden={(isHidden) => {}}
-        />
+        {pickupStations}
       </Box>
     </Box>
   );
@@ -186,8 +213,8 @@ const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   button10: {
     ...baseStyles.gamepiece,
-    left: -5, //-18
-    top: 200, //+70
+    left: -5, // -18
+    top: 200, // +70
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button9: {
@@ -247,8 +274,8 @@ const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   button19: {
     ...baseStyles.gamepiece,
-    left: -23, //-15
-    top: 290, //+100
+    left: -23, // -15
+    top: 290, // +100
   },
   // eslint-disable-next-line react-native/no-unused-styles
   button20: {
