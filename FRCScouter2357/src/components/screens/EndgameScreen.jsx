@@ -10,7 +10,7 @@ export default function EndgameScreen({ navigation }) {
     <Box style={styles.autoContainer}>
       <Text title="Auto" />
       <VStack>
-        <RadioButtonList labels={['Parked', 'Docked', 'Engaged']} direction="row" />
+        <RadioButtonList labels={['None','Parked', 'Docked', 'Engaged']} direction="row" />
         <TextInput
           label="Notes"
           variant="outlined"

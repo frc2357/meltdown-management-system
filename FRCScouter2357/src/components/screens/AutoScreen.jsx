@@ -16,7 +16,7 @@ export default function AutoScreen({ navigation }) {
           <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
           <Text>Mobility</Text>
         </HStack>
-        <RadioButtonList labels={['Docked', 'Engaged']} />
+        <RadioButtonList labels={['None','Docked', 'Engaged', 'None']} />
       </VStack>
       <HStack>
         <Button
