@@ -1,13 +1,18 @@
 ﻿using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
+using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Xml.Linq;
+
 namespace ScoutingCenter
 {
     /// <summary>
@@ -15,6 +20,8 @@ namespace ScoutingCenter
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles";
+
         public BluetoothClient workingClient;
         public MainWindow()
         {
@@ -77,7 +84,7 @@ namespace ScoutingCenter
 
         /** <summary>
          * <para>
-         * Writes a provided message that DOES NOT HAVE A DELIMITER IN IT ALREADY
+         * Writes a provided message that does NOT have a delimiter present already
          * </para> <para>
          * User needs to provide a bluetooth client with an active connection, as well as the message
          * </para> <para>
@@ -95,6 +102,11 @@ namespace ScoutingCenter
             }
         }
 
+        /**
+         * <summary>
+         * Reads from the buffer of a provided BluetoothClient and returns the string that was read
+         * </summary>
+         */
         public String readFromBuffer(BluetoothClient blueClient)
         {
             try
@@ -111,8 +123,6 @@ namespace ScoutingCenter
             }
         }
 
-
-
         /**
          * <summary>
          *  Processes a string mac address into a Bluetooth address that can be used for an endpoint
@@ -123,6 +133,7 @@ namespace ScoutingCenter
             return new BluetoothAddress(Convert.ToUInt64(macAddress.Replace(":", ""), 16));
         }
         /**
+         * 
          * <summary>
          *  Makes a list of Bluetooth addresses from a list of mac addresses, processed or not.
          * </summary>
@@ -144,10 +155,10 @@ namespace ScoutingCenter
 
         /**
          * <summary>
-         * Processes the values in a CSV file and returns them in a string array.
+         * Parses the values in a CSV file with one row and returns the values in it in a string array.
          * </summary>
          */
-        public string[] processCSVFile(string fileAddress)
+        public string[] parseSingleRowCSVFile(string fileAddress)
         {
             using (TextFieldParser parser = new TextFieldParser(fileAddress))
             {
@@ -156,14 +167,31 @@ namespace ScoutingCenter
                 while (!parser.EndOfData)
                 {
                     //Process row
-                    string[] fields = parser.ReadFields();
-                    foreach (string field in fields)
-                    {
-                        //TODO: Process field
-                    }
+                    return parser.ReadFields();
                 }
             }
-            return new string[] { };
+            return new string[0];
+        }
+
+        public Dictionary<string, string> getCSVFileNamePathPairs()
+        {
+            try
+            {
+                Dictionary<string, string> fileNamePathPairs = new Dictionary<string, string>();
+                foreach (string filePath in Directory.GetFiles(CSV_FILE_DIRECTORY_PATH))
+                {
+                    // gets rid of the rest of the file path in the files name, so we can use it for the dictionary
+                    string eventName = filePath.Replace(CSV_FILE_DIRECTORY_PATH + "\\", "").Replace(".csv", "").ToLower();
+                    fileNamePathPairs.Add(eventName, filePath);
+                    Debug.WriteLine("Event name parsed: " + eventName + $"\nFile path of event name: {filePath}");
+                }
+                return fileNamePathPairs;
+            }
+            catch (Exception e) 
+            {
+                Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
+            }
+            return null;
         }
 
         /**

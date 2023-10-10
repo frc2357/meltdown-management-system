@@ -4,7 +4,6 @@ C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\bin\Debug\Scouting
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\bin\Debug\InTheHand.Net.Bluetooth.dll
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\bin\Debug\InTheHand.Net.Bluetooth.xml
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\obj\Debug\ScoutingCenter.csproj.AssemblyReference.cache
-C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\obj\Debug\ScoutingCenter.csproj.SuggestedBindingRedirects.cache
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\obj\Debug\MainWindow.g.cs
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\obj\Debug\App.g.cs
 C:\Users\mamil\Documents\Git\scouting-software\ScoutingCenter\obj\Debug\ScoutingCenter_MarkupCompile.cache
