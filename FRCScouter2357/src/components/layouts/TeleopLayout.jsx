@@ -12,11 +12,19 @@ const robotStates = {
   empty: 'empty',
 };
 
+const numGamepieces = 27;
+const numHybridNodes = 9;
+const numPickupStations = 3;
+
 export default function TeleopLayout({ navigation }) {
   const [robotState, setRobotState] = useState(robotStates.empty);
-  const [isScored, setScored] = useState(new Array(27).fill(false));
-  const [hybridStates, setHybridStates] = useState(new Array(9).fill(robotStates.empty));
-  const [pickupStates, setPickupStates] = useState(new Array(3).fill(robotStates.empty));
+  const [isScored, setScored] = useState(new Array(numGamepieces).fill(false));
+  const [hybridStates, setHybridStates] = useState(
+    new Array(numHybridNodes).fill(robotStates.empty)
+  );
+  const [pickupStates, setPickupStates] = useState(
+    new Array(numPickupStations).fill(robotStates.empty)
+  );
 
   const robotStateToImage = (state) => {
     switch (state) {
@@ -29,31 +37,39 @@ export default function TeleopLayout({ navigation }) {
     }
   };
 
+  const clearRobotStateAndPickup = () => {
+    setPickupStates(new Array(numPickupStations).fill(robotStates.empty));
+    setRobotState(robotStates.empty);
+  };
+
   const gamepieceRow = [
-    coneImage,
-    cubeImage,
-    coneImage,
-    coneImage,
-    cubeImage,
-    coneImage,
-    coneImage,
-    cubeImage,
-    coneImage,
+    robotStates.cone,
+    robotStates.cube,
+    robotStates.cone,
+    robotStates.cone,
+    robotStates.cube,
+    robotStates.cone,
+    robotStates.cone,
+    robotStates.cube,
+    robotStates.cone,
   ];
   const gamepieceOrder = [...gamepieceRow, ...gamepieceRow, ...gamepieceRow];
 
   const buttons = [];
-  for (let i = 0; i < 27; i++) {
+  for (let i = 0; i < 18; i++) {
     buttons.push(
       <GamepieceButton
         key={i}
         style={buttonStyles['button' + (i + 1)]}
-        gamepiece={gamepieceOrder[i]}
+        gamepiece={robotStateToImage(gamepieceOrder[i])}
         isHidden={!isScored[i]}
         setHidden={(isHidden) => {
-          // TODO: What to do if robotState empty??
           if (!isHidden) {
-            setRobotState(robotState.empty);
+            if (robotState !== gamepieceOrder[i] || isScored[i]) {
+              return;
+            }
+
+            clearRobotStateAndPickup();
           }
 
           if (isHidden === isScored[i]) {
@@ -65,19 +81,25 @@ export default function TeleopLayout({ navigation }) {
       />
     );
   }
+
   for (let i = 18; i < 27; i++) {
+    const hybridIdx = i % 18;
     buttons.push(
       <GamepieceButton
         key={i}
         style={buttonStyles['button' + (i + 1)]}
-        gamepiece={robotStateToImage(hybridStates[i % 18])}
+        gamepiece={robotStateToImage(hybridStates[hybridIdx])}
         isHidden={!isScored[i]}
         setHidden={(isHidden) => {
           if (!isHidden) {
+            if (robotState === robotState.empty || isScored[i]) {
+              return;
+            }
+
             const newHybridStates = [...hybridStates];
-            hybridStates[i] = robotState;
+            newHybridStates[hybridIdx] = robotState;
             setHybridStates(newHybridStates);
-            setRobotState(robotState.empty);
+            clearRobotStateAndPickup();
           }
 
           if (isHidden === isScored[i]) {
@@ -93,20 +115,21 @@ export default function TeleopLayout({ navigation }) {
   const pickupStationStyles = [buttonStyles.doubleSub, buttonStyles.singleSub, buttonStyles.floor];
   const pickupStations = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < numPickupStations; i++) {
     pickupStations.push(
       <GamepieceButton
+        key={i}
         style={pickupStationStyles[i]}
-        gamepiece={robotStateToImage(pickupStates[0])}
+        gamepiece={robotStateToImage(pickupStates[i])}
         isHidden={pickupStates[i] === robotStates.empty}
         setHidden={(isHidden) => {
-          const newPickupStates = [...pickupStates];
+          const newPickupStates = new Array(3).fill(robotStates.empty);
 
           if (isHidden) {
             newPickupStates[i] = robotStates.empty;
           } else {
             newPickupStates[i] =
-              newPickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
+              pickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
           }
 
           setRobotState(newPickupStates[i]);
