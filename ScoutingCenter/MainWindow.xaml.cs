@@ -160,19 +160,32 @@ namespace ScoutingCenter
          */
         public string[] parseSingleRowCSVFile(string fileAddress)
         {
-            using (TextFieldParser parser = new TextFieldParser(fileAddress))
+            try
             {
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
-                while (!parser.EndOfData)
+                using (TextFieldParser parser = new TextFieldParser(fileAddress))
                 {
-                    //Process row
-                    return parser.ReadFields();
+                    parser.TextFieldType = FieldType.Delimited;
+                    parser.SetDelimiters(",");
+                    while (!parser.EndOfData)
+                    {
+                        //Process row
+                        return parser.ReadFields();
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
             }
             return new string[0];
         }
 
+        /**
+         * <summary>
+         * Gets the file names and paths of the CSV files in the CSV file directory<para>
+         * Returns them in the format of, file name, file path </para>
+         * </summary>
+         */
         public Dictionary<string, string> getCSVFileNamePathPairs()
         {
             try
@@ -180,8 +193,7 @@ namespace ScoutingCenter
                 Dictionary<string, string> fileNamePathPairs = new Dictionary<string, string>();
                 foreach (string filePath in Directory.GetFiles(CSV_FILE_DIRECTORY_PATH))
                 {
-                    // gets rid of the rest of the file path in the files name, so we can use it for the dictionary
-                    string eventName = filePath.Replace(CSV_FILE_DIRECTORY_PATH + "\\", "").Replace(".csv", "").ToLower();
+                    string eventName = Path.GetFileName(filePath).Split('.')[0];
                     fileNamePathPairs.Add(eventName, filePath);
                     Debug.WriteLine("Event name parsed: " + eventName + $"\nFile path of event name: {filePath}");
                 }
