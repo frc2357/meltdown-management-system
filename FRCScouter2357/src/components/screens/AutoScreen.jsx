@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { VStack, HStack, Switch, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
+import { useDispatch } from 'react-redux';
+import { addAuto } from '../../state/matchLogSlice';
 
 const windowDimensions = Dimensions.get('window');
 
 export default function AutoScreen({ navigation }) {
   const [hasMobility, setMobility] = useState(false);
+  const [chargestation, setChargestation] = useState('None');
+
+  const onOk = () => {
+    useDispatch(addAuto({hasMobility, loc: chargestation}));
+
+    navigation.navigate('TeleopLayout');
+  }
 
   return (
     <Box style={styles.autoContainer}>
@@ -16,7 +25,7 @@ export default function AutoScreen({ navigation }) {
           <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
           <Text>Mobility</Text>
         </HStack>
-        <RadioButtonList labels={['None','Docked', 'Engaged']} />
+        <RadioButtonList labels={['None','Docked', 'Engaged']} selected={chargestation} setSelected={setChargestation} />
       </VStack>
       <HStack>
         <Button
@@ -29,7 +38,7 @@ export default function AutoScreen({ navigation }) {
           title="Ok"
           compact
           variant="contained"
-          onPress={() => navigation.navigate('TeleopLayout')}
+          onPress={onOk}
         />
       </HStack>
     </Box>

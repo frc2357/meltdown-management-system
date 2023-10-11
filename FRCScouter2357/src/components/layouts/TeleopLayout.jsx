@@ -148,7 +148,9 @@ export default function TeleopLayout({ navigation }) {
           title="Auto"
           onPress={() => navigation.navigate('AutoScreen')}
         />
-        <Button variant="contained" title="Drop" />
+        <Button variant="contained" title="Drop" onPress={() => {
+          clearRobotStateAndPickup();
+        }}/>
         <Button
           variant="contained"
           title="Endgame"

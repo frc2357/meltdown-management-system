@@ -16,13 +16,13 @@ const NavStack = createNativeStackNavigator();
 function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(init());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(init());
+  // }, []);
 
-  if (!useSelector((state) => state.bluetooth.isInit)) {
-    return <AwaitAssignmentScreen />;
-  }
+  // if (!useSelector((state) => state.bluetooth.isInit)) {
+  //   return <AwaitAssignmentScreen />;
+  // }
 
   return (
     <Provider style={styles.container}>

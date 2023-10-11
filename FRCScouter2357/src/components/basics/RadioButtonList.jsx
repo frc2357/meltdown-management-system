@@ -1,21 +1,21 @@
 import { Stack, Text, HStack } from '@react-native-material/core';
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { RadioButton } from 'react-native-paper';
 
 RadioButtonList.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string),
   direction: PropTypes.string,
+  selected: PropTypes.string,
+  setSelected: PropTypes.func
 };
 
-export default function RadioButtonList({ labels, direction = 'column' }) {
-  const [value, setValue] = useState(labels[0]);
-
+export default function RadioButtonList({ labels, direction = 'column', selected, setSelected }) {
   return (
     <RadioButton.Group
       direction={direction}
-      onValueChange={(newValue) => setValue(newValue)}
-      value={value}
+      onValueChange={(newValue) => setSelected(newValue)}
+      value={selected}
     >
       <Stack direction={direction}>
         {labels.map((label, i) => {

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Text, Button, Pressable } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import AwaitMatchScreen from './AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
+import { newMatch } from '../../state/matchLogSlice';
 
 export default function PrematchScreen({ navigation }) {
   const [pressed, setPressed] = useState(new Array(4).fill(false));
+  const [preload, setPreload] = useState('None');
   const assignment = useSelector((state) => state.bluetooth.assignment);
   const match = useSelector((state) => state.bluetooth.currentMatch);
 
-  const scouter = assignment?.scouter ? assignment.scouter : '';
+  const scouterName = assignment?.scouter ? assignment.scouter : '';
   const id = assignment?.id ? assignment.id : '';
 
   const teamNum = match?.teamNum ? assignment.teamNum : '';
@@ -21,6 +23,20 @@ export default function PrematchScreen({ navigation }) {
   if (!match) {
     return <AwaitMatchScreen />;
   }
+
+  const onConfirm = () => {
+    let startPos = 0;
+    for (startPos = 0; startPos < 4; startPos++) {
+      if (pressed[startPos]) {
+        break;
+      }
+    }
+
+    useDispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
+
+    // TODO: Pass initial robotstate
+    navigation.navigate('TeleopLayout');
+  };
 
   return (
     <Box>
@@ -46,7 +62,7 @@ export default function PrematchScreen({ navigation }) {
 
         <DataTable.Row>
           <DataTable.Cell>
-            <Text>{scouter}</Text>
+            <Text>{scouterName}</Text>
           </DataTable.Cell>
           <DataTable.Cell>
             <Text>{id}</Text>
@@ -63,7 +79,12 @@ export default function PrematchScreen({ navigation }) {
         </DataTable.Row>
       </DataTable>
       <Text variant="h10">Pre-Load</Text>
-      <RadioButtonList direction="row" labels={['Cone', 'Cube', 'None']} />
+      <RadioButtonList
+        direction="row"
+        labels={['Cone', 'Cube', 'None']}
+        selected={preload}
+        setSelected={setPreload}
+      />
       <Text variant="h5">Press start location:</Text>
       <Image
         alt="Starting position"
@@ -85,12 +106,7 @@ export default function PrematchScreen({ navigation }) {
           />
         );
       })}
-      <Button
-        title="Confirm"
-        variant="contained"
-        style={styles.confirm}
-        onPress={() => navigation.navigate('TeleopLayout')}
-      />
+      <Button title="Confirm" variant="contained" style={styles.confirm} onPress={onConfirm} />
     </Box>
   );
 }

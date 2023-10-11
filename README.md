@@ -27,9 +27,11 @@ All events must have a `type` field
 
 #### Matchinf 
             {
-                matchNum
                 teamNum
                 scouterName
+                matchNum
+                alliance
+                startPos
                 preload:
                 notes
             }
