@@ -3,7 +3,8 @@ import { VStack, HStack, Switch, Text, Button, Box } from '@react-native-materia
 import { StyleSheet, Dimensions } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
-import { addAuto } from '../../state/matchLogSlice';
+import { addEvent } from '../../state/matchLogSlice';
+import { createAuto } from '../../util/eventCreator';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -13,7 +14,7 @@ export default function AutoScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const onOk = () => {
-    dispatch(addAuto({ hasMobility, loc: chargestation }));
+    dispatch(addEvent(createAuto(hasMobility, chargestation)));
 
     navigation.navigate('TeleopLayout');
   };

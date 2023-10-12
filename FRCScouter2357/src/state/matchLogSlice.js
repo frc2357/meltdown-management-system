@@ -11,6 +11,7 @@ const initialState = {
     notes: '',
     events: [],
   },
+  startTimeSeconds: 0,
 };
 
 export const matchLogSlice = createSlice({
@@ -19,8 +20,9 @@ export const matchLogSlice = createSlice({
   reducers: {
     newMatch: (
       state,
-      { payload: { teamNum, scouterName, matchNum, alliance, startPos, preload } }
+      { payload: { teamNum, scouterName, matchNum, alliance, startPos, preload, temp } }
     ) => {
+      console.log(JSON.stringify(state));
       state.match = {
         ...initialState.match,
         teamNum,
@@ -30,28 +32,18 @@ export const matchLogSlice = createSlice({
         startPos,
         preload,
       };
+      state.startTimeSeconds = Math.floor(Date.now() / 1000);
       console.log(state);
     },
-    addPickup: (state, { payload: { piece, location, isAuto } }) => {
-      state.match.events.push({ type: 'pickup', piece, location, isAuto });
+
+    addEvent: (state, { payload }) => {
+      state.match.events.push(payload);
     },
-    addDrop: (state, { payload: { piece, isAuto } }) => {
-      state.match.events.push({ type: 'drop', piece, isAuto });
-    },
-    addScore: (state, { payload: { piece, row, col, isAuto } }) => {
-      state.match.events.push({ type: 'score', piece, row, col, isAuto });
-    },
-    addAuto: (state, { payload: { hasMobility, loc } }) => {
-      state.match.events.push({ type: 'auto', hasMobility, loc });
-    },
-    addEndgame: (state, { payload: { loc, notes } }) => {
-      state.match.events.push({ type: 'endgame', loc });
-      state.match.notes = notes;
-      console.log(state);
+    addNotes: (state, { payload }) => {
+      state.match.notes = payload;
     },
   },
 });
 
-export const { newMatch, addPickup, addDrop, addScore, addAuto, addEndgame } =
-  matchLogSlice.actions;
+export const { newMatch, addEvent, addNotes } = matchLogSlice.actions;
 export default matchLogSlice.reducer;

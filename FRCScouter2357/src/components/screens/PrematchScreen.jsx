@@ -6,7 +6,7 @@ import AwaitMatchScreen from './AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
 import { newMatch } from '../../state/matchLogSlice';
-import robotStates from '../../enums/robotStates';
+import robotStates from '../../util/robotStates';
 
 export default function PrematchScreen({ navigation }) {
   const [pressed, setPressed] = useState(new Array(4).fill(false));
@@ -36,7 +36,6 @@ export default function PrematchScreen({ navigation }) {
 
     dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
 
-    // TODO: Pass initial robotstate
     navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
 

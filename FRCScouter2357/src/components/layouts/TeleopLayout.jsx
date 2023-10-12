@@ -5,10 +5,11 @@ import coneImage from '../../images/cone.png';
 import cubeImage from '../../images/cube.png';
 import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
-import robotStates from '../../enums/robotStates';
+import robotStates from '../../util/robotStates';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { addDrop, addPickup, addScore } from '../../state/matchLogSlice';
+import { addEvent } from '../../state/matchLogSlice';
+import { createDrop, createPickup } from '../../util/eventCreator';
 
 const numGamepieces = 27;
 const numHybridNodes = 9;
@@ -55,16 +56,14 @@ export default function TeleopLayout({
   };
 
   const onDrop = () => {
-    dispatch(addPickup({ piece: robotState, location: lastPickup, isAuto }));
-    dispatch(addDrop({ piece: robotState, isAuto }));
+    dispatch(addEvent(lastPickup));
+    dispatch(addEvent(createDrop(robotState, isAuto)));
     clearRobotStateAndPickup();
   };
 
   const createScore = (position) => {
-    dispatch(addPickup({ piece: robotState, location: '', isAuto }));
-    dispatch(
-      addScore({ piece: robotState, row: Math.floor(position / 9), col: position % 9, isAuto })
-    );
+    dispatch(addEvent(lastPickup));
+    dispatch(addEvent(createScore(robotState, Math.floor(position / 9), position % 9, isAuto)));
   };
 
   const gamepieceRow = [
@@ -157,7 +156,7 @@ export default function TeleopLayout({
             newPickupStates[i] =
               pickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
 
-            setLastPickup(pickupStationNames[i]);
+            setLastPickup(createPickup(robotState, pickupStationNames[i], isAuto));
 
             setRobotState(newPickupStates[i]);
 
