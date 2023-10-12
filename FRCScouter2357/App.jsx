@@ -10,19 +10,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { init } from './src/state/bluetoothSlice';
 import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScreen';
+import robotStates from './src/enums/robotStates';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(init());
-  // }, []);
+  useEffect(() => {
+    dispatch(init());
+  }, []);
 
-  // if (!useSelector((state) => state.bluetooth.isInit)) {
-  //   return <AwaitAssignmentScreen />;
-  // }
+  if (!useSelector((state) => state.bluetooth.isInit)) {
+    return <AwaitAssignmentScreen />;
+  }
 
   return (
     <Provider style={styles.container}>
@@ -38,6 +39,7 @@ function App() {
               name="TeleopLayout"
               component={TeleopLayout}
               options={{ headerShown: false }}
+              initialParams={{initialRobotState: robotStates.empty, isAuto: false}}
             />
             <NavStack.Screen
               name="AutoScreen"

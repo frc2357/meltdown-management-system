@@ -6,10 +6,12 @@ import AwaitMatchScreen from './AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
 import { newMatch } from '../../state/matchLogSlice';
+import robotStates from '../../enums/robotStates';
 
 export default function PrematchScreen({ navigation }) {
   const [pressed, setPressed] = useState(new Array(4).fill(false));
-  const [preload, setPreload] = useState('None');
+  const [preload, setPreload] = useState(robotStates.empty);
+  const dispatch = useDispatch();
   const assignment = useSelector((state) => state.bluetooth.assignment);
   const match = useSelector((state) => state.bluetooth.currentMatch);
 
@@ -32,10 +34,10 @@ export default function PrematchScreen({ navigation }) {
       }
     }
 
-    useDispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
+    dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
 
     // TODO: Pass initial robotstate
-    navigation.navigate('TeleopLayout');
+    navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
 
   return (
@@ -81,7 +83,7 @@ export default function PrematchScreen({ navigation }) {
       <Text variant="h10">Pre-Load</Text>
       <RadioButtonList
         direction="row"
-        labels={['Cone', 'Cube', 'None']}
+        labels={[robotStates.cone, robotStates.cube, robotStates.empty]}
         selected={preload}
         setSelected={setPreload}
       />

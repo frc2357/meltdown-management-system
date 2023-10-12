@@ -10,12 +10,13 @@ const windowDimensions = Dimensions.get('window');
 export default function AutoScreen({ navigation }) {
   const [hasMobility, setMobility] = useState(false);
   const [chargestation, setChargestation] = useState('None');
+  const dispatch = useDispatch();
 
   const onOk = () => {
-    useDispatch(addAuto({hasMobility, loc: chargestation}));
+    dispatch(addAuto({ hasMobility, loc: chargestation }));
 
     navigation.navigate('TeleopLayout');
-  }
+  };
 
   return (
     <Box style={styles.autoContainer}>
@@ -25,21 +26,20 @@ export default function AutoScreen({ navigation }) {
           <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
           <Text>Mobility</Text>
         </HStack>
-        <RadioButtonList labels={['None','Docked', 'Engaged']} selected={chargestation} setSelected={setChargestation} />
+        <RadioButtonList
+          labels={['Docked', 'Engaged', 'None']}
+          selected={chargestation}
+          setSelected={setChargestation}
+        />
       </VStack>
       <HStack>
         <Button
           title="Cancel"
           compact
           variant="outlined"
-          onPress={() => navigation.navigate('TeleopLayout')}
+          onPress={() => navigation.navigate('TeleopLayout', { isAuto: false })}
         />
-        <Button
-          title="Ok"
-          compact
-          variant="contained"
-          onPress={onOk}
-        />
+        <Button title="Ok" compact variant="contained" onPress={onOk} />
       </HStack>
     </Box>
   );

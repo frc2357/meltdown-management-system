@@ -5,19 +5,29 @@ import coneImage from '../../images/cone.png';
 import cubeImage from '../../images/cube.png';
 import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
-
-const robotStates = {
-  cone: 'cone',
-  cube: 'cube',
-  empty: 'empty',
-};
+import robotStates from '../../enums/robotStates';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { addDrop, addPickup, addScore } from '../../state/matchLogSlice';
 
 const numGamepieces = 27;
 const numHybridNodes = 9;
 const numPickupStations = 3;
 
-export default function TeleopLayout({ navigation }) {
-  const [robotState, setRobotState] = useState(robotStates.empty);
+const pickupStationNames = ['doubleSub', 'singleSub', 'floor'];
+
+TeleopLayout.propTypes = {
+  route: PropTypes.object.isRequired,
+};
+
+export default function TeleopLayout({
+  route: {
+    params: { initialRobotState, isAuto },
+  },
+  navigation,
+}) {
+  const [robotState, setRobotState] = useState(initialRobotState);
+  const [lastPickup, setLastPickup] = useState();
   const [isScored, setScored] = useState(new Array(numGamepieces).fill(false));
   const [hybridStates, setHybridStates] = useState(
     new Array(numHybridNodes).fill(robotStates.empty)
@@ -25,6 +35,8 @@ export default function TeleopLayout({ navigation }) {
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(robotStates.empty)
   );
+
+  const dispatch = useDispatch();
 
   const robotStateToImage = (state) => {
     switch (state) {
@@ -40,6 +52,19 @@ export default function TeleopLayout({ navigation }) {
   const clearRobotStateAndPickup = () => {
     setPickupStates(new Array(numPickupStations).fill(robotStates.empty));
     setRobotState(robotStates.empty);
+  };
+
+  const onDrop = () => {
+    dispatch(addPickup({ piece: robotState, location: lastPickup, isAuto }));
+    dispatch(addDrop({ piece: robotState, isAuto }));
+    clearRobotStateAndPickup();
+  };
+
+  const createScore = (position) => {
+    dispatch(addPickup({ piece: robotState, location: '', isAuto }));
+    dispatch(
+      addScore({ piece: robotState, row: Math.floor(position / 9), col: position % 9, isAuto })
+    );
   };
 
   const gamepieceRow = [
@@ -69,6 +94,7 @@ export default function TeleopLayout({ navigation }) {
               return;
             }
 
+            createScore(i);
             clearRobotStateAndPickup();
           }
 
@@ -98,6 +124,8 @@ export default function TeleopLayout({ navigation }) {
 
             const newHybridStates = [...hybridStates];
             newHybridStates[hybridIdx] = robotState;
+
+            createScore(i);
             setHybridStates(newHybridStates);
             clearRobotStateAndPickup();
           }
@@ -118,23 +146,23 @@ export default function TeleopLayout({ navigation }) {
   for (let i = 0; i < numPickupStations; i++) {
     pickupStations.push(
       <GamepieceButton
-        key={i}
+        key={pickupStationNames[i]}
         style={pickupStationStyles[i]}
         gamepiece={robotStateToImage(pickupStates[i])}
         isHidden={pickupStates[i] === robotStates.empty}
         setHidden={(isHidden) => {
-          const newPickupStates = new Array(3).fill(robotStates.empty);
+          if (!isHidden) {
+            const newPickupStates = new Array(3).fill(robotStates.empty);
 
-          if (isHidden) {
-            newPickupStates[i] = robotStates.empty;
-          } else {
             newPickupStates[i] =
               pickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
+
+            setLastPickup(pickupStationNames[i]);
+
+            setRobotState(newPickupStates[i]);
+
+            setPickupStates(newPickupStates);
           }
-
-          setRobotState(newPickupStates[i]);
-
-          setPickupStates(newPickupStates);
         }}
       />
     );
@@ -148,9 +176,7 @@ export default function TeleopLayout({ navigation }) {
           title="Auto"
           onPress={() => navigation.navigate('AutoScreen')}
         />
-        <Button variant="contained" title="Drop" onPress={() => {
-          clearRobotStateAndPickup();
-        }}/>
+        <Button variant="contained" title="Drop" onPress={onDrop} />
         <Button
           variant="contained"
           title="Endgame"
