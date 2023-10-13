@@ -20,8 +20,11 @@ namespace ScoutingCenter
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles";
+        const string SEND_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles\\send";
+        const string RECIEVE_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles\\receive";
 
+        public Dictionary<string, string> sendCSVFileNamePathPairs;
+        public Dictionary<string, int> valuesToSendViaCSV;
         public BluetoothClient workingClient;
         public MainWindow()
         {
@@ -37,8 +40,18 @@ namespace ScoutingCenter
         public List<BluetoothClient> connectedBluetoothClients = new List<BluetoothClient>();
         public StreamReader sr;
         public StreamWriter sw;
+
+        /**
+         * <summary>
+         * The method that sets everything up
+         * </summary>
+         */
         public void setUpScoutingCenter()
         {
+            sendCSVFileNamePathPairs = getSendCSVFileNamePathPairs();
+            valuesToSendViaCSV = new Dictionary<string, int> { };
+            // below line adds the value for the match number, and says that the current match is 24, currently the variables MUST be hard coded.
+            valuesToSendViaCSV.Add("matchNumber",24);
             client = new BluetoothClient();
             listener = new BluetoothListener(BluetoothService.SerialPort);
             listener.Start();
@@ -182,20 +195,20 @@ namespace ScoutingCenter
 
         /**
          * <summary>
-         * Gets the file names and paths of the CSV files in the CSV file directory<para>
+         * Gets the file names and paths of the CSV files in the CSV file directory for the events to send<para>
          * Returns them in the format of, file name, file path </para>
          * </summary>
          */
-        public Dictionary<string, string> getCSVFileNamePathPairs()
+        public Dictionary<string, string> getSendCSVFileNamePathPairs()
         {
             try
             {
                 Dictionary<string, string> fileNamePathPairs = new Dictionary<string, string>();
-                foreach (string filePath in Directory.GetFiles(CSV_FILE_DIRECTORY_PATH))
+                foreach (string filePath in Directory.GetFiles(SEND_CSV_FILE_DIRECTORY_PATH))
                 {
                     string eventName = Path.GetFileName(filePath).Split('.')[0];
                     fileNamePathPairs.Add(eventName, filePath);
-                    Debug.WriteLine("Event name parsed: " + eventName + $"\nFile path of event name: {filePath}");
+                    Debug.WriteLine("Event name parsed from CSV directory: " + eventName + $"\nFile path of that event: {filePath}");
                 }
                 return fileNamePathPairs;
             }
@@ -205,6 +218,86 @@ namespace ScoutingCenter
             }
             return null;
         }
+
+        /**
+         * <summary>
+         * Gets the file names and paths of the CSV files in the CSV file directory for the events that will be received<para>
+         * Returns them in the format of, file name, file path </para>
+         * </summary>
+         */
+        public Dictionary<string, string> getReceiveCSVFileNamePathPairs()
+        {
+            try
+            {
+                Dictionary<string, string> fileNamePathPairs = new Dictionary<string, string>();
+                foreach (string filePath in Directory.GetFiles(RECIEVE_CSV_FILE_DIRECTORY_PATH))
+                {
+                    string eventName = Path.GetFileName(filePath).Split('.')[0];
+                    fileNamePathPairs.Add(eventName, filePath);
+                    Debug.WriteLine("Event name parsed from CSV directory: " + eventName + $"\nFile path of that event: {filePath}");
+                }
+                return fileNamePathPairs;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
+            }
+            return null;
+        }
+
+        /**
+         * <summary>
+         * Writes an event to the buffer of the provided bluetooth client
+         * </summary>
+         */
+        public void writeEventToBuffer(BluetoothClient bluetoothClient, string eventType)
+        {
+            try
+            {
+                string eventFilePath;
+                if (!sendCSVFileNamePathPairs.TryGetValue(eventType, out eventFilePath))
+                {
+                    Debug.WriteLine("Invalid event type!");
+                    return;
+                }
+                string[] eventFormat = parseSingleRowCSVFile(eventFilePath);
+                ArrayList goodString = new ArrayList();
+                foreach(string str in eventFormat) 
+                {
+                    foreach (string key in valuesToSendViaCSV.Keys) 
+                    {
+                        try
+                        {
+                            int value;
+                            valuesToSendViaCSV.TryGetValue(key, out value);
+                            str.Replace(key, value.ToString());
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Do not have the value for the key in the values to send!*************");
+                            Debug.WriteLine("Error Message: " + e.Message + "\nStack trace...\n" + e.StackTrace);
+                            return;
+                        }
+                    }
+                    goodString.Add(str);
+                }
+                foreach(string str in goodString)
+                {
+                    try 
+                    {
+                        writeToStream(bluetoothClient, str);
+                    } catch(Exception err)
+                    {
+                        Debug.WriteLine("Exception Message: " + err.Message + "\nException Stack Trace...\n" + err.StackTrace);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
+            }
+        }
+
 
         /**
          * <summary>
