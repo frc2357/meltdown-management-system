@@ -41,6 +41,7 @@ export const matchLogSlice = createSlice({
     },
     addNotes: (state, { payload }) => {
       state.match.notes = payload;
+      console.log(JSON.stringify(state));
     },
   },
 });
