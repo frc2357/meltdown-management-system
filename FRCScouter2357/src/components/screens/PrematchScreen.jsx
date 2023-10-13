@@ -8,8 +8,10 @@ import RadioButtonList from '../basics/RadioButtonList';
 import { newMatch } from '../../state/matchLogSlice';
 import robotStates from '../../util/robotStates';
 
+const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
+
 export default function PrematchScreen({ navigation }) {
-  const [pressed, setPressed] = useState(new Array(4).fill(false));
+  const [startPosPressed, setStartPosPressed] = useState(new Array(startPosLabels.length).fill(false));
   const [preload, setPreload] = useState(robotStates.empty);
   const dispatch = useDispatch();
   const assignment = useSelector((state) => state.bluetooth.assignment);
@@ -27,10 +29,10 @@ export default function PrematchScreen({ navigation }) {
   }
 
   const onConfirm = () => {
-    let startPos = 0;
-    for (startPos = 0; startPos < 4; startPos++) {
-      if (pressed[startPos]) {
-        break;
+    let startPos = '';
+    for (let i = 0; i < startPosLabels.length; i++) {
+      if (startPosPressed[i]) {
+        startPos = startPosLabels[i];
       }
     }
 
@@ -98,11 +100,11 @@ export default function PrematchScreen({ navigation }) {
           <Pressable
             key={i}
             // eslint-disable-next-line react-native/no-color-literals, react-native/no-inline-styles
-            style={{ ...style, backgroundColor: pressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)' }}
+            style={{ ...style, backgroundColor: startPosPressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)' }}
             onPress={() => {
               const newArr = new Array(4).fill(false);
               newArr[i] = true;
-              setPressed(newArr);
+              setStartPosPressed(newArr);
             }}
           />
         );
