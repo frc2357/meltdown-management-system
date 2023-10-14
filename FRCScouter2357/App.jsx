@@ -10,12 +10,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScreen';
 import robotStates from './src/util/robotStates';
 import useConnectBluetooth from './src/hooks/useConnectBluetooth';
+import { useSelector } from 'react-redux';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
   const connect = useConnectBluetooth();
   const [isInit, setInit] = useState(false);
+  const assignment = useSelector((state) => state.bluetooth.assignment);
 
   useEffect(() => {
     connect()
@@ -26,9 +28,9 @@ function App() {
         console.log(err);
         setInit(false);
       });
-  });
+  }, []);
 
-  if (!isInit) {
+  if (!isInit || !assignment) {
     return <AwaitAssignmentScreen />;
   }
 

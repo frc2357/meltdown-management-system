@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 import { useDispatch } from 'react-redux';
 import { setAssignment, setDevice, setMatch } from '../state/bluetoothSlice';
