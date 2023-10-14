@@ -38,6 +38,9 @@ export default function PrematchScreen({ navigation }) {
 
     dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
 
+    setStartPosPressed(new Array(startPosLabels.length).fill(false));
+    setPreload(robotStates.empty);
+
     navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
 

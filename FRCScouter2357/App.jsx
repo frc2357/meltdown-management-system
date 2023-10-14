@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from '@react-native-material/core';
-import { StyleSheet } from 'react-native';
+import { DeviceEventEmitter, StyleSheet } from 'react-native';
 import TeleopLayout from './src/components/layouts/TeleopLayout';
 import PrematchScreen from './src/components/screens/PrematchScreen';
 import AutoScreen from './src/components/screens/AutoScreen';
@@ -9,13 +9,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScreen';
 import robotStates from './src/util/robotStates';
-import useConnectBluetooth from './src/hooks/useConnectBluetooth';
+import useBluetooth from './src/hooks/useBluetooth';
 import { useSelector } from 'react-redux';
+import store from './src/state/store'
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
-  const connect = useConnectBluetooth();
+  const { connect, upload } = useBluetooth();
   const [isInit, setInit] = useState(false);
   const assignment = useSelector((state) => state.bluetooth.assignment);
 
@@ -30,6 +31,16 @@ function App() {
       });
   }, []);
 
+  
+  useEffect(() => {
+    DeviceEventEmitter.addListener("event.uploadMatch", () => {
+      const matchLog = store.getState().matchLog.match;
+      upload(matchLog);
+    });
+  
+    return () => DeviceEventEmitter.removeAllListeners('event.uploadMatch');
+  }, []);
+  
   if (!isInit || !assignment) {
     return <AwaitAssignmentScreen />;
   }
