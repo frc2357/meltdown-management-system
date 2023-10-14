@@ -9,7 +9,7 @@ import robotStates from '../../util/robotStates';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
-import { createDrop, createPickup } from '../../util/eventCreator';
+import { createDrop, createPickup, createScore } from '../../util/eventCreator';
 
 const numGamepieces = 27;
 const numHybridNodes = 9;
@@ -61,7 +61,7 @@ export default function TeleopLayout({
     clearRobotStateAndPickup();
   };
 
-  const createScore = (position) => {
+  const onScore = (position) => {
     dispatch(addEvent(lastPickup));
     dispatch(addEvent(createScore(robotState, Math.floor(position / 9), position % 9, isAuto)));
   };
@@ -93,7 +93,7 @@ export default function TeleopLayout({
               return;
             }
 
-            createScore(i);
+            onScore(i);
             clearRobotStateAndPickup();
           }
 
@@ -124,7 +124,7 @@ export default function TeleopLayout({
             const newHybridStates = [...hybridStates];
             newHybridStates[hybridIdx] = robotState;
 
-            createScore(i);
+            onScore(i);
             setHybridStates(newHybridStates);
             clearRobotStateAndPickup();
           }
