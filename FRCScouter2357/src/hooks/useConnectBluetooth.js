@@ -49,7 +49,6 @@ export default function useConnectBluetooth() {
       return true;
     } else {
       console.log('Device not connected ');
-      return false;
     }
   };
 
