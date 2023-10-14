@@ -60,22 +60,6 @@ namespace ScoutingCenter
             Console.Write("Not blocked");
         }
 
-        public void connectToDevicesForButton(object sender, RoutedEventArgs eventArgs)
-        {
-            for (int i = 0; i < bluetoothAddresses.Count; i++)
-            {
-                connectToDevice(bluetoothAddresses[i]);
-            }
-        }
-
-        public void connectToDevice(BluetoothAddress deviceAddress)
-        {
-            connectedBluetoothClients.Add(new BluetoothClient());
-            Debug.WriteLine("Connecting to device...");
-            connectedBluetoothClients.Last().Connect(deviceAddress, BluetoothService.SerialPort);
-            Debug.WriteLine("Connection status: " + connectedBluetoothClients.Last().Connected);
-        }
-
         public void readFromBufferForButton(object sender, RoutedEventArgs eventArgs)
         {
             Debug.WriteLine("Reading...");
