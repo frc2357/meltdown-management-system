@@ -20,8 +20,8 @@ namespace ScoutingCenter
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string SEND_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles\\send";
-        const string RECIEVE_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\mamil\\Documents\\Git\\scouting-software\\ScoutingCenter\\CSVFiles\\receive";
+        const string SEND_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\crazy\\Documents\\GitHub\\scouting-software\\ScoutingCenter\\CSVFiles\\send";
+        const string RECIEVE_CSV_FILE_DIRECTORY_PATH = "C:\\Users\\crazy\\Documents\\GitHub\\scouting-software\\ScoutingCenter\\CSVFiles\\receive";
 
         public Dictionary<string, string> sendCSVFileNamePathPairs;
         public Dictionary<string, int> valuesToSendViaCSV;
@@ -55,7 +55,9 @@ namespace ScoutingCenter
             client = new BluetoothClient();
             listener = new BluetoothListener(BluetoothService.SerialPort);
             listener.Start();
+            Console.WriteLine("STarted listener");
             client = listenForConnection(listener);
+            Console.Write("Not blocked");
         }
 
         public void connectToDevicesForButton(object sender, RoutedEventArgs eventArgs)
@@ -163,6 +165,10 @@ namespace ScoutingCenter
 
         public BluetoothClient listenForConnection(BluetoothListener listener)
         {
+            while (true)
+            {
+                listener.AcceptBluetoothClient();
+            }
             return listener.AcceptBluetoothClient();
         }
 
