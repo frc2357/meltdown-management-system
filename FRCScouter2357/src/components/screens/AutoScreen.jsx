@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
-import { createAuto } from '../../util/eventCreator';
+import { createAuto } from '../../hooks/useEventCreator';
 
 const windowDimensions = Dimensions.get('window');
 

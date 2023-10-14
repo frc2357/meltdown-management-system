@@ -9,7 +9,7 @@ import robotStates from '../../util/robotStates';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
-import { createDrop, createPickup, createScore } from '../../util/eventCreator';
+import useEventCreator from '../../hooks/useEventCreator';
 
 const numGamepieces = 27;
 const numHybridNodes = 9;
@@ -36,6 +36,7 @@ export default function TeleopLayout({
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(robotStates.empty)
   );
+  const eventCreator = useEventCreator();
 
   const dispatch = useDispatch();
 
@@ -57,13 +58,17 @@ export default function TeleopLayout({
 
   const onDrop = () => {
     dispatch(addEvent(lastPickup));
-    dispatch(addEvent(createDrop(robotState, isAuto)));
+    dispatch(addEvent(eventCreator.createDrop(robotState, isAuto)));
     clearRobotStateAndPickup();
   };
 
   const onScore = (position) => {
-    dispatch(addEvent(lastPickup));
-    dispatch(addEvent(createScore(robotState, Math.floor(position / 9), position % 9, isAuto)));
+    if (lastPickup) {
+      dispatch(addEvent(lastPickup));
+    }
+    dispatch(
+      addEvent(eventCreator.createScore(robotState, Math.floor(position / 9), position % 9, isAuto))
+    );
   };
 
   const gamepieceRow = [
@@ -117,10 +122,9 @@ export default function TeleopLayout({
         isHidden={!isScored[i]}
         setHidden={(isHidden) => {
           if (!isHidden) {
-            if (robotState === robotState.empty || isScored[i]) {
+            if (robotState === robotStates.empty || isScored[i]) {
               return;
             }
-
             const newHybridStates = [...hybridStates];
             newHybridStates[hybridIdx] = robotState;
 
@@ -156,7 +160,7 @@ export default function TeleopLayout({
             newPickupStates[i] =
               pickupStates[i] === robotStates.cone ? robotStates.cube : robotStates.cone;
 
-            setLastPickup(createPickup(robotState, pickupStationNames[i], isAuto));
+            setLastPickup(eventCreator.createPickup(robotState, pickupStationNames[i], isAuto));
 
             setRobotState(newPickupStates[i]);
 
