@@ -3,6 +3,7 @@ using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualBasic.FileIO;
+using ScoutingCenter.src;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,15 +32,13 @@ namespace ScoutingCenter
             InitializeComponent();
             setUpScoutingCenter();
         }
-        public readonly Guid FtpProtocol;
-        public BluetoothClient client;
         public BluetoothListener listener;
 
         // for now, put all mac addresses here, so they get used by the program.
         public List<BluetoothAddress> bluetoothAddresses;
         public List<BluetoothClient> connectedBluetoothClients = new List<BluetoothClient>();
-        public StreamReader sr;
-        public StreamWriter sw;
+
+        public List<ScoutingTablet> tablets = new List<ScoutingTablet>();
 
         /**
          * <summary>
@@ -52,21 +51,21 @@ namespace ScoutingCenter
             valuesToSendViaCSV = new Dictionary<string, int> { };
             // below line adds the value for the match number, and says that the current match is 24, currently the variables MUST be hard coded.
             valuesToSendViaCSV.Add("matchNumber",24);
-            client = new BluetoothClient();
+            
             listener = new BluetoothListener(BluetoothService.SerialPort);
             listener.Start();
-            Console.WriteLine("STarted listener");
-            client = listenForConnection(listener);
-            Console.Write("Not blocked");
+
+            listenForConnection(listener);
         }
 
-        public void readFromBufferForButton(object sender, RoutedEventArgs eventArgs)
+/*        public void readFromBufferForButton(object sender, RoutedEventArgs eventArgs)
         {
             Debug.WriteLine("Reading...");
             Debug.Write("Stream Buffer that was read: ");
             String line = sr.ReadLine(); 
             Debug.WriteLine(line);
         }
+*/
 
         public void writeToStreamForButton(object sender, RoutedEventArgs eventArgs)
         {
@@ -122,31 +121,6 @@ namespace ScoutingCenter
             }
         }
 
-        /**
-         * <summary>
-         *  Processes a string mac address into a Bluetooth address that can be used for an endpoint
-         * </summary>
-         */
-        public BluetoothAddress macAddressToBluetoothAddress(String macAddress)
-        {
-            return new BluetoothAddress(Convert.ToUInt64(macAddress.Replace(":", ""), 16));
-        }
-        /**
-         * 
-         * <summary>
-         *  Makes a list of Bluetooth addresses from a list of mac addresses, processed or not.
-         * </summary>
-         */
-        public List<BluetoothAddress> makeBluetoothAddressList(String[] macAddressList)
-        {
-            List<BluetoothAddress> addressList = new List<BluetoothAddress>();
-            for (int i = 0; i < macAddressList.Length; i++)
-            {
-                addressList.Add(macAddressToBluetoothAddress(macAddressList[i]));
-            }
-            return addressList;
-        }
-
         public BluetoothClient listenForConnection(BluetoothListener listener)
         {
             while (true)
@@ -156,32 +130,6 @@ namespace ScoutingCenter
             return listener.AcceptBluetoothClient();
         }
 
-        /**
-         * <summary>
-         * Parses the values in a CSV file with one row and returns the values in it in a string array.
-         * </summary>
-         */
-        public string[] parseSingleRowCSVFile(string fileAddress)
-        {
-            try
-            {
-                using (TextFieldParser parser = new TextFieldParser(fileAddress))
-                {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(",");
-                    while (!parser.EndOfData)
-                    {
-                        //Process row
-                        return parser.ReadFields();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
-            }
-            return new string[0];
-        }
 
         /**
          * <summary>
@@ -295,6 +243,16 @@ namespace ScoutingCenter
          * </summary>
          */
         public void con(object sender, RoutedEventArgs eventArgs)
+        {
+
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
         {
 
         }
