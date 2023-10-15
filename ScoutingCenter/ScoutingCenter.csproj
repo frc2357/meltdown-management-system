@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="src\BluetoothThreadHandler.cs" />
     <Compile Include="src\MatchController.cs" />
     <Compile Include="src\ScoutingTablet.cs" />
     <Compile Include="src\Util.cs" />
