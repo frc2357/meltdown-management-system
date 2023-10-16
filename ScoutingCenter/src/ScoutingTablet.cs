@@ -7,17 +7,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ScoutingCenter.src
 {
 
     public class ScoutingTablet
     {
-        public BluetoothClient client;
+        private BluetoothClient client;
+        public string id { get; }
+
+        public WindowFields fields { get; set; }
 
         public ScoutingTablet(BluetoothClient client)
         {
             this.client = client;
+            this.id = parseName(client.RemoteMachineName);
         }
 
         /**
@@ -60,6 +65,33 @@ namespace ScoutingCenter.src
             {
                 Debug.WriteLine(err.ToString());
             }
+        }
+
+        public void sendAssignment()
+        {
+            string assignment = "{\"type\": \"assignment\", \"info\": {\"scouter\": \"" 
+                + fields.scouter.Text + "\", \"id\": \"" + id + "\"}}";
+            writeToStream(assignment);
+        }
+
+        public static string parseName(string name)
+        {
+            return name.Substring(name.IndexOf('-') + 1);
+        }
+
+        public static Predicate<ScoutingTablet> byId(string id)
+        {
+            return delegate(ScoutingTablet tablet)
+            {
+                return tablet.id == id;
+            };
+        }
+
+        public class WindowFields
+        {
+            public CheckBox isConnected { get; set; }
+            public TextBox lastInfo { get; set; }
+            public TextBox scouter { get; set; }
         }
     }
 }

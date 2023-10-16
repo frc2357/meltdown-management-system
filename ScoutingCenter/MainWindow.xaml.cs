@@ -21,15 +21,14 @@ namespace ScoutingCenter
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<ScoutingTablet> tablets = new List<ScoutingTablet>();
+        private BluetoothThreadHandler threadHandler;
+
         public MainWindow()
         {
             InitializeComponent();
             setUpScoutingCenter();
         }       
-
-        private List<ScoutingTablet> tablets = new List<ScoutingTablet>();
-        private BluetoothThreadHandler threadHandler;
-
 
         /**
          * <summary>
@@ -38,17 +37,66 @@ namespace ScoutingCenter
          */
         public void setUpScoutingCenter()
         {
-            threadHandler = new BluetoothThreadHandler(tablets);
+            threadHandler = new BluetoothThreadHandler(tablets, getTabletFields);
+            threadHandler.startThread();
         }
 
-        /**
-         * <summary>
-         * Satisfies the con requirement
-         * </summary>
-         */
-        public void con(object sender, RoutedEventArgs eventArgs)
+        public ScoutingTablet.WindowFields getTabletFields(string id)
         {
+            switch (id)
+            {
+                case "RED-1":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Red1Connected,
+                        lastInfo = Red1LastInfo,
+                        scouter = Red1Scouter,
+                    };
+                case "RED-2":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Red2Connected,
+                        lastInfo = Red2LastInfo,
+                        scouter = Red2Scouter,
+                    };
+                case "RED-3":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Red3Connected,
+                        lastInfo = Red3LastInfo,
+                        scouter = Red3Scouter,
+                    };
+                case "BLUE-1":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Blue1Connected,
+                        lastInfo = Blue1LastInfo,
+                        scouter = Blue1Scouter,
+                    };
+                case "BLUE-2":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Blue2Connected,
+                        lastInfo = Blue2LastInfo,
+                        scouter = Blue2Scouter,
+                    };
+                case "BLUE-3":
+                    return new ScoutingTablet.WindowFields
+                    {
+                        isConnected = Blue3Connected,
+                        lastInfo = Blue3LastInfo,
+                        scouter = Blue3Scouter,
+                    };
+            }
+            return null;
+        }
 
+        private void onSendAssignment(object sender, RoutedEventArgs e)
+        {
+            foreach (ScoutingTablet tablet in tablets)
+            {
+                tablet.sendAssignment();                
+            }
         }
     }
 }

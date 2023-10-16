@@ -39,8 +39,8 @@ export default function useBluetooth() {
 
     device.current.onDataReceived((event) => {
       console.log(JSON.stringify(event));
-
-      const data = event.data;
+      
+      const data = JSON.parse(event.data);
 
       switch (data.type) {
         case 'match':

@@ -18,50 +18,51 @@
         <Label Content="Currently Running Match: " HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
         <Label Content="0" HorizontalAlignment="Left" Margin="161,54,0,0" VerticalAlignment="Top"/>
         
-        <Button x:Name="export" Content="Export Match Logs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" FontSize="16" Margin="165,93,0,0"/>
-        <Button x:Name="sendAssignment" Content="Send Assignment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="149" Height="150" Margin="320,93,0,0" FontSize="16"/>
-        <Button x:Name="sendMatch" Content="Send Next Match" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="474,93,0,0" FontSize="16"/>
-        <Button x:Name="sendAssignment_Copy" Content="Import Match Info" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="10,93,0,0" FontSize="16"/>
+        <Button x:Name="Export" Content="Export Match Logs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" FontSize="16" Margin="165,93,0,0"/>
+        <Button x:Name="SendAssignment" Content="Send Assignment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="149" Height="150" Margin="320,93,0,0" FontSize="16" Click="onSendAssignment"/>
+        <Button x:Name="SendMatch" Content="Send Next Match" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="474,93,0,0" FontSize="16"/>
+        <Button x:Name="ImportMatch" Content="Import Match Info" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="10,93,0,0" FontSize="16"/>
 
         <Label Content="RED-1" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="10,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="10,278,0,0"/>
-        <TextBox Margin="10,364,531,10"/>
+        <TextBox Name="Red1LastInfo" Margin="10,364,531,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="10,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="10,307,0,0"/>
-        <CheckBox Content="Connected" HorizontalAlignment="Left" Margin="10,328,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Red1Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="10,307,0,0" />
+        <CheckBox Name="Red1Connected" Content="Connected" HorizontalAlignment="Left" Margin="10,328,0,0" VerticalAlignment="Top"/>
         
         <Label Content="RED-2" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="112,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="112,278,0,0"/>
-        <TextBox Margin="112,364,429,10"/>
+        <TextBox Name="Red2LastInfo" Margin="112,364,429,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="112,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="112,307,0,0"/>
-        <CheckBox Content="Connected" HorizontalAlignment="Left" Margin="112,328,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Red2Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="112,307,0,0"/>
+        <CheckBox Name="Red2Connected" Content="Connected" HorizontalAlignment="Left" Margin="112,328,0,0" VerticalAlignment="Top"/>
         
         <Label Content="RED-3" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="214,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="214,278,0,0"/>
-        <TextBox Margin="214,364,327,10"/>
+        <TextBox Name="Red3LastInfo" Margin="214,364,327,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="214,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="214,307,0,0"/>
-        <CheckBox Content="Connected" HorizontalAlignment="Left" Margin="214,328,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Red3Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="214,307,0,0"/>
+        <CheckBox Name="Red3Connected" Content="Connected" HorizontalAlignment="Left" Margin="214,328,0,0" VerticalAlignment="Top"/>
         
         <Label Content="BLUE-1" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="317,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="317,278,0,0"/>
-        <TextBox Margin="317,364,224,10"/>
+        <TextBox Name="Blue1LastInfo" Margin="317,364,224,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="317,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="317,307,0,0"/>
-        <CheckBox Content="Connected" HorizontalAlignment="Left" Margin="317,328,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Blue1Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="317,307,0,0"/>
+        <CheckBox Name="Blue1Connected" Content="Connected" HorizontalAlignment="Left" Margin="317,328,0,0" VerticalAlignment="Top"/>
         
         <Label Content="BLUE-2" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="422,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="422,278,0,0"/>
-        <TextBox Margin="422,364,119,10"/>
+        <TextBox Name="Blue2LastInfo" Margin="422,364,119,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="422,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="422,307,0,0"/>
-        <CheckBox Content="Connected" HorizontalAlignment="Left" Margin="422,328,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Blue2Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="422,307,0,0"/>
+        <CheckBox Name="Blue2Connected" Content="Connected" HorizontalAlignment="Left" Margin="422,328,0,0" VerticalAlignment="Top"/>
 
         <Label Content="BLUE-3" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="525,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="525,278,0,0"/>
-        <TextBox Margin="525,364,16,10"/>
+        <TextBox Name="Blue3LastInfo" Margin="525,364,16,10"/>
         <Label Content="Last Info" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="525,341,0,0"/>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="525,307,0,0"/>
+        <TextBox Name="Blue3Scouter" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="79" Text="Temp" Margin="525,307,0,0"/>
+        <CheckBox Name="Blue3Connected" Content="Connected" HorizontalAlignment="Left" Margin="525,329,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
