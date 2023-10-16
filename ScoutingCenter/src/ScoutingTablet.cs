@@ -1,12 +1,7 @@
 ﻿using InTheHand.Net.Sockets;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace ScoutingCenter.src
@@ -72,6 +67,11 @@ namespace ScoutingCenter.src
             string assignment = "{\"type\": \"assignment\", \"info\": {\"scouter\": \"" 
                 + fields.scouter.Text + "\", \"id\": \"" + id + "\"}}";
             writeToStream(assignment);
+        }
+
+        public void setConnected()
+        {
+            fields.isConnected.IsChecked = true;
         }
 
         public static string parseName(string name)

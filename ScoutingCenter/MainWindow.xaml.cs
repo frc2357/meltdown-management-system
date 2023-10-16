@@ -1,18 +1,6 @@
-﻿using InTheHand.Net;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
-using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.VisualBasic.FileIO;
-using ScoutingCenter.src;
-using System;
-using System.Collections;
+﻿using ScoutingCenter.src;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace ScoutingCenter
 {

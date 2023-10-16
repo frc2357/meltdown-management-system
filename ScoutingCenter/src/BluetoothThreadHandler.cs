@@ -3,11 +3,8 @@ using InTheHand.Net.Sockets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace ScoutingCenter.src
 {
@@ -51,6 +48,8 @@ namespace ScoutingCenter.src
                 } 
 
                 tablets.Add(tablet);
+
+                Application.Current.Dispatcher.Invoke(() => tablet.setConnected());
      
                 Debug.Write("Tablet connected: ");
                 Debug.WriteLine(client.RemoteMachineName);
