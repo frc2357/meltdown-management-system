@@ -1,9 +1,0 @@
-{,type: "match"\c,info: {,matchNum: matchNumber\c,teamNum: teamNumber\c,alliancePos: alliancePosition\c,},}
-{
-    type: "match",
-        info: {
-            matchNum: 0,
-            teamNum: 0000,
-            alliancePos: pos0,
-        }
-}

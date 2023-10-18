@@ -21,7 +21,7 @@
         <Button x:Name="Export" Content="Export Match Logs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" FontSize="16" Margin="165,93,0,0" Click="onExportMatch"/>
         <Button x:Name="SendAssignment" Content="Send Assignment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="149" Height="150" Margin="320,93,0,0" FontSize="16" Click="onSendAssignment"/>
         <Button x:Name="SendMatch" Content="Send Next Match" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="474,93,0,0" FontSize="16"/>
-        <Button x:Name="ImportMatch" Content="Import Match Info" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="10,93,0,0" FontSize="16"/>
+        <Button x:Name="ImportMatch" Content="Import Match Info" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="10,93,0,0" FontSize="16" Click="onImportMatchData"/>
 
         <Label Content="RED-1" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-3.42,-0.589" Width="64" Height="25" Margin="10,257,0,0"/>
         <Label Content="Scouter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="50" Margin="10,278,0,0"/>
