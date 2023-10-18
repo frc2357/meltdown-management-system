@@ -5,24 +5,30 @@ import { Image, StyleSheet } from 'react-native';
 import AwaitMatchScreen from './AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
-import { newMatch } from '../../state/matchLogSlice';
+import { addEvent, newMatch } from '../../state/matchLogSlice';
 import robotStates from '../../util/robotStates';
+import useEventCreator from '../../hooks/useEventCreator';
 
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
 export default function PrematchScreen({ navigation }) {
-  const [startPosPressed, setStartPosPressed] = useState(new Array(startPosLabels.length).fill(false));
+  const [startPosPressed, setStartPosPressed] = useState(
+    new Array(startPosLabels.length).fill(false)
+  );
   const [preload, setPreload] = useState(robotStates.empty);
   const dispatch = useDispatch();
   const assignment = useSelector((state) => state.bluetooth.assignment);
   const match = useSelector((state) => state.bluetooth.currentMatch);
 
+  const eventCreator = useEventCreator();
+
   const scouterName = assignment?.scouter ? assignment.scouter : '';
   const id = assignment?.id ? assignment.id : '';
 
-  const teamNum = match?.teamNum ? assignment.teamNum : '';
-  const matchNum = match?.matchNum ? assignment.matchNum : '';
-  const alliance = match?.alliancePos ? assignment.alliancePos : '';
+  const teamNum = match?.teamNum ? match.teamNum : '';
+  const matchNum = match?.matchNum ? match.matchNum : '';
+  const alliance = match?.alliance ? match.alliance : '';
+  const alliancePos = match?.alliancePos ? assignment.alliancePos : '';
 
   if (!match) {
     return <AwaitMatchScreen />;
@@ -36,7 +42,8 @@ export default function PrematchScreen({ navigation }) {
       }
     }
 
-    dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, startPos, preload }));
+    dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, alliancePos }));
+    dispatch(addEvent(eventCreator.createStart(startPos, preload)));
 
     setStartPosPressed(new Array(startPosLabels.length).fill(false));
     setPreload(robotStates.empty);
@@ -103,7 +110,10 @@ export default function PrematchScreen({ navigation }) {
           <Pressable
             key={i}
             // eslint-disable-next-line react-native/no-color-literals, react-native/no-inline-styles
-            style={{ ...style, backgroundColor: startPosPressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)' }}
+            style={{
+              ...style,
+              backgroundColor: startPosPressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
+            }}
             onPress={() => {
               const newArr = new Array(4).fill(false);
               newArr[i] = true;

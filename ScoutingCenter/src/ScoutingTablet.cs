@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Windows.Controls;
 
 namespace ScoutingCenter.src
@@ -9,6 +10,11 @@ namespace ScoutingCenter.src
 
     public class ScoutingTablet
     {
+        private static string[] matchHeaders = 
+            { "teamNum", "matchNum", "alliance", "startPos", 
+            "preload", "notes", "type", "piece", "row", "col", 
+            "isAuto", "location", "hasMobility", "loc" };
+
         private BluetoothClient client;
         public string id { get; }
 
@@ -18,27 +24,6 @@ namespace ScoutingCenter.src
         {
             this.client = client;
             this.id = parseName(client.RemoteMachineName);
-        }
-
-        /**
-         * <summary>
-         * Reads from the buffer of a provided BluetoothClient and returns the string that was read
-         * </summary>
-         */
-        public String readFromBuffer()
-        {
-            try
-            {
-                using (StreamReader sr = new StreamReader(client.GetStream()))
-                {
-                    return sr.ReadLine();
-                }
-            }
-            catch (Exception err)
-            {
-                Debug.WriteLine(err.ToString());
-                return null;
-            }
         }
 
         /** <summary>
@@ -72,6 +57,24 @@ namespace ScoutingCenter.src
         public void setConnected()
         {
             fields.isConnected.IsChecked = true;
+        }
+
+        public MatchLog getMatchlog()
+        {
+            string matchStr;
+            try
+            {
+                using (StreamReader sr = new StreamReader(client.GetStream()))
+                {
+                   matchStr = sr.ReadLine();
+                }
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine(err.ToString());
+                return null;
+            }
+            return JsonSerializer.Deserialize<MatchLog>(matchStr);
         }
 
         public static string parseName(string name)

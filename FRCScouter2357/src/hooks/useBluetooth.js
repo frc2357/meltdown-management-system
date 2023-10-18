@@ -57,7 +57,7 @@ export default function useBluetooth() {
 
   const upload = (data) => {
     // console.log(device.current);
-    const dataJson = JSON.stringify(data);
+    const dataJson = JSON.stringify(data) + "\n";
     device.current
       .write(dataJson, 'ascii')
       .then((success) => console.log('Upload Status: ' + success))
