@@ -49,7 +49,7 @@ namespace ScoutingCenter.src
 
                 tablets.Add(tablet);
 
-                Application.Current.Dispatcher.Invoke(() => tablet.setConnected());
+                Application.Current.Dispatcher.Invoke(() => tablet.setConnected(true));
      
                 Debug.Write("Tablet connected: ");
                 Debug.WriteLine(client.RemoteMachineName);

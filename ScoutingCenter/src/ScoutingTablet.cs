@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ScoutingCenter.src
@@ -10,12 +12,13 @@ namespace ScoutingCenter.src
 
     public class ScoutingTablet
     {
-        private static string[] matchHeaders = 
-            { "teamNum", "matchNum", "alliance", "startPos", 
-            "preload", "notes", "type", "piece", "row", "col", 
+        private static string[] matchHeaders =
+            { "teamNum", "matchNum", "alliance", "startPos",
+            "preload", "notes", "type", "piece", "row", "col",
             "isAuto", "location", "hasMobility", "loc" };
 
         private BluetoothClient client;
+        private Thread readMatches;
         public string id { get; }
 
         public WindowFields fields { get; set; }
@@ -24,6 +27,64 @@ namespace ScoutingCenter.src
         {
             this.client = client;
             this.id = parseName(client.RemoteMachineName);
+
+            readMatches = new Thread(new ThreadStart(runReadMatches));
+            readMatches.IsBackground = true;
+            readMatches.Start();
+        }
+
+        ~ScoutingTablet()
+        {
+            readMatches.Abort();
+        }
+
+        public void runReadMatches()
+        {
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string matchPath = Directory.CreateDirectory(documents + "\\matchLog").FullName;
+
+            Debug.WriteLine(documents);
+
+            while (true)
+            {
+                if (!client.Connected)
+                {
+                    Application.Current.Dispatcher.Invoke(() => 
+                    { setConnected(false); setLastInfo("Lost Connection"); });
+
+                    continue;
+                }
+
+                try
+                {
+                    using (StreamReader sr = new StreamReader(client.GetStream()))
+                    {
+                        if (sr.EndOfStream)
+                        {
+                            continue;
+                        }
+
+                        string[] matches = sr.ReadToEnd().Split('\n');
+
+
+                        foreach (string match in matches)
+                        {
+                            string filename = "temp.json";
+
+                            using (StreamWriter outputFile =
+                                new StreamWriter(System.IO.Path.Combine(matchPath, filename)))
+                            {
+                                outputFile.WriteLine(match);
+                            }
+                            Application.Current.Dispatcher.Invoke(() => setLastInfo("Received Match"));
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    Debug.WriteLine(err.ToString());
+                }
+            }
         }
 
         /** <summary>
@@ -49,14 +110,20 @@ namespace ScoutingCenter.src
 
         public void sendAssignment()
         {
-            string assignment = "{\"type\": \"assignment\", \"info\": {\"scouter\": \"" 
+            string assignment = "{\"type\": \"assignment\", \"info\": {\"scouter\": \""
                 + fields.scouter.Text + "\", \"id\": \"" + id + "\"}}";
             writeToStream(assignment);
         }
 
-        public void setConnected()
+        public void setConnected(bool isConnected)
         {
-            fields.isConnected.IsChecked = true;
+            fields.isConnected.IsChecked = isConnected;
+        }
+
+
+        public void setLastInfo(string message)
+        {
+            fields.lastInfo.Text = message;
         }
 
         public MatchLog getMatchlog()
@@ -66,7 +133,7 @@ namespace ScoutingCenter.src
             {
                 using (StreamReader sr = new StreamReader(client.GetStream()))
                 {
-                   matchStr = sr.ReadLine();
+                    matchStr = sr.ReadLine();
                 }
             }
             catch (Exception err)
@@ -84,7 +151,7 @@ namespace ScoutingCenter.src
 
         public static Predicate<ScoutingTablet> byId(string id)
         {
-            return delegate(ScoutingTablet tablet)
+            return delegate (ScoutingTablet tablet)
             {
                 return tablet.id == id;
             };
