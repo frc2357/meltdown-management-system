@@ -18,6 +18,7 @@ namespace ScoutingCenter.src
             "isAuto", "location", "hasMobility", "loc" };
 
         private BluetoothClient client;
+
         private Thread readMatches;
         public string id { get; }
 
@@ -26,7 +27,7 @@ namespace ScoutingCenter.src
         public ScoutingTablet(BluetoothClient client)
         {
             this.client = client;
-            this.id = parseName(client.RemoteMachineName);
+            id = parseName(client.RemoteMachineName);
 
             readMatches = new Thread(new ThreadStart(runReadMatches));
             readMatches.IsBackground = true;
@@ -43,45 +44,63 @@ namespace ScoutingCenter.src
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string matchPath = Directory.CreateDirectory(documents + "\\matchLog").FullName;
 
-            Debug.WriteLine(documents);
-
             while (true)
             {
                 if (!client.Connected)
                 {
-                    Application.Current.Dispatcher.Invoke(() => 
+                    Application.Current.Dispatcher.Invoke(() =>
                     { setConnected(false); setLastInfo("Lost Connection"); });
 
-                    continue;
+                    return;
                 }
 
                 try
                 {
-                    using (StreamReader sr = new StreamReader(client.GetStream()))
+                    string matchStr = "";
+                    while (client.GetStream().DataAvailable)
                     {
-                        if (sr.EndOfStream)
+                        byte[] buffer = new byte[1024];
+                        client.GetStream().Read(buffer, 0, 1024);
+
+                        matchStr += System.Text.Encoding.ASCII.GetString(buffer);
+                    }
+
+                    if (matchStr.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    string[] matches = matchStr.Split('\n');
+
+                    foreach (string match in matches)
+                    {
+                        if(match.Length == 0)
                         {
                             continue;
                         }
 
-                        string[] matches = sr.ReadToEnd().Split('\n');
+                        string matchKey = "\"matchNum\":\"";
+                        int matchIdx = matchStr.IndexOf(matchKey);
+                        matchIdx = matchIdx + matchKey.Length;
+                        int matchLen = match.IndexOf("\"", matchIdx) - matchIdx;
 
+                        string matchNum = match.Substring(matchIdx, matchLen);
 
-                        foreach (string match in matches)
+                        string filename = id.ToLower()+"-match-"+matchNum+".json";
+
+                        using (StreamWriter outputFile =
+                            new StreamWriter(System.IO.Path.Combine(matchPath, filename)))
                         {
-                            string filename = "temp.json";
-
-                            using (StreamWriter outputFile =
-                                new StreamWriter(System.IO.Path.Combine(matchPath, filename)))
-                            {
-                                outputFile.WriteLine(match);
-                            }
-                            Application.Current.Dispatcher.Invoke(() => setLastInfo("Received Match"));
+                            outputFile.WriteLine(match);
                         }
+                        Application.Current.Dispatcher.Invoke(() => setLastInfo("Received Match"));
                     }
+                    Debug.WriteLine("Matches wrote");
+
                 }
                 catch (Exception err)
                 {
+                    Debug.Write("Error: ");
                     Debug.WriteLine(err.ToString());
                 }
             }
