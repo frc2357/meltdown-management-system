@@ -89,11 +89,6 @@ namespace ScoutingCenter
 
         private void onExportMatch(object sender, RoutedEventArgs e)
         {
-            foreach (ScoutingTablet tablet in tablets)
-            {
-                MatchLog log = tablet.getMatchlog();
-
-            }
         }
     }
 }

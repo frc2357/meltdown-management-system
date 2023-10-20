@@ -139,28 +139,9 @@ namespace ScoutingCenter.src
             fields.isConnected.IsChecked = isConnected;
         }
 
-
         public void setLastInfo(string message)
         {
             fields.lastInfo.Text = message;
-        }
-
-        public MatchLog getMatchlog()
-        {
-            string matchStr;
-            try
-            {
-                using (StreamReader sr = new StreamReader(client.GetStream()))
-                {
-                    matchStr = sr.ReadLine();
-                }
-            }
-            catch (Exception err)
-            {
-                Debug.WriteLine(err.ToString());
-                return null;
-            }
-            return JsonSerializer.Deserialize<MatchLog>(matchStr);
         }
 
         public static string parseName(string name)
