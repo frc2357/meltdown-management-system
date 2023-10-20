@@ -86,5 +86,9 @@ namespace ScoutingCenter
                 tablet.sendAssignment();                
             }
         }
+
+        private void onExportMatch(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

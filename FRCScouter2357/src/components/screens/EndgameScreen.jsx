@@ -3,7 +3,7 @@ import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-mate
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
-import { addEvent, addNotes } from '../../state/matchLogSlice';
+import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
 
 const windowDimensions = Dimensions.get('window');
@@ -15,8 +15,7 @@ export default function EndgameScreen({ navigation }) {
   const eventCreator = useEventCreator();
 
   const onSubmit = () => {
-    dispatch(addEvent(eventCreator.createEndgame(chargestation)));
-    dispatch(addNotes(notes));
+    dispatch(addEvent(eventCreator.createEndgame(chargestation, notes)));
     DeviceEventEmitter.emit('event.uploadMatch');
     navigation.navigate('PrematchScreen');
   };

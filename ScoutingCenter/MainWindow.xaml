@@ -18,7 +18,7 @@
         <Label Content="Currently Running Match: " HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
         <Label Content="0" HorizontalAlignment="Left" Margin="161,54,0,0" VerticalAlignment="Top"/>
         
-        <Button x:Name="Export" Content="Export Match Logs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" FontSize="16" Margin="165,93,0,0"/>
+        <Button x:Name="Export" Content="Export Match Logs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" FontSize="16" Margin="165,93,0,0" Click="onExportMatch"/>
         <Button x:Name="SendAssignment" Content="Send Assignment" HorizontalAlignment="Left" VerticalAlignment="Top" Width="149" Height="150" Margin="320,93,0,0" FontSize="16" Click="onSendAssignment"/>
         <Button x:Name="SendMatch" Content="Send Next Match" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="474,93,0,0" FontSize="16"/>
         <Button x:Name="ImportMatch" Content="Import Match Info" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="150" Margin="10,93,0,0" FontSize="16"/>

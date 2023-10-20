@@ -6,9 +6,7 @@ const initialState = {
     scouterName: '',
     matchNum: '',
     alliance: '',
-    startPos: '',
-    preload: '',
-    notes: '',
+    alliancePos: '',
     events: [],
   },
   startTimeSeconds: 0,
@@ -18,10 +16,7 @@ export const matchLogSlice = createSlice({
   name: 'matchLog',
   initialState,
   reducers: {
-    newMatch: (
-      state,
-      { payload: { teamNum, scouterName, matchNum, alliance, startPos, preload, temp } }
-    ) => {
+    newMatch: (state, { payload: { teamNum, scouterName, matchNum, alliance, alliancePos } }) => {
       console.log(JSON.stringify(state));
       state.match = {
         ...initialState.match,
@@ -29,22 +24,17 @@ export const matchLogSlice = createSlice({
         scouterName,
         matchNum,
         alliance,
-        startPos,
-        preload,
+        alliancePos
       };
-      state.startTimeSeconds = Math.floor(Date.now() / 1000);
+      state.startTimeSeconds = Date.now() / 1000;
       console.log(state);
     },
 
     addEvent: (state, { payload }) => {
       state.match.events.push(payload);
     },
-    addNotes: (state, { payload }) => {
-      state.match.notes = payload;
-      console.log(JSON.stringify(state));
-    },
   },
 });
 
-export const { newMatch, addEvent, addNotes } = matchLogSlice.actions;
+export const { newMatch, addEvent } = matchLogSlice.actions;
 export default matchLogSlice.reducer;
