@@ -89,8 +89,6 @@
     </ApplicationDefinition>
     <Compile Include="src\BluetoothThreadHandler.cs" />
     <Compile Include="src\MatchController.cs" />
-    <Compile Include="src\MatchEvent.cs" />
-    <Compile Include="src\MatchLog.cs" />
     <Compile Include="src\ScoutingTablet.cs" />
     <Compile Include="src\Util.cs" />
     <Page Include="MainWindow.xaml">
