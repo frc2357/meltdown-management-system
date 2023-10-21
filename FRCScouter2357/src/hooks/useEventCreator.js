@@ -4,7 +4,7 @@ export default function useEventCreator() {
   const startTimeSeconds = useSelector((state) => state.matchLog.startTimeSeconds);
 
   const createStart = (location, piece) => {
-    const type = 'notes';
+    const type = 'start';
     return { type, location, piece, timestamp: 0 };
   };
 

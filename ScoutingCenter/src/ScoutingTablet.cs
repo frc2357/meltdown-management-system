@@ -69,13 +69,13 @@ namespace ScoutingCenter.src
 
                     foreach (string match in matches)
                     {
-                        if (match.Length == 0)
+                        if (string.IsNullOrWhiteSpace(match))
                         {
                             continue;
                         }
 
                         string matchKey = "\"matchNum\":";
-                        int matchIdx = matchStr.IndexOf(matchKey);
+                        int matchIdx = match.IndexOf(matchKey);
                         matchIdx = matchIdx + matchKey.Length;
                         int matchLen = match.IndexOf(",", matchIdx) - matchIdx;
 
@@ -88,7 +88,7 @@ namespace ScoutingCenter.src
                         {
                             outputFile.WriteLine(match);
                         }
-                        Application.Current.Dispatcher.Invoke(() => setLastInfo("Received Match"));
+                        Application.Current.Dispatcher.Invoke(() => setLastInfo("Recv Match: " + matchNum));
                     }
                     Debug.WriteLine("Matches wrote");
 
@@ -134,7 +134,7 @@ namespace ScoutingCenter.src
             string[] strs = id.Split('-');
             string match = "{\"type\": \"match\", \"info\": {" +
                 "\"teamNum\":\"" + currentMatchAssignment.teamNum + "\"," +
-                "\"matchNum\":\"" + currentMatchAssignment.matchNum + "\"," +
+                "\"matchNum\":" + currentMatchAssignment.matchNum + "," +
                 "\"alliance\":\"" + strs[0] + "\"," +
                 "\"alliancePos\":\"" + strs[1] + "\"}}";
             writeToStream(match);
