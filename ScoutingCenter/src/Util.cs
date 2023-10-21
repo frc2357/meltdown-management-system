@@ -1,6 +1,8 @@
 ﻿using InTheHand.Net;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +35,15 @@ namespace ScoutingCenter.src
                 addressList.Add(macAddressToBluetoothAddress(macAddressList[i]));
             }
             return addressList;
+        }
+
+        public static Stream getCSVFileStream()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV files|*.csv";
+            openFileDialog.ShowDialog();
+            openFileDialog.Multiselect = false;
+            return openFileDialog.OpenFile();
         }
     }
 }

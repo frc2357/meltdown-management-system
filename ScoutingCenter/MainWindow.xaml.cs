@@ -1,5 +1,8 @@
-﻿using ScoutingCenter.src;
+﻿using Microsoft.Win32;
+using ScoutingCenter.src;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 
 namespace ScoutingCenter
@@ -11,12 +14,12 @@ namespace ScoutingCenter
     {
         private List<ScoutingTablet> tablets = new List<ScoutingTablet>();
         private BluetoothThreadHandler threadHandler;
-
+        private MatchController matchController;
         public MainWindow()
         {
             InitializeComponent();
             setUpScoutingCenter();
-        }       
+        }
 
         /**
          * <summary>
@@ -25,6 +28,7 @@ namespace ScoutingCenter
          */
         public void setUpScoutingCenter()
         {
+            matchController = new MatchController();
             threadHandler = new BluetoothThreadHandler(tablets, getTabletFields);
             threadHandler.startThread();
         }
@@ -83,12 +87,17 @@ namespace ScoutingCenter
         {
             foreach (ScoutingTablet tablet in tablets)
             {
-                tablet.sendAssignment();                
+                tablet.sendAssignment();
             }
         }
 
         private void onExportMatch(object sender, RoutedEventArgs e)
         {
+
+        }
+        private void onImportMatchData(object sender, RoutedEventArgs e)
+        {
+            matchController.importMatchCSV();
         }
     }
 }
