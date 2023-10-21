@@ -37,7 +37,7 @@ namespace ScoutingCenter.src
             return addressList;
         }
 
-        public static Stream getMatchCSVFileStream()
+        public static Stream getCSVFileStream()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV files|*.csv";

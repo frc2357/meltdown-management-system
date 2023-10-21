@@ -19,7 +19,7 @@ namespace ScoutingCenter
         {
             InitializeComponent();
             setUpScoutingCenter();
-        }       
+        }
 
         /**
          * <summary>
@@ -87,22 +87,17 @@ namespace ScoutingCenter
         {
             foreach (ScoutingTablet tablet in tablets)
             {
-                tablet.sendAssignment();                
+                tablet.sendAssignment();
             }
         }
 
         private void onExportMatch(object sender, RoutedEventArgs e)
         {
-            
+
         }
         private void onImportMatchData(object sender, RoutedEventArgs e)
         {
-            matchController.parseMatchCSVFile();
+            matchController.importMatchCSV();
         }
-
-        public string getBaseDirectory()
-        {
-            return Directory.GetCurrentDirectory();
-        }
-    
+    }
 }
