@@ -26,7 +26,7 @@ export default function PrematchScreen({ navigation }) {
   const id = assignment?.id ? assignment.id : '';
 
   const teamNum = match?.teamNum ? match.teamNum : '';
-  const matchNum = match?.matchNum ? match.matchNum : '';
+  const matchNum = match?.matchNum ? match.matchNum : 0;
   const alliance = match?.alliance ? match.alliance : '';
   const alliancePos = match?.alliancePos ? assignment.alliancePos : '';
 

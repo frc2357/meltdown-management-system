@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text.Json;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,17 +11,13 @@ namespace ScoutingCenter.src
 
     public class ScoutingTablet
     {
-        private static string[] matchHeaders =
-            { "teamNum", "matchNum", "alliance", "startPos",
-            "preload", "notes", "type", "piece", "row", "col",
-            "isAuto", "location", "hasMobility", "loc" };
-
         private BluetoothClient client;
 
         private Thread readMatches;
         public string id { get; }
 
         public WindowFields fields { get; set; }
+        public MatchAssignment currentMatchAssignment { get; set; }
 
         public ScoutingTablet(BluetoothClient client)
         {
@@ -74,19 +69,19 @@ namespace ScoutingCenter.src
 
                     foreach (string match in matches)
                     {
-                        if(match.Length == 0)
+                        if (match.Length == 0)
                         {
                             continue;
                         }
 
-                        string matchKey = "\"matchNum\":\"";
+                        string matchKey = "\"matchNum\":";
                         int matchIdx = matchStr.IndexOf(matchKey);
                         matchIdx = matchIdx + matchKey.Length;
-                        int matchLen = match.IndexOf("\"", matchIdx) - matchIdx;
+                        int matchLen = match.IndexOf(",", matchIdx) - matchIdx;
 
                         string matchNum = match.Substring(matchIdx, matchLen);
 
-                        string filename = id.ToLower()+"-match-"+matchNum+".json";
+                        string filename = id.ToLower() + "-match-" + matchNum + ".json";
 
                         using (StreamWriter outputFile =
                             new StreamWriter(System.IO.Path.Combine(matchPath, filename)))
@@ -134,6 +129,17 @@ namespace ScoutingCenter.src
             writeToStream(assignment);
         }
 
+        public void sendMatch()
+        {
+            string[] strs = id.Split('-');
+            string match = "{\"type\": \"match\", \"info\": {" +
+                "\"teamNum\":\"" + currentMatchAssignment.teamNum + "\"," +
+                "\"matchNum\":\"" + currentMatchAssignment.matchNum + "\"," +
+                "\"alliance\":\"" + strs[0] + "\"," +
+                "\"alliancePos\":\"" + strs[1] + "\"}}";
+            writeToStream(match);
+        }
+
         public void setConnected(bool isConnected)
         {
             fields.isConnected.IsChecked = isConnected;
@@ -162,6 +168,12 @@ namespace ScoutingCenter.src
             public CheckBox isConnected { get; set; }
             public TextBox lastInfo { get; set; }
             public TextBox scouter { get; set; }
+        }
+
+        public class MatchAssignment
+        {
+            public string teamNum { get; set; }
+            public int matchNum { get; set; }
         }
     }
 }

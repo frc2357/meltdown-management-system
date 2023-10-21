@@ -2,17 +2,102 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.Windows.Controls;
 
 namespace ScoutingCenter.src
 {
     public class MatchController
     {
-
-        public Dictionary<int, int[]> matchDataDictionary = new Dictionary<int, int[]>();
+        private int currentMatch { get; set; }
+        public List<Match> matches;
+        public WindowFields fields { get; set; }
 
         public MatchController()
         {
+            currentMatch = -1;
+        }
+
+        private void setWindowFields()
+        {
+            fields.currentMatch.Content = currentMatch;
+
+            string label = "";
+            if (currentMatch == -1)
+            {
+                label = "No Matches";
+            }
+            else if (currentMatch == matches.Count)
+            {
+                label = "Out of matches";
+            }
+            else
+            {
+                label = "Send Next Match: " + (currentMatch + 1);
+            }
+            fields.sendMatch.Content = label;
+        }
+
+        public void gotoNextMatch()
+        {
+            if (currentMatch < matches.Count && currentMatch > -1)
+            {
+                currentMatch++;
+            }
+            else
+            {
+                currentMatch = -1;
+            }
+            setWindowFields();
+        }
+
+        public bool outOfMatches()
+        {
+            return currentMatch == matches.Count;
+        }
+
+        public ScoutingTablet.MatchAssignment getNextMatchAssignment(string id)
+        {
+            Match match = matches[currentMatch];
+            switch (id)
+            {
+                case "RED-1":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.red1
+                    };
+                case "RED-2":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.red2
+                    };
+                case "RED-3":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.red3
+                    };
+                case "BLUE-1":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.blue1
+                    };
+                case "BLUE-2":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.blue2
+                    };
+                case "BLUE-3":
+                    return new ScoutingTablet.MatchAssignment
+                    {
+                        matchNum = match.matchNum,
+                        teamNum = match.blue3
+                    };
+            }
+            return null;
         }
 
         /**
@@ -22,6 +107,7 @@ namespace ScoutingCenter.src
         */
         public void importMatchCSV()
         {
+            matches = new List<Match>();
             try
             {
                 using (TextFieldParser parser = new TextFieldParser(Util.getCSVFileStream()))
@@ -41,10 +127,17 @@ namespace ScoutingCenter.src
                             continue;
                         }
 
-                        int matchNumber = Int32.Parse(matchData[0]);
-                        int[] teamsInMatch = new int[] { Int32.Parse(matchData[1]), Int32.Parse(matchData[2]),
-                            Int32.Parse(matchData[3]), Int32.Parse(matchData[4]), Int32.Parse(matchData[5]), Int32.Parse(matchData[6])};
-                        matchDataDictionary.Add(matchNumber, teamsInMatch);
+                        Match match = new Match
+                        {
+                            matchNum = Int32.Parse(matchData[0]),
+                            red1 = matchData[1],
+                            red2 = matchData[2],
+                            red3 = matchData[3],
+                            blue1 = matchData[4],
+                            blue2 = matchData[5],
+                            blue3 = matchData[6]
+                        };
+                        matches.Add(match);
                     }
                 }
             }
@@ -52,16 +145,15 @@ namespace ScoutingCenter.src
             {
                 Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
             }
-            foreach(int i in matchDataDictionary.Keys)
-            {
-                Debug.WriteLine($"Key: {i}");
-                int[] values;
-                matchDataDictionary.TryGetValue(i, out values);
-                foreach (int value in values)
-                {
-                    Debug.WriteLine($"\tValue: {value}");
-                }
-            }
+
+            currentMatch = 0;
+            setWindowFields();
+        }
+
+        public class WindowFields
+        {
+            public Button sendMatch { get; set; }
+            public Label currentMatch { get; set; }
         }
     }
 }

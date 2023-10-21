@@ -1,8 +1,5 @@
-﻿using Microsoft.Win32;
-using ScoutingCenter.src;
+﻿using ScoutingCenter.src;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 
 namespace ScoutingCenter
@@ -28,7 +25,14 @@ namespace ScoutingCenter
          */
         public void setUpScoutingCenter()
         {
-            matchController = new MatchController();
+            matchController = new MatchController()
+            {
+                fields = new MatchController.WindowFields()
+                {
+                    currentMatch = CurrentMatchLabel,
+                    sendMatch = SendMatch,
+                }
+            };
             threadHandler = new BluetoothThreadHandler(tablets, getTabletFields);
             threadHandler.startThread();
         }
@@ -83,6 +87,18 @@ namespace ScoutingCenter
             return null;
         }
 
+
+        private void onImportMatchData(object sender, RoutedEventArgs e)
+        {
+            matchController.importMatchCSV();
+        }
+
+
+        private void onExportMatch(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void onSendAssignment(object sender, RoutedEventArgs e)
         {
             foreach (ScoutingTablet tablet in tablets)
@@ -91,13 +107,21 @@ namespace ScoutingCenter
             }
         }
 
-        private void onExportMatch(object sender, RoutedEventArgs e)
+        private void onSendNextMatch(object sender, RoutedEventArgs e)
         {
 
-        }
-        private void onImportMatchData(object sender, RoutedEventArgs e)
-        {
-            matchController.importMatchCSV();
+            if(matchController.outOfMatches())
+            {
+                return;
+            }
+
+            foreach (ScoutingTablet tablet in tablets)
+            {
+                tablet.currentMatchAssignment = matchController.getNextMatchAssignment(tablet.id);
+                tablet.sendMatch();
+            }
+
+            matchController.gotoNextMatch();
         }
     }
 }
