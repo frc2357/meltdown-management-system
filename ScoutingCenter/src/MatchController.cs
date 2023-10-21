@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Controls;
 
 namespace ScoutingCenter.src
@@ -107,10 +108,17 @@ namespace ScoutingCenter.src
         */
         public void importMatchCSV()
         {
+            Stream importStream = Util.getCSVFileStream();
+
+            if(importStream == null)
+            {
+                return;
+            }
+
             matches = new List<Match>();
             try
             {
-                using (TextFieldParser parser = new TextFieldParser(Util.getCSVFileStream()))
+                using (TextFieldParser parser = new TextFieldParser(importStream))
                 {
 
                     bool isFirstLine = true;
@@ -146,8 +154,23 @@ namespace ScoutingCenter.src
                 Debug.WriteLine("Exception Message: " + e.Message + "\nException Stack Trace...\n" + e.StackTrace);
             }
 
+            importStream.Close();
+
             currentMatch = 0;
             setWindowFields();
+        }
+
+        public void exportMatchCSV()
+        {
+            string fileName = Util.getExportCSVFileName();
+
+            if(string.IsNullOrWhiteSpace(fileName))
+            {
+                return;
+            }
+
+            string output = Util.executePython("exportMatches.py", fileName);
+            Debug.Write(output);
         }
 
         public class WindowFields

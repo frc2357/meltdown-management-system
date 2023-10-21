@@ -76,7 +76,7 @@ namespace ScoutingCenter.src
 
                         string matchKey = "\"matchNum\":";
                         int matchIdx = match.IndexOf(matchKey);
-                        matchIdx = matchIdx + matchKey.Length;
+                        matchIdx += matchKey.Length;
                         int matchLen = match.IndexOf(",", matchIdx) - matchIdx;
 
                         string matchNum = match.Substring(matchIdx, matchLen);

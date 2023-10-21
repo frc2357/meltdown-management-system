@@ -2,10 +2,9 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 namespace ScoutingCenter.src
 {
@@ -41,9 +40,52 @@ namespace ScoutingCenter.src
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV files|*.csv";
-            openFileDialog.ShowDialog();
             openFileDialog.Multiselect = false;
-            return openFileDialog.OpenFile();
+
+            if (openFileDialog.ShowDialog() ?? false)
+            {
+                return openFileDialog.OpenFile();
+            }
+            return null;
+        }
+
+        public static string getExportCSVFileName()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV files|*.csv";
+            if (saveFileDialog.ShowDialog() ?? false)
+            {
+                return saveFileDialog.FileName;
+            }
+            return string.Empty;
+        }
+
+        public static string executePython(string pythonScript, string fileName)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "src\\python\\" + pythonScript;
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "py";
+            start.Arguments = string.Format("{0} {1}",path, fileName);
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
+
+            using (Process process = Process.Start(start))
+            {
+                string result = "stdout: ";
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    result += reader.ReadToEnd();
+                }
+
+                result += "\n\nstderr: ";
+                using (StreamReader reader = process.StandardError)
+                {
+                    result += reader.ReadToEnd();
+                }
+
+                return result;
+            }
         }
     }
 }

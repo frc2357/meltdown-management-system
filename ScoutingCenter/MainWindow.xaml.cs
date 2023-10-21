@@ -96,7 +96,7 @@ namespace ScoutingCenter
 
         private void onExportMatch(object sender, RoutedEventArgs e)
         {
-
+            matchController.exportMatchCSV();
         }
 
         private void onSendAssignment(object sender, RoutedEventArgs e)
