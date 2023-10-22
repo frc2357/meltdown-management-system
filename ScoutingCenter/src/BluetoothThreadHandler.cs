@@ -10,10 +10,10 @@ namespace ScoutingCenter.src
 {
     public class BluetoothThreadHandler
     {
-        private BluetoothListener listener;
-        private Thread thread;
-        private List<ScoutingTablet> tablets;
-        private Func<string, ScoutingTablet.WindowFields> getTabletFields;
+        private readonly BluetoothListener listener;
+        private readonly Thread thread;
+        private readonly List<ScoutingTablet> tablets;
+        private readonly Func<string, ScoutingTablet.WindowFields> getTabletFields;
 
         public BluetoothThreadHandler(List<ScoutingTablet> tablets, Func<string, ScoutingTablet.WindowFields> getTabletFields)
         {
@@ -21,15 +21,21 @@ namespace ScoutingCenter.src
             this.getTabletFields = getTabletFields;
 
             listener = new BluetoothListener(BluetoothService.SerialPort);
-            thread = new Thread(new ThreadStart(run));
-            thread.IsBackground = true;
+            thread = new Thread(new ThreadStart(run))
+            {
+                IsBackground = true
+            };
+        }
+
+        ~BluetoothThreadHandler()
+        {
+            stopThread();
         }
 
         public void startThread()
         {
             listener.Start();
             thread.Start();
-            Debug.WriteLine("Thread started");
         }
 
         public void run()
@@ -54,9 +60,6 @@ namespace ScoutingCenter.src
                     tablet.setConnected(true);
                     tablet.setLastInfo("Connected");
                 });
-
-                Debug.Write("Tablet connected: ");
-                Debug.WriteLine(client.RemoteMachineName);
             }
         }
 

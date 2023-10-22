@@ -9,8 +9,9 @@ namespace ScoutingCenter.src
 {
     public class MatchController
     {
+        private List<Match> matches;
+
         public int currentMatch { get; set; }
-        public List<Match> matches;
         public WindowFields fields { get; set; }
 
         public MatchController()
@@ -22,8 +23,7 @@ namespace ScoutingCenter.src
         {
             fields.currentMatch.Content = currentMatch;
 
-            string label = "";
-
+            string label;
             if (currentMatch == -1)
             {
                 label = "No Matches";
@@ -38,7 +38,8 @@ namespace ScoutingCenter.src
             }
 
             fields.sendNextMatch.Content = label;
-            fields.reSendMatch.Visibility = runningMatch() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+            fields.reSendMatch.Visibility = runningMatch() ?
+                System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
 
         public void gotoNextMatch()
@@ -66,7 +67,7 @@ namespace ScoutingCenter.src
 
         public ScoutingTablet.MatchAssignment getMatchAssignment(string id)
         {
-            Match match = matches[currentMatch-1];
+            Match match = matches[currentMatch - 1];
             switch (id)
             {
                 case "RED-1":
@@ -118,7 +119,7 @@ namespace ScoutingCenter.src
         {
             Stream importStream = Util.getCSVFileStream();
 
-            if(importStream == null)
+            if (importStream == null)
             {
                 return;
             }
@@ -172,7 +173,7 @@ namespace ScoutingCenter.src
         {
             string fileName = Util.getExportCSVFileName();
 
-            if(string.IsNullOrWhiteSpace(fileName))
+            if (string.IsNullOrWhiteSpace(fileName))
             {
                 return;
             }

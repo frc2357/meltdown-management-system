@@ -17,7 +17,6 @@ export const matchLogSlice = createSlice({
   initialState,
   reducers: {
     newMatch: (state, { payload: { teamNum, scouterName, matchNum, alliance, alliancePos } }) => {
-      console.log(JSON.stringify(state));
       state.match = {
         ...initialState.match,
         teamNum,
@@ -27,7 +26,6 @@ export const matchLogSlice = createSlice({
         alliancePos
       };
       state.startTimeSeconds = Date.now() / 1000;
-      console.log(state);
     },
 
     addEvent: (state, { payload }) => {

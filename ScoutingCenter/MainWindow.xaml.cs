@@ -9,7 +9,7 @@ namespace ScoutingCenter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<ScoutingTablet> tablets = new List<ScoutingTablet>();
+        private readonly List<ScoutingTablet> tablets = new List<ScoutingTablet>();
         private BluetoothThreadHandler threadHandler;
         private MatchController matchController;
         public MainWindow()
@@ -137,7 +137,7 @@ namespace ScoutingCenter
 
         private void onReSendNextMatch(object sender, RoutedEventArgs e)
         {
-            if(matchController.runningMatch())
+            if (matchController.runningMatch())
             {
                 sendMatch();
             }

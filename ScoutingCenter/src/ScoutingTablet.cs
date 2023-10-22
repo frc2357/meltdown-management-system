@@ -10,9 +10,9 @@ namespace ScoutingCenter.src
 {
     public class ScoutingTablet
     {
-        private BluetoothClient client;
+        private readonly BluetoothClient client;
 
-        private Thread readMatches;
+        private readonly Thread readMatches;
         public string id { get; }
 
         public WindowFields fields { get; set; }
@@ -23,8 +23,10 @@ namespace ScoutingCenter.src
             this.client = client;
             id = parseName(client.RemoteMachineName);
 
-            readMatches = new Thread(new ThreadStart(runReadMatches));
-            readMatches.IsBackground = true;
+            readMatches = new Thread(new ThreadStart(runReadMatches))
+            {
+                IsBackground = true
+            };
             readMatches.Start();
         }
 
@@ -45,7 +47,6 @@ namespace ScoutingCenter.src
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     { setConnected(false); setLastInfo("Lost Connection"); });
-
                     return;
                 }
 
@@ -82,9 +83,6 @@ namespace ScoutingCenter.src
                         outputFile.Flush();
                     }
                     Application.Current.Dispatcher.Invoke(() => setLastInfo("Recv Match: " + currentMatchAssignment.matchNum));
-
-                    Debug.WriteLine("Matches wrote");
-
                 }
                 catch (Exception err)
                 {

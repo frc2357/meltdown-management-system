@@ -32,7 +32,6 @@ export default function useEventCreator() {
   const createEvent = (obj) => {
     const timeStamp = Date.now() / 1000 - startTimeSeconds;
     const event = { timestamp: timeStamp, ...obj };
-    console.log(event);
     return event;
   };
 

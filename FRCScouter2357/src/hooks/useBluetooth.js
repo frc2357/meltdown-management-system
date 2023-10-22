@@ -43,8 +43,6 @@ export default function useBluetooth() {
     console.log('Device connected');
 
     device.current.onDataReceived((event) => {
-      console.log(JSON.stringify(event));
-
       const data = JSON.parse(event.data);
 
       switch (data.type) {
@@ -61,7 +59,6 @@ export default function useBluetooth() {
   };
 
   const upload = (data) => {
-    // console.log(device.current);
     const dataJson = JSON.stringify(data) + '\n';
     device.current
       .write(dataJson, 'ascii')
