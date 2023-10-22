@@ -9,7 +9,7 @@ namespace ScoutingCenter.src
 {
     public class MatchController
     {
-        private int currentMatch { get; set; }
+        public int currentMatch { get; set; }
         public List<Match> matches;
         public WindowFields fields { get; set; }
 

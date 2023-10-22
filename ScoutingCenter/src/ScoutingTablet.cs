@@ -65,31 +65,24 @@ namespace ScoutingCenter.src
                         continue;
                     }
 
-                    string[] matches = matchStr.Split('\n');
+                    matchStr = matchStr.Trim();
+                    matchStr = matchStr.Remove(matchStr.IndexOf('\0'));
 
-                    foreach (string match in matches)
+                    if (string.IsNullOrWhiteSpace(matchStr) || matchStr[0] == '\0')
                     {
-                        if (string.IsNullOrWhiteSpace(match))
-                        {
-                            continue;
-                        }
-
-                        string matchKey = "\"matchNum\":";
-                        int matchIdx = match.IndexOf(matchKey);
-                        matchIdx += matchKey.Length;
-                        int matchLen = match.IndexOf(",", matchIdx) - matchIdx;
-
-                        string matchNum = match.Substring(matchIdx, matchLen);
-
-                        string filename = id.ToLower() + "-match-" + matchNum + ".json";
-
-                        using (StreamWriter outputFile =
-                            new StreamWriter(System.IO.Path.Combine(matchPath, filename)))
-                        {
-                            outputFile.WriteLine(match);
-                        }
-                        Application.Current.Dispatcher.Invoke(() => setLastInfo("Recv Match: " + matchNum));
+                        continue;
                     }
+
+                    string filename = id.ToLower() + "-match-" + currentMatchAssignment.matchNum + ".json";
+
+                    using (StreamWriter outputFile =
+                        File.AppendText(System.IO.Path.Combine(matchPath, filename)))
+                    {
+                        outputFile.Write(matchStr);
+                        outputFile.Flush();
+                    }
+                    Application.Current.Dispatcher.Invoke(() => setLastInfo("Recv Match: " + currentMatchAssignment.matchNum));
+
                     Debug.WriteLine("Matches wrote");
 
                 }

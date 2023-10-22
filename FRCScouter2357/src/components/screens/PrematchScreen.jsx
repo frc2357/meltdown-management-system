@@ -28,7 +28,7 @@ export default function PrematchScreen({ navigation }) {
   const teamNum = match?.teamNum ? match.teamNum : '';
   const matchNum = match?.matchNum ? match.matchNum : 0;
   const alliance = match?.alliance ? match.alliance : '';
-  const alliancePos = match?.alliancePos ? assignment.alliancePos : '';
+  const alliancePos = match?.alliancePos ? match.alliancePos : '';
 
   if (!match) {
     return <AwaitMatchScreen />;

@@ -14,8 +14,8 @@ def loadMatchFiles():
     return matches
 
 def matchSortVal(match):
-    sortVal = int(match['matchNum'])
-    sortVal += 0 if match['alliance'].upper() == 'RED' else 3
+    sortVal = int(match['matchNum']) * 10
+    sortVal += (0 if match['alliance'].upper() == 'RED' else 3)
     sortVal += int(match['alliancePos'])
     return sortVal
 
@@ -33,9 +33,7 @@ def writeMatches(matches, outputFile):
             for event in match['events']:
                 row = [match['matchNum'], match['alliance'], match['alliancePos'], match['teamNum']]
                 for i in eventHeaders:
-                    print("Header: ", i)
                     row.append(event.get(i, ""))
-                    print("Row: ", row)
                 csvWriter.writerow(row)
 
 if len(sys.argv) >= 2:

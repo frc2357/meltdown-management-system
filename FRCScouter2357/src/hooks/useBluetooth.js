@@ -21,17 +21,22 @@ export default function useBluetooth() {
     }
 
     let connected = await device.current.isConnected();
-    
+
     while (!connected) {
-      connected = await device.current.connect({
-        CONNECTOR_TYPE: 'rfcomm',
-        DELIMITER: '\n',
-        DEVICE_CHARSET: 'ascii',
-        READ_TIMEOUT: 5000,
-        SECURE_SOCKET: true,
-      });
-      if (!connected) {
-        console.log('Connection failed, retrying');
+      try {
+        connected = await device.current.connect({
+          CONNECTOR_TYPE: 'rfcomm',
+          DELIMITER: '\n',
+          DEVICE_CHARSET: 'ascii',
+          READ_TIMEOUT: 5000,
+          SECURE_SOCKET: true,
+        });
+        if (!connected) {
+          console.log('Connection failed, retrying');
+        }
+      } catch (error) {
+        console.log(error);
+        connected = false;
       }
     }
 
@@ -39,7 +44,7 @@ export default function useBluetooth() {
 
     device.current.onDataReceived((event) => {
       console.log(JSON.stringify(event));
-      
+
       const data = JSON.parse(event.data);
 
       switch (data.type) {
@@ -57,7 +62,7 @@ export default function useBluetooth() {
 
   const upload = (data) => {
     // console.log(device.current);
-    const dataJson = JSON.stringify(data) + "\n";
+    const dataJson = JSON.stringify(data) + '\n';
     device.current
       .write(dataJson, 'ascii')
       .then((success) => console.log('Upload Status: ' + success))
