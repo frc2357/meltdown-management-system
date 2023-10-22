@@ -21,7 +21,14 @@
     "preview3": {
       "developmentClient": true
     },
-    "production": {}
+    "production": {
+      "android": {
+        "buildType": "apk",
+        "distribution": "internal",
+        "gradleCommand": ":app:assembleRelease",
+        "node": "18.16.0"
+      }
+    }
   },
   "submit": {
     "production": {}
