@@ -20,7 +20,11 @@ export default function useBluetooth() {
       device.current = devices[0];
     }
 
-    let connected = await device.current.isConnected();
+    if (await device.current.isConnected()) {
+      await device.current.disconnect();
+    }
+
+    let connected = false;
 
     while (!connected) {
       try {

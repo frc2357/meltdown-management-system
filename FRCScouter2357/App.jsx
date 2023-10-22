@@ -11,7 +11,8 @@ import AwaitAssignmentScreen from './src/components/screens/AwaitAssignmentScree
 import robotStates from './src/util/robotStates';
 import useBluetooth from './src/hooks/useBluetooth';
 import { useSelector } from 'react-redux';
-import store from './src/state/store'
+import store from './src/state/store';
+import AwaitScoutingCenterScreen from './src/components/screens/AwaitBluetoothConnectScreen';
 
 const NavStack = createNativeStackNavigator();
 
@@ -21,6 +22,9 @@ function App() {
   const assignment = useSelector((state) => state.bluetooth.assignment);
 
   useEffect(() => {
+    if (isInit) {
+      return;
+    }
     connect()
       .then((isInit) => {
         setInit(isInit);
@@ -29,19 +33,29 @@ function App() {
         console.log(err);
         setInit(false);
       });
-  }, []);
+  }, [isInit]);
 
-  
   useEffect(() => {
-    DeviceEventEmitter.addListener("event.uploadMatch", () => {
+    DeviceEventEmitter.addListener('event.uploadMatch', () => {
       const matchLog = store.getState().matchLog.match;
       upload(matchLog);
     });
-  
-    return () => DeviceEventEmitter.removeAllListeners('event.uploadMatch');
+
+    DeviceEventEmitter.addListener('event.reconnect', () => {
+      setInit(false);
+    });
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('event.uploadMatch');
+      DeviceEventEmitter.removeAllListeners('event.reconnect');
+    };
   }, []);
-  
-  if (!isInit || !assignment) {
+
+  if (!isInit) {
+    return <AwaitScoutingCenterScreen />;
+  }
+
+  if (!assignment) {
     return <AwaitAssignmentScreen />;
   }
 
