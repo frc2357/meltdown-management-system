@@ -3,12 +3,11 @@ import json
 import sys
 import csv
 
-def loadMatchFiles():
+def loadMatchFiles(inputPath):
     matches = []
-    path = os.path.expanduser("~\\Documents\\matchLog")
-    matchFiles = os.listdir(path)
+    matchFiles = os.listdir(inputPath)
     for file in matchFiles:
-        with open(path+"\\"+file) as stream:
+        with open(inputPath+"\\"+file) as stream:
             obj = json.load(stream) 
             matches.append(obj)
     return matches
@@ -41,6 +40,11 @@ if len(sys.argv) >= 2:
 else:
     outputFile = os.path.expanduser("~\\Documents\\matchTest.csv")
 
-matches = loadMatchFiles()
+if len(sys.argv) >= 3:
+    inputPath = sys.argv[2]
+else:
+    inputPath = os.path.expanduser("~\\Documents\\matchLog\\eventHere")
+
+matches = loadMatchFiles(inputPath)
 matches.sort(key=matchSortVal)
 writeMatches(matches, outputFile)

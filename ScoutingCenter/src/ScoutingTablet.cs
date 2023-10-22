@@ -8,7 +8,6 @@ using System.Windows.Controls;
 
 namespace ScoutingCenter.src
 {
-
     public class ScoutingTablet
     {
         private BluetoothClient client;
@@ -36,8 +35,9 @@ namespace ScoutingCenter.src
 
         public void runReadMatches()
         {
-            string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            string matchPath = Directory.CreateDirectory(documents + "\\matchLog").FullName;
+            string eventName = "";
+            Application.Current.Dispatcher.Invoke(() => eventName = fields.eventName.Text);
+            string matchPath = Util.getMatchPath(eventName);
 
             while (true)
             {
@@ -161,6 +161,8 @@ namespace ScoutingCenter.src
             public CheckBox isConnected { get; set; }
             public TextBox lastInfo { get; set; }
             public TextBox scouter { get; set; }
+
+            public TextBox eventName { get; set; }
         }
 
         public class MatchAssignment

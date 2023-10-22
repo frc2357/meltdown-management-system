@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection.Emit;
 
 namespace ScoutingCenter.src
 {
@@ -60,12 +59,12 @@ namespace ScoutingCenter.src
             return string.Empty;
         }
 
-        public static string executePython(string pythonScript, string fileName)
+        public static string executePython(string pythonScript, string outputFileName, string inputFolder)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "src\\python\\" + pythonScript;
             ProcessStartInfo start = new ProcessStartInfo();
             start.FileName = "py";
-            start.Arguments = string.Format("{0} {1}",path, fileName);
+            start.Arguments = string.Format("{0} {1} {2}", path, outputFileName, inputFolder);
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;
@@ -86,6 +85,12 @@ namespace ScoutingCenter.src
 
                 return result;
             }
+        }
+
+        public static string getMatchPath(string eventName)
+        {
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            return Directory.CreateDirectory(documents + "\\matchLog\\"+eventName).FullName;
         }
     }
 }

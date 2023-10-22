@@ -29,8 +29,10 @@ namespace ScoutingCenter
             {
                 fields = new MatchController.WindowFields()
                 {
+                    reSendMatch = ReSendMatch,
+                    sendNextMatch = SendNextMatch,
                     currentMatch = CurrentMatchLabel,
-                    sendMatch = SendMatch,
+                    eventName = EventName
                 }
             };
             threadHandler = new BluetoothThreadHandler(tablets, getTabletFields);
@@ -47,6 +49,7 @@ namespace ScoutingCenter
                         isConnected = Red1Connected,
                         lastInfo = Red1LastInfo,
                         scouter = Red1Scouter,
+                        eventName = EventName
                     };
                 case "RED-2":
                     return new ScoutingTablet.WindowFields
@@ -54,6 +57,7 @@ namespace ScoutingCenter
                         isConnected = Red2Connected,
                         lastInfo = Red2LastInfo,
                         scouter = Red2Scouter,
+                        eventName = EventName
                     };
                 case "RED-3":
                     return new ScoutingTablet.WindowFields
@@ -61,6 +65,7 @@ namespace ScoutingCenter
                         isConnected = Red3Connected,
                         lastInfo = Red3LastInfo,
                         scouter = Red3Scouter,
+                        eventName = EventName
                     };
                 case "BLUE-1":
                     return new ScoutingTablet.WindowFields
@@ -68,6 +73,7 @@ namespace ScoutingCenter
                         isConnected = Blue1Connected,
                         lastInfo = Blue1LastInfo,
                         scouter = Blue1Scouter,
+                        eventName = EventName
                     };
                 case "BLUE-2":
                     return new ScoutingTablet.WindowFields
@@ -75,6 +81,7 @@ namespace ScoutingCenter
                         isConnected = Blue2Connected,
                         lastInfo = Blue2LastInfo,
                         scouter = Blue2Scouter,
+                        eventName = EventName
                     };
                 case "BLUE-3":
                     return new ScoutingTablet.WindowFields
@@ -82,6 +89,7 @@ namespace ScoutingCenter
                         isConnected = Blue3Connected,
                         lastInfo = Blue3LastInfo,
                         scouter = Blue3Scouter,
+                        eventName = EventName
                     };
             }
             return null;
@@ -107,21 +115,32 @@ namespace ScoutingCenter
             }
         }
 
+        private void sendMatch()
+        {
+            foreach (ScoutingTablet tablet in tablets)
+            {
+                tablet.currentMatchAssignment = matchController.getMatchAssignment(tablet.id);
+                tablet.sendMatch();
+            }
+        }
+
         private void onSendNextMatch(object sender, RoutedEventArgs e)
         {
-
-            if(matchController.outOfMatches())
+            matchController.gotoNextMatch();
+            if (matchController.outOfMatches())
             {
                 return;
             }
 
-            foreach (ScoutingTablet tablet in tablets)
-            {
-                tablet.currentMatchAssignment = matchController.getNextMatchAssignment(tablet.id);
-                tablet.sendMatch();
-            }
+            sendMatch();
+        }
 
-            matchController.gotoNextMatch();
+        private void onReSendNextMatch(object sender, RoutedEventArgs e)
+        {
+            if(matchController.runningMatch())
+            {
+                sendMatch();
+            }
         }
     }
 }

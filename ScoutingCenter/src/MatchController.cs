@@ -23,6 +23,7 @@ namespace ScoutingCenter.src
             fields.currentMatch.Content = currentMatch;
 
             string label = "";
+
             if (currentMatch == -1)
             {
                 label = "No Matches";
@@ -35,7 +36,9 @@ namespace ScoutingCenter.src
             {
                 label = "Send Next Match: " + (currentMatch + 1);
             }
-            fields.sendMatch.Content = label;
+
+            fields.sendNextMatch.Content = label;
+            fields.reSendMatch.Visibility = runningMatch() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
 
         public void gotoNextMatch()
@@ -53,12 +56,17 @@ namespace ScoutingCenter.src
 
         public bool outOfMatches()
         {
-            return currentMatch == matches.Count;
+            return currentMatch > matches.Count || currentMatch == -1;
         }
 
-        public ScoutingTablet.MatchAssignment getNextMatchAssignment(string id)
+        public bool runningMatch()
         {
-            Match match = matches[currentMatch];
+            return currentMatch > 0 && currentMatch <= matches.Count;
+        }
+
+        public ScoutingTablet.MatchAssignment getMatchAssignment(string id)
+        {
+            Match match = matches[currentMatch-1];
             switch (id)
             {
                 case "RED-1":
@@ -169,14 +177,17 @@ namespace ScoutingCenter.src
                 return;
             }
 
-            string output = Util.executePython("exportMatches.py", fileName);
+            string inputFolder = Util.getMatchPath(fields.eventName.Text);
+            string output = Util.executePython("exportMatches.py", fileName, inputFolder);
             Debug.Write(output);
         }
 
         public class WindowFields
         {
-            public Button sendMatch { get; set; }
+            public Button reSendMatch { get; set; }
+            public Button sendNextMatch { get; set; }
             public Label currentMatch { get; set; }
+            public TextBox eventName { get; set; }
         }
     }
 }

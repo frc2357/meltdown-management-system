@@ -34,7 +34,7 @@ namespace ScoutingCenter.src
 
         public void run()
         {
-            while(true)
+            while (true)
             {
                 BluetoothClient client = listener.AcceptBluetoothClient();
 
@@ -45,18 +45,23 @@ namespace ScoutingCenter.src
                 if (idx > -1)
                 {
                     tablets.RemoveAt(idx);
-                } 
+                }
 
                 tablets.Add(tablet);
 
-                Application.Current.Dispatcher.Invoke(() => tablet.setConnected(true));
-     
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    tablet.setConnected(true);
+                    tablet.setLastInfo("Connected");
+                });
+
                 Debug.Write("Tablet connected: ");
                 Debug.WriteLine(client.RemoteMachineName);
             }
         }
 
-        public void stopThread() {
+        public void stopThread()
+        {
             listener.Dispose();
             thread.Abort();
         }
