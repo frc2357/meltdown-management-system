@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Text, Button, Pressable } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import AwaitMatchScreen from './AwaitMatchScreen';
+import AwaitMatchScreen from '../loadingScreens/AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
 import { addEvent, newMatch } from '../../state/matchLogSlice';

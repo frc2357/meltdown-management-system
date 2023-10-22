@@ -67,6 +67,11 @@ namespace ScoutingCenter.src
 
         public ScoutingTablet.MatchAssignment getMatchAssignment(string id)
         {
+            if(!runningMatch())
+            {
+                return null;
+            }
+
             Match match = matches[currentMatch - 1];
             switch (id)
             {

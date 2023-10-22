@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import LoadingScreen from './LoadingScreen';
+import ReconnectLoadingScreen from './ReconnectLoadingScreen';
 
 export default function AwaitMatchScreen() {
   const assignment = useSelector((state) => state.bluetooth.assignment);
@@ -11,5 +11,5 @@ export default function AwaitMatchScreen() {
   const message =
     'Hello ' + scouter + ', you are assigned to ' + id + '.Waiting for next match assignment.';
 
-  return <LoadingScreen message={message} />;
+  return <ReconnectLoadingScreen message={message} />;
 }

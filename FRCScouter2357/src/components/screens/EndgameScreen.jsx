@@ -5,7 +5,6 @@ import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
-import { setMatch } from '../../state/bluetoothSlice';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -18,7 +17,6 @@ export default function EndgameScreen({ navigation }) {
   const onSubmit = () => {
     dispatch(addEvent(eventCreator.createEndgame(chargestation, notes)));
     DeviceEventEmitter.emit('event.uploadMatch');
-    dispatch(setMatch(null));
     navigation.navigate('PrematchScreen');
   };
 

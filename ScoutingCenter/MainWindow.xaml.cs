@@ -35,7 +35,7 @@ namespace ScoutingCenter
                     eventName = EventName
                 }
             };
-            threadHandler = new BluetoothThreadHandler(tablets, getTabletFields);
+            threadHandler = new BluetoothThreadHandler(tablets, getTabletFields, matchController.getMatchAssignment);
             threadHandler.startThread();
         }
 

@@ -27,6 +27,10 @@ namespace ScoutingCenter.src
             {
                 IsBackground = true
             };
+        }
+
+        public void startThread()
+        {
             readMatches.Start();
         }
 

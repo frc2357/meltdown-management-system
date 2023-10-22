@@ -62,15 +62,20 @@ export default function useBluetooth() {
     return true;
   };
 
-  const upload = (data) => {
+  const upload = async (data) => {
     const dataJson = JSON.stringify(data) + '\n';
-    device.current
-      .write(dataJson, 'ascii')
-      .then((success) => console.log('Upload Status: ' + success))
-      .catch((err) => {
-        console.log('Error uploading');
-        console.log(err);
-      });
+
+    try {
+      const success = await device.current.write(dataJson, 'ascii');
+
+      console.log('Upload Status: ' + success);
+      return success;
+    } catch (err) {
+      console.log('Error uploading');
+      console.log(err);
+    }
+
+    return false;
   };
 
   const isConnected = async () => {

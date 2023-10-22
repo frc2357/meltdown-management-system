@@ -14,11 +14,15 @@ namespace ScoutingCenter.src
         private readonly Thread thread;
         private readonly List<ScoutingTablet> tablets;
         private readonly Func<string, ScoutingTablet.WindowFields> getTabletFields;
+        private readonly Func<string, ScoutingTablet.MatchAssignment> getMatchAssignment;
 
-        public BluetoothThreadHandler(List<ScoutingTablet> tablets, Func<string, ScoutingTablet.WindowFields> getTabletFields)
+        public BluetoothThreadHandler(List<ScoutingTablet> tablets, 
+            Func<string, ScoutingTablet.WindowFields> getTabletFields, 
+            Func<string, ScoutingTablet.MatchAssignment> getMatchAssignment)
         {
             this.tablets = tablets;
             this.getTabletFields = getTabletFields;
+            this.getMatchAssignment = getMatchAssignment;
 
             listener = new BluetoothListener(BluetoothService.SerialPort);
             thread = new Thread(new ThreadStart(run))
@@ -46,12 +50,15 @@ namespace ScoutingCenter.src
 
                 ScoutingTablet tablet = new ScoutingTablet(client);
                 tablet.fields = getTabletFields(tablet.id);
+                tablet.currentMatchAssignment = getMatchAssignment(tablet.id);
+                tablet.startThread();
 
                 int idx = tablets.FindIndex(ScoutingTablet.byId(tablet.id));
                 if (idx > -1)
                 {
                     tablets.RemoveAt(idx);
                 }
+
 
                 tablets.Add(tablet);
 
