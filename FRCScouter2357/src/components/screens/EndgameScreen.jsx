@@ -22,8 +22,9 @@ export default function EndgameScreen({ navigation }) {
 
   return (
     <Box style={styles.autoContainer}>
-      <Text title="Auto" />
+      <Text variant="h4">Endgame</Text>
       <VStack>
+      <Text variant="h6">Chargestation:</Text>
         <RadioButtonList
           labels={['Parked', 'Docked', 'Engaged', 'None']}
           direction="row"
@@ -48,8 +49,9 @@ export default function EndgameScreen({ navigation }) {
           compact
           variant="outlined"
           onPress={() => navigation.navigate('TeleopLayout')}
+          style={styles.button}
         />
-        <Button title="Submit" compact variant="contained" onPress={onSubmit} />
+        <Button title="Submit" compact variant="contained" onPress={onSubmit} style={styles.button} />
       </HStack>
     </Box>
   );
@@ -61,6 +63,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: windowDimensions.height,
     width: windowDimensions.width,
+  },
+  button: {
+    margin: 20,
+    width: 100
   },
   textInput: {
     height: 300,

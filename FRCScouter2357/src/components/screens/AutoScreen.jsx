@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { VStack, HStack, Switch, Text, Button, Box } from '@react-native-material/core';
+import { VStack, HStack, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
+import { Checkbox } from 'react-native-paper';
 import useEventCreator from '../../hooks/useEventCreator';
 
 const windowDimensions = Dimensions.get('window');
@@ -22,26 +23,32 @@ export default function AutoScreen({ navigation }) {
 
   return (
     <Box style={styles.autoContainer}>
-      <Text title="Auto" />
+      <Text variant="h4">Auto</Text>
       <VStack>
-        <HStack>
-          <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
-          <Text>Mobility</Text>
-        </HStack>
-        <RadioButtonList
-          labels={['Docked', 'Engaged', 'None']}
-          selected={chargestation}
-          setSelected={setChargestation}
+        <Checkbox.Item
+          label="Mobility"
+          position="leading"
+          status={hasMobility ? 'checked' : 'unchecked'}
+          onPress={() => setMobility(!hasMobility)}
         />
+        <HStack>
+          <Text variant="h6">Chargestation:</Text>
+          <RadioButtonList
+            labels={['Docked', 'Engaged', 'None']}
+            selected={chargestation}
+            position="leading"
+            setSelected={setChargestation}
+          />
+        </HStack>
       </VStack>
       <HStack>
         <Button
           title="Cancel"
-          compact
           variant="outlined"
           onPress={() => navigation.navigate('TeleopLayout', { isAuto: false })}
+          style={styles.button}
         />
-        <Button title="Ok" compact variant="contained" onPress={onOk} />
+        <Button title="Ok" variant="contained" onPress={onOk} style={styles.button} />
       </HStack>
     </Box>
   );
@@ -53,5 +60,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: windowDimensions.height,
     width: windowDimensions.width,
+  },
+  button: {
+    margin: 20,
+    width: 100
   },
 });

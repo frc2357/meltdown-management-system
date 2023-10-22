@@ -188,12 +188,14 @@ export default function TeleopLayout({
           variant="contained"
           title="Auto"
           onPress={() => navigation.navigate('AutoScreen')}
+          style={styles.button}
         />
-        <Button variant="contained" title="Drop" onPress={onDrop} />
+        <Button variant="contained" title="Drop" onPress={onDrop} style={styles.button} />
         <Button
           variant="contained"
           title="Endgame"
           onPress={() => navigation.navigate('EndgameScreen')}
+          style={styles.button}
         />
         <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
       </HStack>
@@ -226,6 +228,9 @@ const baseStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
+  button: {
+    width: 120,
+  },
   buttonStack: {
     alignItems: 'center',
     height: 40,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Text, Button, Pressable } from '@react-native-material/core';
+import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import AwaitMatchScreen from '../loadingScreens/AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
@@ -53,52 +53,74 @@ export default function PrematchScreen({ navigation }) {
 
   return (
     <Box>
-      <Text variant="h2">Pre-Match</Text>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>
-            <Text>Scouter</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text>ID</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text>Team #</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text>Match #</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text>Alliance #</Text>
-          </DataTable.Title>
-        </DataTable.Header>
+      <Text variant="h4">Pre-Match</Text>
+      <HStack>
+        <DataTable style={styles.dataTable}>
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>Scouter</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{scouterName}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
 
-        <DataTable.Row>
-          <DataTable.Cell>
-            <Text>{scouterName}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text>{id}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text>{teamNum}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text>{matchNum}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text>{alliance}</Text>
-          </DataTable.Cell>
-        </DataTable.Row>
-      </DataTable>
-      <Text variant="h10">Pre-Load</Text>
-      <RadioButtonList
-        direction="row"
-        labels={[robotStates.cone, robotStates.cube, robotStates.empty]}
-        selected={preload}
-        setSelected={setPreload}
-      />
-      <Text variant="h5">Press start location:</Text>
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>ID</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{id}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>Team #</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{teamNum}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>Match #</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{matchNum}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+          
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>Alliance</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{alliance}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+          
+          <DataTable.Row>
+            <DataTable.Title>
+              <Text>Alliance Pos</Text>
+            </DataTable.Title>
+            <DataTable.Cell>
+              <Text>{alliancePos}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+        </DataTable>
+        <Box style={styles.form}>
+          <Text variant="h6">Pre-Load:</Text>
+          <RadioButtonList
+            direction="row"
+            labels={[robotStates.cone, robotStates.cube, robotStates.empty]}
+            selected={preload}
+            setSelected={setPreload}
+          />
+          <Text variant="h5">Press start location:</Text>
+        </Box>
+      </HStack>
       <Image
         alt="Starting position"
         source={require('../../images/community.png')}
@@ -127,48 +149,54 @@ export default function PrematchScreen({ navigation }) {
   );
 }
 
-const center = 1024 / 2;
-const communityLeft = center - 225;
+const communityLeft = 550;
+const communityTop = 170;
 const styles = StyleSheet.create({
   community: {
     height: 300,
     left: communityLeft,
     position: 'absolute',
-    top: 180,
+    top: communityTop,
     width: 450,
   },
   confirm: {
     left: communityLeft,
     position: 'absolute',
-    top: 485,
+    top: 480,
     width: 450,
+  },
+  dataTable: {
+    width: 400,
+  },
+  form: {
+    marginLeft: 150,
   },
   posFour: {
     height: 130,
     left: communityLeft + 122 + 210,
     position: 'absolute',
-    top: 190 + 150,
+    top: communityTop + 10 + 150,
     width: 118,
   },
   posOne: {
     height: 150,
     left: communityLeft + 17,
     position: 'absolute',
-    top: 190,
+    top: communityTop + 10,
     width: 105,
   },
   posThree: {
     height: 150,
     left: communityLeft + 122 + 210,
     position: 'absolute',
-    top: 190,
+    top: communityTop + 10,
     width: 118,
   },
   posTwo: {
     height: 120,
     left: communityLeft + 122,
     position: 'absolute',
-    top: 190,
+    top: communityTop + 10,
     width: 210,
   },
 });
