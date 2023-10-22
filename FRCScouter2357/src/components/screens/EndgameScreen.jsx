@@ -18,7 +18,7 @@ export default function EndgameScreen({ navigation }) {
   const onSubmit = () => {
     dispatch(addEvent(eventCreator.createEndgame(chargestation, notes)));
     DeviceEventEmitter.emit('event.uploadMatch');
-    dispatch(setMatch(null))
+    dispatch(setMatch(null));
     navigation.navigate('PrematchScreen');
   };
 

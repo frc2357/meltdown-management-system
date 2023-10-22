@@ -143,7 +143,16 @@ export default function TeleopLayout({
     );
   }
 
-  const pickupStationStyles = [buttonStyles.doubleSub, buttonStyles.singleSub, buttonStyles.floor];
+  const pickupStationStyles = [
+    buttonStyles.doubleSubPressable,
+    buttonStyles.singleSubPressable,
+    buttonStyles.floorPressable,
+  ];
+  const gamepieceStyles = [
+    buttonStyles.doubleSubImage,
+    buttonStyles.singleSubImage,
+    buttonStyles.floorImage,
+  ];
   const pickupStations = [];
 
   for (let i = 0; i < numPickupStations; i++) {
@@ -151,6 +160,7 @@ export default function TeleopLayout({
       <GamepieceButton
         key={pickupStationNames[i]}
         style={pickupStationStyles[i]}
+        imageStyle={gamepieceStyles[i]}
         gamepiece={robotStateToImage(pickupStates[i])}
         isHidden={pickupStates[i] === robotStates.empty}
         setHidden={(isHidden) => {
@@ -215,6 +225,47 @@ const baseStyles = StyleSheet.create({
   },
 });
 
+const styles = StyleSheet.create({
+  buttonStack: {
+    alignItems: 'center',
+    height: 40,
+    justifyContent: 'center',
+    margin: 4,
+  },
+  columns: {
+    height: 484,
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: 700,
+  },
+  doubleSub: {
+    height: 250,
+    left: 705,
+    position: 'absolute',
+    top: 0,
+    width: 325,
+  },
+  floor: {
+    height: 230,
+    left: 705,
+    position: 'absolute',
+    top: 255,
+    width: 160,
+  },
+  robotState: {
+    height: 50,
+    width: 50,
+  },
+  singleSub: {
+    height: 230,
+    left: 870,
+    position: 'absolute',
+    top: 255,
+    width: 160,
+  },
+});
+
 const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   button1: {
@@ -265,18 +316,17 @@ const buttonStyles = StyleSheet.create({
     top: 230,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button10: {
-    ...baseStyles.gamepiece,
-    left: -5, // -18
-    top: 200, // +70
-  },
-  // eslint-disable-next-line react-native/no-unused-styles
   button9: {
     ...baseStyles.gamepiece,
     left: 635,
     top: 230,
   },
-
+  // eslint-disable-next-line react-native/no-unused-styles, react-native/sort-styles
+  button10: {
+    ...baseStyles.gamepiece,
+    left: -5, // -18
+    top: 200, // +70
+  },
   // eslint-disable-next-line react-native/no-unused-styles
   button11: {
     ...baseStyles.gamepiece,
@@ -380,62 +430,33 @@ const buttonStyles = StyleSheet.create({
     top: 400,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  singleSub: {
-    ...baseStyles.gamepiece,
-    left: 750,
-    top: 350,
+  singleSubPressable: {
+    ...styles.singleSub,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  doubleSub: {
+  doubleSubPressable: {
+    ...styles.doubleSub,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  floorPressable: {
+    ...styles.floor,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  singleSubImage: {
     ...baseStyles.gamepiece,
-    left: 800,
+    left: 45,
+    top: 90,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  doubleSubImage: {
+    ...baseStyles.gamepiece,
+    left: 100,
     top: 80,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  floor: {
+  floorImage: {
     ...baseStyles.gamepiece,
-    left: 900,
-    top: 350,
-  },
-});
-
-const styles = StyleSheet.create({
-  buttonStack: {
-    alignItems: 'center',
-    height: 40,
-    justifyContent: 'center',
-    margin: 4,
-  },
-  columns: {
-    height: 484,
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: 700,
-  },
-  doubleSub: {
-    height: 250,
-    left: 705,
-    position: 'absolute',
-    top: 0,
-    width: 325,
-  },
-  floor: {
-    height: 230,
-    left: 705,
-    position: 'absolute',
-    top: 255,
-    width: 160,
-  },
-  robotState: {
-    height: 50,
-    width: 50,
-  },
-  singleSub: {
-    height: 230,
-    left: 870,
-    position: 'absolute',
-    top: 255,
-    width: 160,
+    left: 45,
+    top: 90,
   },
 });

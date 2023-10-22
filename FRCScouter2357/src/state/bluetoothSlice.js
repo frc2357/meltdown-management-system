@@ -7,10 +7,10 @@ export const bluetoothSlice = createSlice({
     assignment: null,
   },
   reducers: {
-    setMatch: (state, {payload}) => {
+    setMatch: (state, { payload }) => {
       state.currentMatch = payload;
     },
-    setAssignment: (state, {payload}) => {
+    setAssignment: (state, { payload }) => {
       state.assignment = payload;
     },
   },

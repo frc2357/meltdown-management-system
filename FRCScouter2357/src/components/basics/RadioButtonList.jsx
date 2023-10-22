@@ -7,7 +7,7 @@ RadioButtonList.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string),
   direction: PropTypes.string,
   selected: PropTypes.string,
-  setSelected: PropTypes.func
+  setSelected: PropTypes.func,
 };
 
 export default function RadioButtonList({ labels, direction = 'column', selected, setSelected }) {

@@ -23,7 +23,7 @@ export const matchLogSlice = createSlice({
         scouterName,
         matchNum,
         alliance,
-        alliancePos
+        alliancePos,
       };
       state.startTimeSeconds = Date.now() / 1000;
     },

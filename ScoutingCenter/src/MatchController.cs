@@ -182,7 +182,6 @@ namespace ScoutingCenter.src
             string output = Util.executePython("exportMatches.py", fileName, inputFolder);
             Debug.Write(output);
         }
-
         public class WindowFields
         {
             public Button reSendMatch { get; set; }
