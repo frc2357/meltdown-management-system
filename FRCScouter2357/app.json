@@ -2,7 +2,7 @@
   "expo": {
     "name": "FRCScouter2357",
     "slug": "FRCScouter2357",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "landscape",
     "icon": "./src/images/logo.png",
     "userInterfaceStyle": "light",
