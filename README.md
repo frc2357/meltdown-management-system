@@ -2,7 +2,7 @@
 Repository for scouting software
 
 ## Setup
-- Download and install Python
+- Download and install Python 3.7 or greater
   - Ensure env path variable set to access python
 - Download scouting center windows executable (Found under releases on GitHub)
 - Setup scouting tablets:
@@ -31,10 +31,17 @@ Repository for scouting software
   - Connection is indicated by he `connected` checkbox for each tablet
 - The tablets cannot detect disconnects.
 - If a disconnect occurs
-  - Reload the tablet app
-  - Wait for the tablet to connect
-  - Click `send assignment` to send the scouter's name
-  - You are know good to go.
+  - Press the retry to connect button on the loading screen
+  - If that does not work
+    - Reload the tablet app
+    - Wait for the tablet to connect
+    - Click `send assignment` to send the scouter's name
+  -  Re-send assignment/match information if the tablet does not already have it
+-  If disconnect occurs during **uploading**
+   -  **Do not close the app**, you will lose that data if you do
+   -  Make sure the scouting center is in a good state
+   -  Press reupload
+
 
 ### Structure of values that Scouting Center will send to Tablets:
 
