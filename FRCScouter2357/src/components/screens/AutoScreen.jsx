@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VStack, HStack, Text, Button, Box } from '@react-native-material/core';
+import { VStack, HStack, Text, Button, Box, Switch } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
 import { useDispatch } from 'react-redux';
@@ -25,12 +25,10 @@ export default function AutoScreen({ navigation }) {
     <Box style={styles.autoContainer}>
       <Text variant="h4">Auto</Text>
       <VStack>
-        <Checkbox.Item
-          label="Mobility"
-          position="leading"
-          status={hasMobility ? 'checked' : 'unchecked'}
-          onPress={() => setMobility(!hasMobility)}
-        />
+        <HStack>
+          <Switch value={hasMobility} onValueChange={() => setMobility(!hasMobility)} />
+          <Text>Mobility</Text>
+        </HStack>
         <HStack>
           <Text variant="h6">Chargestation:</Text>
           <RadioButtonList
@@ -63,6 +61,6 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 20,
-    width: 100
+    width: 100,
   },
 });
