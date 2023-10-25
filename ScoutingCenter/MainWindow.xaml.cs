@@ -32,7 +32,13 @@ namespace ScoutingCenter
                     reSendMatch = ReSendMatch,
                     sendNextMatch = SendNextMatch,
                     currentMatch = CurrentMatchLabel,
-                    eventName = EventName
+                    eventName = EventName,
+                    red1Scouter = Red1Scouter,
+                    red2Scouter = Red2Scouter,
+                    red3Scouter = Red3Scouter,
+                    blue1Scouter = Blue1Scouter,
+                    blue2Scouter = Blue2Scouter,
+                    blue3Scouter = Blue3Scouter
                 }
             };
             threadHandler = new BluetoothThreadHandler(tablets, getTabletFields, matchController.getMatchAssignment);

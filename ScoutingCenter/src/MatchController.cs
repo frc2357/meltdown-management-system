@@ -23,6 +23,17 @@ namespace ScoutingCenter.src
         {
             fields.currentMatch.Content = currentMatch;
 
+            if (matches.Count > 0)
+            {
+                Match match = matches[currentMatch - 1 < 0 ? 0 : currentMatch - 1];
+
+                fields.red1Scouter.Text = match.red1Scout;
+                fields.red2Scouter.Text = match.red2Scout;
+                fields.red3Scouter.Text = match.red3Scout;
+                fields.blue1Scouter.Text = match.blue1Scout;
+                fields.blue2Scouter.Text = match.blue2Scout;
+                fields.blue3Scouter.Text = match.blue3Scout;
+            }
             string label;
             if (currentMatch == -1)
             {
@@ -67,7 +78,7 @@ namespace ScoutingCenter.src
 
         public ScoutingTablet.MatchAssignment getMatchAssignment(string id)
         {
-            if(!runningMatch())
+            if (!runningMatch())
             {
                 return null;
             }
@@ -153,11 +164,17 @@ namespace ScoutingCenter.src
                         {
                             matchNum = Int32.Parse(matchData[0]),
                             red1 = matchData[1],
-                            red2 = matchData[2],
-                            red3 = matchData[3],
-                            blue1 = matchData[4],
-                            blue2 = matchData[5],
-                            blue3 = matchData[6]
+                            red1Scout = matchData[2],
+                            red2 = matchData[3],
+                            red2Scout = matchData[4],
+                            red3 = matchData[5],
+                            red3Scout = matchData[6],
+                            blue1 = matchData[7],
+                            blue1Scout = matchData[8],
+                            blue2 = matchData[9],
+                            blue2Scout = matchData[10],
+                            blue3 = matchData[11],
+                            blue3Scout = matchData[12]
                         };
                         matches.Add(match);
                     }
@@ -193,6 +210,14 @@ namespace ScoutingCenter.src
             public Button sendNextMatch { get; set; }
             public Label currentMatch { get; set; }
             public TextBox eventName { get; set; }
+
+            public TextBox red1Scouter { get; set; }
+            public TextBox red2Scouter { get; set; }
+            public TextBox red3Scouter { get; set; }
+            public TextBox blue1Scouter { get; set; }
+            public TextBox blue2Scouter { get; set; }
+            public TextBox blue3Scouter { get; set; }
+
         }
     }
 }

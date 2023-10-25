@@ -17,7 +17,14 @@ namespace ScoutingCenter.src
 
             if (openFileDialog.ShowDialog() ?? false)
             {
-                return openFileDialog.OpenFile();
+
+                try {
+                    return openFileDialog.OpenFile();
+                } catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
             }
             return null;
         }

@@ -163,7 +163,6 @@ namespace ScoutingCenter.src
             public CheckBox isConnected { get; set; }
             public TextBox lastInfo { get; set; }
             public TextBox scouter { get; set; }
-
             public TextBox eventName { get; set; }
         }
 
