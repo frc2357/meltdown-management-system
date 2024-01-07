@@ -11,7 +11,13 @@ RadioButtonList.propTypes = {
   setSelected: PropTypes.func,
 };
 
-export default function RadioButtonList({ labels, direction = 'column', position = 'trailing', selected, setSelected }) {
+export default function RadioButtonList({
+  labels,
+  direction = 'column',
+  position = 'trailing',
+  selected,
+  setSelected,
+}) {
   return (
     <RadioButton.Group
       direction={direction}

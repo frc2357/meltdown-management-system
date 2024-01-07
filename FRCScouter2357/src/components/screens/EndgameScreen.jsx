@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
-import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
 
@@ -11,11 +10,9 @@ const windowDimensions = Dimensions.get('window');
 export default function EndgameScreen({ navigation }) {
   const [chargestation, setChargestation] = useState('None');
   const [notes, setNotes] = useState('');
-  const dispatch = useDispatch();
   const eventCreator = useEventCreator();
 
   const onSubmit = () => {
-    dispatch(addEvent(eventCreator.createEndgame(chargestation, notes)));
     DeviceEventEmitter.emit('event.uploadMatch');
     navigation.navigate('PrematchScreen');
   };
@@ -24,7 +21,7 @@ export default function EndgameScreen({ navigation }) {
     <Box style={styles.autoContainer}>
       <Text variant="h4">Endgame</Text>
       <VStack>
-      <Text variant="h6">Chargestation:</Text>
+        <Text variant="h6">Chargestation:</Text>
         <RadioButtonList
           labels={['Parked', 'Docked', 'Engaged', 'None']}
           direction="row"
@@ -51,7 +48,13 @@ export default function EndgameScreen({ navigation }) {
           onPress={() => navigation.navigate('TeleopLayout')}
           style={styles.button}
         />
-        <Button title="Submit" compact variant="contained" onPress={onSubmit} style={styles.button} />
+        <Button
+          title="Submit"
+          compact
+          variant="contained"
+          onPress={onSubmit}
+          style={styles.button}
+        />
       </HStack>
     </Box>
   );
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 20,
-    width: 100
+    width: 100,
   },
   textInput: {
     height: 300,

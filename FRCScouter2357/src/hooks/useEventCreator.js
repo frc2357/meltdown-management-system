@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux';
-
 export default function useEventCreator() {
-  const startTimeSeconds = useSelector((state) => state.matchLog.startTimeSeconds);
+  const startTimeSeconds = 0.0;
 
   const createStart = (location, piece) => {
     const type = 'start';
