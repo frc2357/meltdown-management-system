@@ -7,8 +7,8 @@ import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
 import robotStates from '../../util/robotStates';
 import PropTypes from 'prop-types';
-import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
+import { RadioButton } from 'react-native-paper';
 
 const numGamepieces = 27;
 const numHybridNodes = 9;
@@ -26,6 +26,7 @@ export default function TeleopLayout({
   },
   navigation,
 }) {
+  const [leave, setLeave] = useState('unchecked');
   const [robotState, setRobotState] = useState(initialRobotState);
   const [lastPickup, setLastPickup] = useState();
   const [isScored, setScored] = useState(new Array(numGamepieces).fill(false));
@@ -58,8 +59,7 @@ export default function TeleopLayout({
   };
 
   const onScore = (position) => {
-    if (lastPickup) {
-    }
+    if (lastPickup) {}
     };
 
   const gamepieceRow = [
@@ -175,12 +175,7 @@ export default function TeleopLayout({
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <Button
-          variant="contained"
-          title="Auto"
-          onPress={() => navigation.navigate('AutoScreen')}
-          style={styles.button}
-        />
+        <RadioButton.Item label="Leave" status={leave} onPress={setLeave(leave === 'unchecked' ? 'unchecked' : 'checked')}/>
         <Button variant="contained" title="Drop" onPress={onDrop} style={styles.button} />
         <Button
           variant="contained"

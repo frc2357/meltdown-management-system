@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
-import { addEvent, newMatch } from '../../state/matchLogSlice';
 import robotStates from '../../util/robotStates';
 import useEventCreator from '../../hooks/useEventCreator';
+import { AssignmentContext } from '../../contexts/assignmentContext';
 
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
@@ -16,13 +16,15 @@ export default function PrematchScreen({ navigation }) {
   const [preload, setPreload] = useState(robotStates.empty);
   const eventCreator = useEventCreator();
 
+  const assignment = useContext(AssignmentContext);
+
   const scouterName = assignment?.scouter ? assignment.scouter : '';
   const id = assignment?.id ? assignment.id : '';
 
-  const teamNum = match?.teamNum ? match.teamNum : '';
-  const matchNum = match?.matchNum ? match.matchNum : 0;
-  const alliance = match?.alliance ? match.alliance : '';
-  const alliancePos = match?.alliancePos ? match.alliancePos : '';
+  const teamNum = assignment?.teamNum ?? '';
+  const matchNum = assignment?.matchNum ?? 0;
+  const alliance = assignment?.alliance ?? '';
+  const alliancePos = assignment?.alliancePos ?? '';
 
   const onConfirm = () => {
     let startPos = '';
