@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import AwaitMatchScreen from '../loadingScreens/AwaitMatchScreen';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
 import { addEvent, newMatch } from '../../state/matchLogSlice';
@@ -16,10 +14,6 @@ export default function PrematchScreen({ navigation }) {
     new Array(startPosLabels.length).fill(false)
   );
   const [preload, setPreload] = useState(robotStates.empty);
-  const dispatch = useDispatch();
-  const assignment = useSelector((state) => state.bluetooth.assignment);
-  const match = useSelector((state) => state.bluetooth.currentMatch);
-
   const eventCreator = useEventCreator();
 
   const scouterName = assignment?.scouter ? assignment.scouter : '';
@@ -30,10 +24,6 @@ export default function PrematchScreen({ navigation }) {
   const alliance = match?.alliance ? match.alliance : '';
   const alliancePos = match?.alliancePos ? match.alliancePos : '';
 
-  if (!match) {
-    return <AwaitMatchScreen />;
-  }
-
   const onConfirm = () => {
     let startPos = '';
     for (let i = 0; i < startPosLabels.length; i++) {
@@ -41,9 +31,6 @@ export default function PrematchScreen({ navigation }) {
         startPos = startPosLabels[i];
       }
     }
-
-    dispatch(newMatch({ teamNum, scouterName, matchNum, alliance, alliancePos }));
-    dispatch(addEvent(eventCreator.createStart(startPos, preload)));
 
     setStartPosPressed(new Array(startPosLabels.length).fill(false));
     setPreload(robotStates.empty);
@@ -91,7 +78,7 @@ export default function PrematchScreen({ navigation }) {
               <Text>{matchNum}</Text>
             </DataTable.Cell>
           </DataTable.Row>
-          
+
           <DataTable.Row>
             <DataTable.Title>
               <Text>Alliance</Text>
@@ -100,7 +87,7 @@ export default function PrematchScreen({ navigation }) {
               <Text>{alliance}</Text>
             </DataTable.Cell>
           </DataTable.Row>
-          
+
           <DataTable.Row>
             <DataTable.Title>
               <Text>Alliance Pos</Text>

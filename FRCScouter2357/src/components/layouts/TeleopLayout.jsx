@@ -7,7 +7,6 @@ import emptyImage from '../../images/empty.png';
 import GamepieceButton from '../basics/GamepieceButton';
 import robotStates from '../../util/robotStates';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
 
@@ -38,8 +37,6 @@ export default function TeleopLayout({
   );
   const eventCreator = useEventCreator();
 
-  const dispatch = useDispatch();
-
   const robotStateToImage = (state) => {
     switch (state) {
       case robotStates.cone:
@@ -57,19 +54,13 @@ export default function TeleopLayout({
   };
 
   const onDrop = () => {
-    dispatch(addEvent(lastPickup));
-    dispatch(addEvent(eventCreator.createDrop(robotState, isAuto)));
     clearRobotStateAndPickup();
   };
 
   const onScore = (position) => {
     if (lastPickup) {
-      dispatch(addEvent(lastPickup));
     }
-    dispatch(
-      addEvent(eventCreator.createScore(robotState, Math.floor(position / 9), position % 9, isAuto))
-    );
-  };
+    };
 
   const gamepieceRow = [
     robotStates.cone,
