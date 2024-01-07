@@ -59,8 +59,9 @@ export default function TeleopLayout({
   };
 
   const onScore = (position) => {
-    if (lastPickup) {}
-    };
+    if (lastPickup) {
+    }
+  };
 
   const gamepieceRow = [
     robotStates.cone,
@@ -175,7 +176,11 @@ export default function TeleopLayout({
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
-        <RadioButton.Item label="Leave" status={leave} onPress={setLeave(leave === 'unchecked' ? 'unchecked' : 'checked')}/>
+        <RadioButton.Item
+          label="Leave"
+          status={leave}
+          onPress={setLeave(leave === 'unchecked' ? 'unchecked' : 'checked')}
+        />
         <Button variant="contained" title="Drop" onPress={onDrop} style={styles.button} />
         <Button
           variant="contained"

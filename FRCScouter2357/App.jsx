@@ -9,6 +9,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import robotStates from './src/util/robotStates';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
 import { MatchContext } from './src/contexts/MatchContext';
+import { Startup } from './src/components/screens/Startup';
+import { QRCapture } from './src/components/screens/QRCapture';
+import { QRShow } from './src/components/screens/QRShow';
+import { MatchLogs } from './src/components/screens/MatchLogs';
 
 const NavStack = createNativeStackNavigator();
 
@@ -18,7 +22,22 @@ function App() {
       <AssignmentContext.Provider value={{}}>
         <MatchContext.Provider value={{}}>
           <NavigationContainer>
-            <NavStack.Navigator initialRouteName="PrematchScreen">
+            <NavStack.Navigator initialRouteName="Startup">
+              <NavStack.Screen
+                name="Startup"
+                component={Startup}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="MatchLogs"
+                component={MatchLogs}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="QRCapture"
+                component={QRCapture}
+                options={{ headerShown: false }}
+              />
               <NavStack.Screen
                 name="PrematchScreen"
                 component={PrematchScreen}
@@ -35,6 +54,7 @@ function App() {
                 component={EndgameScreen}
                 options={{ headerShown: false }}
               />
+              <NavStack.Screen name="QRShow" component={QRShow} options={{ headerShown: false }} />
             </NavStack.Navigator>
           </NavigationContainer>
         </MatchContext.Provider>
