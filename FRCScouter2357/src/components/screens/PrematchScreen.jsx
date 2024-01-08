@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
+import React, { useContext, useState } from 'react';
+import { Box, Text, Button, Pressable, HStack, VStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
-import { addEvent, newMatch } from '../../state/matchLogSlice';
 import robotStates from '../../util/robotStates';
 import useEventCreator from '../../hooks/useEventCreator';
+import { AssignmentContext } from '../../contexts/AssignmentContext';
 
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
@@ -16,13 +16,14 @@ export default function PrematchScreen({ navigation }) {
   const [preload, setPreload] = useState(robotStates.empty);
   const eventCreator = useEventCreator();
 
-  const scouterName = assignment?.scouter ? assignment.scouter : '';
-  const id = assignment?.id ? assignment.id : '';
+  const assignment = useContext(AssignmentContext);
 
-  const teamNum = match?.teamNum ? match.teamNum : '';
-  const matchNum = match?.matchNum ? match.matchNum : 0;
-  const alliance = match?.alliance ? match.alliance : '';
-  const alliancePos = match?.alliancePos ? match.alliancePos : '';
+  const scouterName = assignment?.scouter ? assignment.scouter : '';
+
+  const teamNum = assignment?.teamNum ?? '';
+  const matchNum = assignment?.matchNum ?? 0;
+  const alliance = assignment?.alliance ?? '';
+  const alliancePos = assignment?.alliancePos ?? '';
 
   const onConfirm = () => {
     let startPos = '';
@@ -41,7 +42,7 @@ export default function PrematchScreen({ navigation }) {
   return (
     <Box>
       <Text variant="h4">Pre-Match</Text>
-      <HStack>
+      <HStack spacing={2}>
         <DataTable style={styles.dataTable}>
           <DataTable.Row>
             <DataTable.Title>
@@ -49,15 +50,6 @@ export default function PrematchScreen({ navigation }) {
             </DataTable.Title>
             <DataTable.Cell>
               <Text>{scouterName}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>ID</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{id}</Text>
             </DataTable.Cell>
           </DataTable.Row>
 
@@ -101,7 +93,7 @@ export default function PrematchScreen({ navigation }) {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={[robotStates.cone, robotStates.cube, robotStates.empty]}
+            labels={[robotStates.note, robotStates.empty]}
             selected={preload}
             setSelected={setPreload}
           />
@@ -110,8 +102,8 @@ export default function PrematchScreen({ navigation }) {
       </HStack>
       <Image
         alt="Starting position"
-        source={require('../../images/community.png')}
-        style={styles.community}
+        source={require('../../images/autoField.png')}
+        style={styles.autoField}
       />
 
       {posStyles.map((style, i) => {
@@ -136,20 +128,20 @@ export default function PrematchScreen({ navigation }) {
   );
 }
 
-const communityLeft = 550;
-const communityTop = 170;
+const communityLeft = 12;
+const communityTop = 280;
 const styles = StyleSheet.create({
-  community: {
-    height: 300,
+  autoField: {
+    height: 225,
     left: communityLeft,
     position: 'absolute',
     top: communityTop,
-    width: 450,
+    width: 1000
   },
   confirm: {
-    left: communityLeft,
+    left: 562,
     position: 'absolute',
-    top: 480,
+    top: 510,
     width: 450,
   },
   dataTable: {
@@ -157,34 +149,35 @@ const styles = StyleSheet.create({
   },
   form: {
     marginLeft: 150,
+    marginTop: 120,
   },
   posFour: {
-    height: 130,
-    left: communityLeft + 122 + 210,
+    height: 225,
+    left: communityLeft + 220 + 185 + 220,
     position: 'absolute',
-    top: communityTop + 10 + 150,
-    width: 118,
+    top: communityTop,
+    width: 375,
   },
   posOne: {
-    height: 150,
-    left: communityLeft + 17,
+    height: 225,
+    left: communityLeft,
     position: 'absolute',
-    top: communityTop + 10,
-    width: 105,
+    top: communityTop,
+    width: 220,
   },
   posThree: {
-    height: 150,
-    left: communityLeft + 122 + 210,
+    height: 225,
+    left: communityLeft + 220 + 185,
     position: 'absolute',
-    top: communityTop + 10,
-    width: 118,
+    top: communityTop,
+    width: 220,
   },
   posTwo: {
     height: 120,
-    left: communityLeft + 122,
+    left: communityLeft + 220,
     position: 'absolute',
-    top: communityTop + 10,
-    width: 210,
+    top: communityTop,
+    width: 185,
   },
 });
 const posStyles = [styles.posOne, styles.posTwo, styles.posThree, styles.posFour];

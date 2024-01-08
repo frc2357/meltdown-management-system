@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import RadioButtonList from '../basics/RadioButtonList';
-import { addEvent } from '../../state/matchLogSlice';
 import useEventCreator from '../../hooks/useEventCreator';
 
 const windowDimensions = Dimensions.get('window');

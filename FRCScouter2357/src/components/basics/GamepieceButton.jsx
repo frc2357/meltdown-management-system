@@ -4,7 +4,7 @@ import { Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 GamepieceButton.propTypes = {
-  gamepiece: PropTypes.number.isRequired,
+  gamepiece: PropTypes.string.isRequired,
   isHidden: PropTypes.bool.isRequired,
   setHidden: PropTypes.func.isRequired,
   style: PropTypes.object,

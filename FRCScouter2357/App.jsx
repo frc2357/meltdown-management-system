@@ -3,44 +3,64 @@ import { Provider } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
 import TeleopLayout from './src/components/layouts/TeleopLayout';
 import PrematchScreen from './src/components/screens/PrematchScreen';
-import AutoScreen from './src/components/screens/AutoScreen';
 import EndgameScreen from './src/components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import robotStates from './src/util/robotStates';
+import { AssignmentContext } from './src/contexts/AssignmentContext';
+import { MatchContext } from './src/contexts/MatchContext';
+import { Startup } from './src/components/screens/Startup';
+import { QRCapture } from './src/components/screens/QRCapture';
+import { QRShow } from './src/components/screens/QRShow';
+import { MatchLogs } from './src/components/screens/MatchLogs';
+import { StatusBar } from 'expo-status-bar';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
   return (
     <Provider style={styles.container}>
-      {
-        <NavigationContainer>
-          <NavStack.Navigator initialRouteName="PrematchScreen">
-            <NavStack.Screen
-              name="PrematchScreen"
-              component={PrematchScreen}
-              options={{ headerShown: false }}
-            />
-            <NavStack.Screen
-              name="TeleopLayout"
-              component={TeleopLayout}
-              options={{ headerShown: false }}
-              initialParams={{ initialRobotState: robotStates.empty, isAuto: false }}
-            />
-            <NavStack.Screen
-              name="AutoScreen"
-              component={AutoScreen}
-              options={{ headerShown: false }}
-            />
-            <NavStack.Screen
-              name="EndgameScreen"
-              component={EndgameScreen}
-              options={{ headerShown: false }}
-            />
-          </NavStack.Navigator>
-        </NavigationContainer>
-      }
+      <StatusBar hidden={true} />
+      <AssignmentContext.Provider value={{}}>
+        <MatchContext.Provider value={{}}>
+          <NavigationContainer>
+            <NavStack.Navigator initialRouteName="Startup" screenOptions={{ headerShown: false }}>
+              <NavStack.Screen
+                name="Startup"
+                component={Startup}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="MatchLogs"
+                component={MatchLogs}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="QRCapture"
+                component={QRCapture}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="PrematchScreen"
+                component={PrematchScreen}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen
+                name="TeleopLayout"
+                component={TeleopLayout}
+                options={{ headerShown: false }}
+                initialParams={{ initialRobotState: robotStates.empty, isAuto: false }}
+              />
+              <NavStack.Screen
+                name="EndgameScreen"
+                component={EndgameScreen}
+                options={{ headerShown: false }}
+              />
+              <NavStack.Screen name="QRShow" component={QRShow} options={{ headerShown: false }} />
+            </NavStack.Navigator>
+          </NavigationContainer>
+        </MatchContext.Provider>
+      </AssignmentContext.Provider>
     </Provider>
   );
 }

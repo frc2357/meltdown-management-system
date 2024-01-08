@@ -1,5 +1,4 @@
 export default {
-  cone: 'cone',
-  cube: 'cube',
+  note: 'note',
   empty: 'empty',
 };
