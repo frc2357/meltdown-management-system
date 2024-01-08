@@ -13,16 +13,18 @@ import { Startup } from './src/components/screens/Startup';
 import { QRCapture } from './src/components/screens/QRCapture';
 import { QRShow } from './src/components/screens/QRShow';
 import { MatchLogs } from './src/components/screens/MatchLogs';
+import { StatusBar } from 'expo-status-bar';
 
 const NavStack = createNativeStackNavigator();
 
 function App() {
   return (
     <Provider style={styles.container}>
+      <StatusBar hidden={true} />
       <AssignmentContext.Provider value={{}}>
         <MatchContext.Provider value={{}}>
           <NavigationContainer>
-            <NavStack.Navigator initialRouteName="Startup" screenOptions={{headerShown: false}}>
+            <NavStack.Navigator initialRouteName="Startup" screenOptions={{ headerShown: false }}>
               <NavStack.Screen
                 name="Startup"
                 component={Startup}

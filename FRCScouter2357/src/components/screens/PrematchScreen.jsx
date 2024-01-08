@@ -19,7 +19,6 @@ export default function PrematchScreen({ navigation }) {
   const assignment = useContext(AssignmentContext);
 
   const scouterName = assignment?.scouter ? assignment.scouter : '';
-  const id = assignment?.id ? assignment.id : '';
 
   const teamNum = assignment?.teamNum ?? '';
   const matchNum = assignment?.matchNum ?? 0;
