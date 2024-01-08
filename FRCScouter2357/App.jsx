@@ -22,7 +22,7 @@ function App() {
       <AssignmentContext.Provider value={{}}>
         <MatchContext.Provider value={{}}>
           <NavigationContainer>
-            <NavStack.Navigator initialRouteName="Startup">
+            <NavStack.Navigator initialRouteName="Startup" screenOptions={{headerShown: false}}>
               <NavStack.Screen
                 name="Startup"
                 component={Startup}

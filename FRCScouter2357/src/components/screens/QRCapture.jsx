@@ -3,6 +3,6 @@ import React from 'react';
 
 export const QRCapture = ({navigation}) => {
   return <Box>
-    <Button title="Next" variant="contained" onPress={navigation.navigate('PrematchScreen')} />
+    <Button title="Next" variant="contained" onPress={() => {navigation.navigate('PrematchScreen')}} />
   </Box>;
 };

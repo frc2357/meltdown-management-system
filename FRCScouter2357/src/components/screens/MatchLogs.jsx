@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Button } from 'react-native-paper';
+import { Box, Button } from '@react-native-material/core';
 
 export const MatchLogs = ({ navigation }) => {
   return (
     <Box>
-      <Button title="Startup" variant="contained" onPress={navigation.navigate('Startup')} />
+      <Button title="Startup" variant="contained" onPress={() => {navigation.navigate('Startup')}} />
     </Box>
   );
 };
