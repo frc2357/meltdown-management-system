@@ -3,7 +3,7 @@ import { Box, Button, Text } from '@react-native-material/core';
 import fs from 'react-native-fs';
 
 export const MatchLogs = ({ navigation }) => {
-  const { fileInfo, setFileInfo } = useState('');
+  const [ fileInfo, setFileInfo ] = useState('');
 
   useEffect(() => {
     fs.readDir(fs.DocumentDirectoryPath).then((result) => {
