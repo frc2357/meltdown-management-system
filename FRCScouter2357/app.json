@@ -30,7 +30,14 @@
         "projectId": "fcb7793b-c50b-4a8f-831a-ccd8916dd4b8"
       }
     },
-    "plugins": [],
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
+        }
+      ]
+    ],
     "owner": "systemmeltdown2357"
   }
 }

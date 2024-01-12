@@ -1,10 +1,26 @@
-import React from 'react';
-import { Box, Button } from '@react-native-material/core';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Text } from '@react-native-material/core';
+import fs from 'react-native-fs';
 
 export const MatchLogs = ({ navigation }) => {
+  const { fileInfo, setFileInfo } = useState('');
+
+  useEffect(() => {
+    fs.readDir(fs.DocumentDirectoryPath).then((result) => {
+      setFileInfo(JSON.stringify(result));
+    });
+  }, []);
+
   return (
     <Box>
-      <Button title="Startup" variant="contained" onPress={() => {navigation.navigate('Startup')}} />
+      <Text>{fileInfo}</Text>
+      <Button
+        title="Startup"
+        variant="contained"
+        onPress={() => {
+          navigation.navigate('Startup');
+        }}
+      />
     </Box>
   );
 };

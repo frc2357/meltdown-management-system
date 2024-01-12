@@ -1,5 +1,10 @@
 import React from 'react';
+import QRCode from 'react-native-qrcode-svg';
 
 export const QRShow = () => {
-  return <></>;
+  return (
+    <>
+      <QRCode value="garbage" />
+    </>
+  );
 };

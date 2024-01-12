@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'stretch',
     top: 0,
-    width: 700
+    width: 700,
   },
   floor: {
     height: 235,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     width: 325,
   },
   images: {
-    marginTop: 10
+    marginTop: 10,
   },
   robotState: {
     height: 50,

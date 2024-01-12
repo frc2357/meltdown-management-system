@@ -13,7 +13,7 @@ export default function EndgameScreen({ navigation }) {
 
   const onSubmit = () => {
     DeviceEventEmitter.emit('event.uploadMatch');
-    navigation.navigate('PrematchScreen');
+    navigation.navigate('QRShow');
   };
 
   return (
