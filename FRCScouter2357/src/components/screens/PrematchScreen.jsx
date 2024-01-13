@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     left: communityLeft,
     position: 'absolute',
     top: communityTop,
-    width: 1000
+    width: 1000,
   },
   confirm: {
     left: 562,
