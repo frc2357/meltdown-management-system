@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
-import RadioButtonList from '../basics/RadioButtonList';
-import useEventCreator from '../../hooks/useEventCreator';
+import { RadioButtonList } from '../basics/RadioButtonList';
+import { useEventCreator } from '../../hooks/useEventCreator';
+import { TEndgameScreenProps } from '../../../types';
 
 const windowDimensions = Dimensions.get('window');
 
-export default function EndgameScreen({ navigation }) {
+export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [chargestation, setChargestation] = useState('None');
   const [notes, setNotes] = useState('');
   const eventCreator = useEventCreator();
@@ -57,7 +58,7 @@ export default function EndgameScreen({ navigation }) {
       </HStack>
     </Box>
   );
-}
+};
 
 const styles = StyleSheet.create({
   autoContainer: {

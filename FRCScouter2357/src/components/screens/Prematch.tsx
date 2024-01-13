@@ -2,18 +2,19 @@ import React, { useContext, useState } from 'react';
 import { Box, Text, Button, Pressable, HStack, VStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import RadioButtonList from '../basics/RadioButtonList';
-import robotStates from '../../util/robotStates';
-import useEventCreator from '../../hooks/useEventCreator';
+import { RadioButtonList } from '../basics/RadioButtonList';
+import { ERobotStates } from '../../../types';
+import { useEventCreator } from '../../hooks/useEventCreator';
 import { AssignmentContext } from '../../contexts/AssignmentContext';
-
+import { TPrematchScreenProps } from '../../../types';
+import autoFieldImage from '../../../assets/autoField.png';
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
-export default function PrematchScreen({ navigation }) {
+export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   const [startPosPressed, setStartPosPressed] = useState(
     new Array(startPosLabels.length).fill(false)
   );
-  const [preload, setPreload] = useState(robotStates.empty);
+  const [preload, setPreload] = useState(ERobotStates.empty);
   const eventCreator = useEventCreator();
 
   const assignment = useContext(AssignmentContext);
@@ -34,7 +35,7 @@ export default function PrematchScreen({ navigation }) {
     }
 
     setStartPosPressed(new Array(startPosLabels.length).fill(false));
-    setPreload(robotStates.empty);
+    setPreload(ERobotStates.empty);
 
     navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
@@ -93,18 +94,14 @@ export default function PrematchScreen({ navigation }) {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={[robotStates.note, robotStates.empty]}
+            labels={[ERobotStates.note, ERobotStates.empty]}
             selected={preload}
-            setSelected={setPreload}
+            setSelected={(value: ERobotStates) => setPreload(value)}
           />
           <Text variant="h5">Press start location:</Text>
         </Box>
       </HStack>
-      <Image
-        alt="Starting position"
-        source={require('../../images/autoField.png')}
-        style={styles.autoField}
-      />
+      <Image alt="Starting position" source={autoFieldImage} style={styles.autoField} />
 
       {posStyles.map((style, i) => {
         return (
@@ -126,7 +123,7 @@ export default function PrematchScreen({ navigation }) {
       <Button title="Confirm" variant="contained" style={styles.confirm} onPress={onConfirm} />
     </Box>
   );
-}
+};
 
 const communityLeft = 12;
 const communityTop = 280;

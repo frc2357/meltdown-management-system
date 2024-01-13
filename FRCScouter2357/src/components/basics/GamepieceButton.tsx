@@ -1,31 +1,26 @@
 import React from 'react';
 import { Pressable } from '@react-native-material/core';
 import { Image } from 'react-native';
-import PropTypes from 'prop-types';
+import { ImageStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import { TGamepieceButtonProps } from '../../../types';
 
-GamepieceButton.propTypes = {
-  gamepiece: PropTypes.string.isRequired,
-  isHidden: PropTypes.bool.isRequired,
-  setHidden: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  imageStyle: PropTypes.object,
-};
-
-export default function GamepieceButton({
-  gamepiece,
+export const GamepieceButton: React.FC<TGamepieceButtonProps> = ({
+  gamePieceSrc,
   isHidden,
   setHidden,
   style = {},
   imageStyle,
-}) {
+}) => {
   const renderImage = () => {
     return isHidden ? (
       <></>
     ) : (
       // eslint-disable-next-line react-native/no-inline-styles
       <Image
-        source={gamepiece}
-        style={{ ...(imageStyle || { ...style, position: 'relative', top: 0, left: 0 }) }}
+        source={gamePieceSrc}
+        style={
+          { ...(imageStyle || { ...style, position: 'relative', top: 0, left: 0 }) } as ImageStyle
+        }
       />
     );
   };
@@ -45,4 +40,4 @@ export default function GamepieceButton({
       {renderImage()}
     </Pressable>
   );
-}
+};
