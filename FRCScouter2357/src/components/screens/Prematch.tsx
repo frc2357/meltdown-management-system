@@ -10,7 +10,7 @@ import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
-export const PrematchScreen: React.FC<TPrematchScreenProps> = ({ navigation }) => {
+export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   const [startPosPressed, setStartPosPressed] = useState(
     new Array(startPosLabels.length).fill(false)
   );

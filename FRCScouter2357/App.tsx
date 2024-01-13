@@ -1,12 +1,12 @@
 import React from 'react';
-import { Provider } from '@react-native-material/core';
+import { Box, Provider, Theme } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
 import { TeleopLayout } from './src/components/layouts/TeleopLayout';
-import { PrematchScreen } from './src/components/screens/PrematchScreen';
-import { EndgameScreen } from './src/components/screens/EndgameScreen';
+import { Prematch } from './src/components/screens/Prematch';
+import { Endgame } from './src/components/screens/Endgame';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ERobotStates } from './types';
+import { ERobotStates, TRootStackParamList } from './types';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
 import { MatchContext } from './src/contexts/MatchContext';
 import { Startup } from './src/components/screens/Startup';
@@ -15,11 +15,11 @@ import { QRShow } from './src/components/screens/QRShow';
 import { MatchLogs } from './src/components/screens/MatchLogs';
 import { StatusBar } from 'expo-status-bar';
 
-const NavStack = createNativeStackNavigator();
+const NavStack = createNativeStackNavigator<TRootStackParamList>();
 
 function App() {
   return (
-    <Provider style={styles.container}>
+    <>
       <StatusBar hidden={true} />
       <AssignmentContext.Provider value={{}}>
         <MatchContext.Provider value={{}}>
@@ -41,8 +41,8 @@ function App() {
                 options={{ headerShown: false }}
               />
               <NavStack.Screen
-                name="PrematchScreen"
-                component={PrematchScreen}
+                name="Prematch"
+                component={Prematch}
                 options={{ headerShown: false }}
               />
               <NavStack.Screen
@@ -52,8 +52,8 @@ function App() {
                 initialParams={{ initialRobotState: ERobotStates.empty, isAuto: false }}
               />
               <NavStack.Screen
-                name="EndgameScreen"
-                component={EndgameScreen}
+                name="Endgame"
+                component={Endgame}
                 options={{ headerShown: false }}
               />
               <NavStack.Screen name="QRShow" component={QRShow} options={{ headerShown: false }} />
@@ -61,17 +61,8 @@ function App() {
           </NavigationContainer>
         </MatchContext.Provider>
       </AssignmentContext.Provider>
-    </Provider>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-});
 
 export default App;

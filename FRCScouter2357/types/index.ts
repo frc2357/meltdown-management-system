@@ -9,3 +9,4 @@ export * from './TPrematchScreenProps';
 export * from './TQRCaptureProps';
 export * from './TQRShowProps';
 export * from './TStartupProps';
+export * from './TRootStackParamList';

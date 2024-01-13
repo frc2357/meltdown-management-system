@@ -97,7 +97,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         <Button
           variant="contained"
           title="Endgame"
-          onPress={() => navigation.navigate('EndgameScreen')}
+          onPress={() => navigation.navigate('Endgame')}
           style={styles.button}
         />
         <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />

@@ -7,7 +7,7 @@ import { TEndgameScreenProps } from '../../../types';
 
 const windowDimensions = Dimensions.get('window');
 
-export const EndgameScreen: React.FC<TEndgameScreenProps> = ({ navigation }) => {
+export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [chargestation, setChargestation] = useState('None');
   const [notes, setNotes] = useState('');
   const eventCreator = useEventCreator();
