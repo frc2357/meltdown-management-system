@@ -17,6 +17,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     codeTypes: ['qr'],
     onCodeScanned: (codes) => {
       console.log(`Scanned ${codes.length} codes!`);
+      console.log(codes[0].value);
     },
   });
 
