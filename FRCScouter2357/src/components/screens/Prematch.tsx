@@ -96,7 +96,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
             direction="row"
             labels={[ERobotStates.note, ERobotStates.empty]}
             selected={preload}
-            setSelected={setPreload}
+            setSelected={(value: ERobotStates) => setPreload(value)}
           />
           <Text variant="h5">Press start location:</Text>
         </Box>
