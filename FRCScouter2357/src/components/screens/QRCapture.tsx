@@ -6,8 +6,7 @@ import {
   useCodeScanner,
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
-
-export type TQRCaptureProps = {}
+import { TQRCaptureProps } from '../../../types';
 
 export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const { hasPermission, requestPermission } = useCameraPermission();
@@ -34,7 +33,12 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     device === null ? (
       <Text>No camera</Text>
     ) : (
-      <Camera style={{ height: '90%', width: '100%' }} device={device} isActive={true} codeScanner={codeScanner} />
+      <Camera
+        style={{ height: '90%', width: '100%' }}
+        device={device}
+        isActive={true}
+        codeScanner={codeScanner}
+      />
     );
 
   return (
@@ -44,7 +48,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
         title="Next"
         variant="contained"
         onPress={() => {
-          navigation.navigate('Startup');
+          navigation.navigate('TeleopLayout');
         }}
       />
     </Box>

@@ -5,15 +5,16 @@ import note from '../../../assets/note.png';
 import emptyImage from '../../../assets/empty.png';
 import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotStates } from '../../../types/ERobotStates';
-import PropTypes from 'prop-types';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
+import { TTeleopLayoutProps } from '../../../types';
+import scoringImage from '../../../assets/scoring.png';
+import sourceImage from '../../../assets/source.png';
+import floorImage from '../../../assets/floor.png';
 
 const numPickupStations = 2;
 
 const pickupStationNames = ['doubleSub', 'singleSub', 'floor'];
-
-export type TTeleopLayoutProps = {};
 
 export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   route: {
@@ -21,7 +22,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   },
   navigation,
 }) => {
-  const [leave, setLeave] = useState('unchecked');
+  const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState(initialRobotState);
   const [lastPickup, setLastPickup] = useState();
   const [pickupStates, setPickupStates] = useState(
@@ -86,6 +87,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
       <HStack spacing={6} style={styles.buttonStack}>
         <RadioButton.Item
           label="Leave"
+          value="leave"
           status={leave}
           onPress={() => {
             setLeave(leave === 'unchecked' ? 'checked' : 'unchecked');
@@ -101,13 +103,9 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
       </HStack>
       <Box style={styles.images}>
-        <Image alt="Field" source={require('../../images/scoring.png')} style={styles.field} />
-        <Image
-          alt="double substation"
-          source={require('../../images/source.png')}
-          style={styles.source}
-        />
-        <Image alt="floor intake" source={require('../../images/floor.png')} style={styles.floor} />
+        <Image alt="Field" source={scoringImage} style={styles.field} />
+        <Image alt="double substation" source={sourceImage} style={styles.source} />
+        <Image alt="floor intake" source={floorImage} style={styles.floor} />
         {pickupStations}
       </Box>
     </Box>

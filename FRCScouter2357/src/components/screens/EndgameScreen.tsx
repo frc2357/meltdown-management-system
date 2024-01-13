@@ -3,10 +3,9 @@ import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-mate
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
+import { TEndgameScreenProps } from '../../../types';
 
 const windowDimensions = Dimensions.get('window');
-
-export type TEndgameScreenProps = {}
 
 export const EndgameScreen: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [chargestation, setChargestation] = useState('None');
@@ -59,7 +58,7 @@ export const EndgameScreen: React.FC<TEndgameScreenProps> = ({ navigation }) => 
       </HStack>
     </Box>
   );
-}
+};
 
 const styles = StyleSheet.create({
   autoContainer: {

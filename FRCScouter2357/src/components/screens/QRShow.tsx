@@ -1,10 +1,9 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import { Button } from '@react-native-material/core';
+import { TQRShowProps } from '../../../types';
 
-export type TQRShowProps = {}
-
-export const QRShow: React.FC<TQRShowProps> = ({navigation}) => {
+export const QRShow: React.FC<TQRShowProps> = ({ navigation }) => {
   return (
     <>
       <QRCode value="garbage" />

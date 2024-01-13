@@ -1,7 +1,6 @@
 import { Box, VStack, Button } from '@react-native-material/core';
 import React from 'react';
-
-export type TStartupProps = {};
+import { TStartupProps } from '../../../types';
 
 export const Startup: React.FC<TStartupProps> = ({ navigation }) => {
   return (

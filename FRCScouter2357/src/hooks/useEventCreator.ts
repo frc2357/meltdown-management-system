@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const useEventCreator = () => {
   const startTimeSeconds = 0.0;
@@ -43,4 +43,4 @@ export const useEventCreator = () => {
     createAuto,
     createEndgame,
   };
-}
+};

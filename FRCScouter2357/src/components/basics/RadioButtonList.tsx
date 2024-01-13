@@ -1,23 +1,15 @@
 import { Stack, HStack } from '@react-native-material/core';
 import React from 'react';
 import { RadioButton } from 'react-native-paper';
-import { FlexStyle } from 'react-native/types';
+import { TRadioButtonListProps } from '../../../types';
 
-export type RadioButtonListProps = {
-  labels: string[];
-  direction?: FlexStyle['flexDirection'];
-  position?: 'leading' | 'trailing';
-  selected: string;
-  setSelected: (value: string) => void;
-};
-
-export const RadioButtonList: React.FC<RadioButtonListProps> = ({
+export const RadioButtonList: React.FC<TRadioButtonListProps> = ({
   labels,
   direction = 'column',
   position = 'trailing',
   selected,
   setSelected,
-}: RadioButtonListProps) => {
+}: TRadioButtonListProps) => {
   return (
     <RadioButton.Group onValueChange={(newValue) => setSelected(newValue)} value={selected}>
       <Stack direction={direction}>

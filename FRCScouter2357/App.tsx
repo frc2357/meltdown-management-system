@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
-import TeleopLayout from './src/components/layouts/TeleopLayout';
-import PrematchScreen from './src/components/screens/PrematchScreen';
-import EndgameScreen from './src/components/screens/EndgameScreen';
+import { TeleopLayout } from './src/components/layouts/TeleopLayout';
+import { PrematchScreen } from './src/components/screens/PrematchScreen';
+import { EndgameScreen } from './src/components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import robotStates from './types/ERobotStates';
+import { ERobotStates } from './types';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
 import { MatchContext } from './src/contexts/MatchContext';
 import { Startup } from './src/components/screens/Startup';
@@ -49,7 +49,7 @@ function App() {
                 name="TeleopLayout"
                 component={TeleopLayout}
                 options={{ headerShown: false }}
-                initialParams={{ initialRobotState: robotStates.empty, isAuto: false }}
+                initialParams={{ initialRobotState: ERobotStates.empty, isAuto: false }}
               />
               <NavStack.Screen
                 name="EndgameScreen"
