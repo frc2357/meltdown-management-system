@@ -1,23 +1,23 @@
 import React from 'react';
 import { Pressable } from '@react-native-material/core';
-import { Image } from 'react-native';
-import PropTypes from 'prop-types';
+import { Image, ImageSourcePropType } from 'react-native';
+import { ImageStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
-GamepieceButton.propTypes = {
-  gamepiece: PropTypes.string.isRequired,
-  isHidden: PropTypes.bool.isRequired,
-  setHidden: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  imageStyle: PropTypes.object,
+export type TGamepieceButtonProps = {
+  gamePieceSrc: ImageSourcePropType;
+  isHidden: boolean;
+  setHidden: (isHidden: boolean) => void;
+  style: Object;
+  imageStyle: Object;
 };
 
-export default function GamepieceButton({
-  gamepiece,
+export const GamepieceButton: React.FC<TGamepieceButtonProps> = ({
+  gamePieceSrc: gamepiece,
   isHidden,
   setHidden,
   style = {},
   imageStyle,
-}) {
+}) => {
   const renderImage = () => {
     return isHidden ? (
       <></>
@@ -25,7 +25,9 @@ export default function GamepieceButton({
       // eslint-disable-next-line react-native/no-inline-styles
       <Image
         source={gamepiece}
-        style={{ ...(imageStyle || { ...style, position: 'relative', top: 0, left: 0 }) }}
+        style={
+          { ...(imageStyle || { ...style, position: 'relative', top: 0, left: 0 }) } as ImageStyle
+        }
       />
     );
   };
@@ -45,4 +47,4 @@ export default function GamepieceButton({
       {renderImage()}
     </Pressable>
   );
-}
+};

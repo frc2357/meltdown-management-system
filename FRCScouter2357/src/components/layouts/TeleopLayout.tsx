@@ -1,39 +1,37 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import note from '../../images/note.png';
-import emptyImage from '../../images/empty.png';
-import GamepieceButton from '../basics/GamepieceButton';
-import robotStates from '../../util/robotStates';
+import note from '../../../assets/note.png';
+import emptyImage from '../../../assets/empty.png';
+import { GamepieceButton } from '../basics/GamepieceButton';
+import { ERobotStates } from '../../../types/ERobotStates';
 import PropTypes from 'prop-types';
-import useEventCreator from '../../hooks/useEventCreator';
+import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
 
 const numPickupStations = 2;
 
 const pickupStationNames = ['doubleSub', 'singleSub', 'floor'];
 
-TeleopLayout.propTypes = {
-  route: PropTypes.object.isRequired,
-};
+export type TTeleopLayoutProps = {};
 
-export default function TeleopLayout({
+export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   route: {
     params: { initialRobotState, isAuto },
   },
   navigation,
-}) {
+}) => {
   const [leave, setLeave] = useState('unchecked');
   const [robotState, setRobotState] = useState(initialRobotState);
   const [lastPickup, setLastPickup] = useState();
   const [pickupStates, setPickupStates] = useState(
-    new Array(numPickupStations).fill(robotStates.empty)
+    new Array(numPickupStations).fill(ERobotStates.empty)
   );
   const eventCreator = useEventCreator();
 
   const robotStateToImage = (state) => {
     switch (state) {
-      case robotStates.note:
+      case ERobotStates.note:
         return note;
       default:
         return emptyImage;
@@ -41,8 +39,8 @@ export default function TeleopLayout({
   };
 
   const clearRobotStateAndPickup = () => {
-    setPickupStates(new Array(numPickupStations).fill(robotStates.empty));
-    setRobotState(robotStates.empty);
+    setPickupStates(new Array(numPickupStations).fill(ERobotStates.empty));
+    setRobotState(ERobotStates.empty);
   };
 
   const onDrop = () => {
@@ -64,13 +62,13 @@ export default function TeleopLayout({
         key={pickupStationNames[i]}
         style={pickupStationStyles[i]}
         imageStyle={gamepieceStyles[i]}
-        gamepiece={robotStateToImage(pickupStates[i])}
-        isHidden={pickupStates[i] === robotStates.empty}
+        gamePieceSrc={robotStateToImage(pickupStates[i])}
+        isHidden={pickupStates[i] === ERobotStates.empty}
         setHidden={(isHidden) => {
           if (!isHidden) {
-            const newPickupStates = new Array(numPickupStations).fill(robotStates.empty);
+            const newPickupStates = new Array(numPickupStations).fill(ERobotStates.empty);
 
-            newPickupStates[i] = robotStates.note;
+            newPickupStates[i] = ERobotStates.note;
 
             setLastPickup(eventCreator.createPickup(robotState, pickupStationNames[i], isAuto));
 
@@ -114,7 +112,7 @@ export default function TeleopLayout({
       </Box>
     </Box>
   );
-}
+};
 
 const baseStyles = StyleSheet.create({
   gamepiece: {

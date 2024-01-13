@@ -20,7 +20,7 @@
     "react-native/no-inline-styles": 2,
     "react-native/no-color-literals": 2,
     "react-native/no-raw-text": 2,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
     "react-native/sort-styles": [
       "error",
       "asc",
@@ -28,7 +28,6 @@
         "ignoreClassNames": false,
         "ignoreStyleProperties": false
       }
-    ],
-    "react/prop-types": ["error", { "ignore": ["navigation", "navigation.navigate"] }]
+    ]
   }
 }

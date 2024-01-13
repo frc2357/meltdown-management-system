@@ -7,7 +7,9 @@ import {
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
 
-export const QRCapture = ({ navigation }) => {
+export type TQRCaptureProps = {}
+
+export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const { hasPermission, requestPermission } = useCameraPermission();
 
   const device = useCameraDevice('back');

@@ -1,4 +1,6 @@
-export default function useEventCreator() {
+import React from "react";
+
+export const useEventCreator = () => {
   const startTimeSeconds = 0.0;
 
   const createStart = (location, piece) => {

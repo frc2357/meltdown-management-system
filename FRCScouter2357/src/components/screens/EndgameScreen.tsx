@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-material/core';
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
-import RadioButtonList from '../basics/RadioButtonList';
-import useEventCreator from '../../hooks/useEventCreator';
+import { RadioButtonList } from '../basics/RadioButtonList';
+import { useEventCreator } from '../../hooks/useEventCreator';
 
 const windowDimensions = Dimensions.get('window');
 
-export default function EndgameScreen({ navigation }) {
+export type TEndgameScreenProps = {}
+
+export const EndgameScreen: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [chargestation, setChargestation] = useState('None');
   const [notes, setNotes] = useState('');
   const eventCreator = useEventCreator();

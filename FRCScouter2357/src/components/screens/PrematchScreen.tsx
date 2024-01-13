@@ -3,13 +3,15 @@ import { Box, Text, Button, Pressable, HStack, VStack } from '@react-native-mate
 import { Image, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import RadioButtonList from '../basics/RadioButtonList';
-import robotStates from '../../util/robotStates';
+import robotStates from '../../../types/ERobotStates';
 import useEventCreator from '../../hooks/useEventCreator';
 import { AssignmentContext } from '../../contexts/AssignmentContext';
 
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
-export default function PrematchScreen({ navigation }) {
+export type TPrematchScreenProps = {}
+
+export const PrematchScreen: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   const [startPosPressed, setStartPosPressed] = useState(
     new Array(startPosLabels.length).fill(false)
   );

@@ -1,15 +1,14 @@
 import { Box, Text, Button } from '@react-native-material/core';
-import LoadingSymbol from '../basics/LoadingSymbol';
+import { LoadingSymbol } from '../basics/LoadingSymbol';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-LoadingScreen.propTypes = {
-  message: PropTypes.string.isRequired,
-  buttonText: PropTypes.string,
-  onPress: PropTypes.func,
+export type TLoadingScreenProps = {
+  message: string;
+  buttonText: string;
+  onPress: () => void;
 };
 
-export default function LoadingScreen({ message, buttonText, onPress }) {
+export const LoadingScreen: React.FC<TLoadingScreenProps> = ({ message, buttonText, onPress }) => {
   const getButton = () => {
     return buttonText && onPress ? (
       <Button variant="outlined" title={buttonText} onPress={onPress} />
@@ -25,4 +24,4 @@ export default function LoadingScreen({ message, buttonText, onPress }) {
       {getButton()}
     </Box>
   );
-}
+};

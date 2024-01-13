@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, Easing, Image, View, StyleSheet } from 'react-native';
 
-export default function LoadingSymbol() {
+export const LoadingSymbol: React.FC = () => {
   const spinValue = new Animated.Value(0);
 
   // First set up animation
@@ -28,7 +28,7 @@ export default function LoadingSymbol() {
       <Image style={styles.radioactiveSymbol} source={require('../../images/radioactive.png')} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   gear: {

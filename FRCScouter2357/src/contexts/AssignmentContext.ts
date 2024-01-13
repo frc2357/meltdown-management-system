@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const AssignmentContext = createContext({});
+export const AssignmentContext: React.Context<any> = createContext({});

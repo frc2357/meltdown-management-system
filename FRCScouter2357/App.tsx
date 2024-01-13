@@ -6,7 +6,7 @@ import PrematchScreen from './src/components/screens/PrematchScreen';
 import EndgameScreen from './src/components/screens/EndgameScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import robotStates from './src/util/robotStates';
+import robotStates from './types/ERobotStates';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
 import { MatchContext } from './src/contexts/MatchContext';
 import { Startup } from './src/components/screens/Startup';
