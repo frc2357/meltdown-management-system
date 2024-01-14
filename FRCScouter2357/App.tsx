@@ -5,7 +5,7 @@ import { Endgame } from './src/components/screens/Endgame';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ERobotState, TRootStackParamList } from './types';
-import { AssignmentContext, AssignmentProvider } from './src/contexts/AssignmentContext';
+import { AssignmentProvider } from './src/contexts/AssignmentContext';
 import { Startup } from './src/components/screens/Startup';
 import { QRCapture } from './src/components/screens/QRCapture';
 import { QRShow } from './src/components/screens/QRShow';
