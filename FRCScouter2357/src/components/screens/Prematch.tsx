@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import { ERobotStates } from '../../../types';
+import { ERobotState } from '../../../types';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
@@ -13,7 +13,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   const [startPosPressed, setStartPosPressed] = useState(
     new Array(startPosLabels.length).fill(false)
   );
-  const [preload, setPreload] = useState(ERobotStates.empty);
+  const [preload, setPreload] = useState(ERobotState.empty);
   const eventCreator = useEventCreator();
 
   const onConfirm = () => {
@@ -25,7 +25,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
     }
 
     setStartPosPressed(new Array(startPosLabels.length).fill(false));
-    setPreload(ERobotStates.empty);
+    setPreload(ERobotState.empty);
 
     navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
@@ -39,9 +39,9 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={[ERobotStates.note, ERobotStates.empty]}
+            labels={[ERobotState.note, ERobotState.empty]}
             selected={preload}
-            setSelected={(value: ERobotStates) => setPreload(value)}
+            setSelected={(value: ERobotState) => setPreload(value)}
           />
           <Text variant="h5">Press start location:</Text>
         </Box>

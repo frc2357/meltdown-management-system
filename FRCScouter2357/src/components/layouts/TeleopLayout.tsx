@@ -4,7 +4,7 @@ import { Image, StyleSheet } from 'react-native';
 import note from '../../../assets/note.png';
 import emptyImage from '../../../assets/empty.png';
 import { GamepieceButton } from '../basics/GamepieceButton';
-import { ERobotStates } from '../../../types/ERobotStates';
+import { ERobotState } from '../../../types/ERobotState';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
 import { TTeleopLayoutProps } from '../../../types';
@@ -26,13 +26,13 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   const [robotState, setRobotState] = useState(initialRobotState);
   const [lastPickup, setLastPickup] = useState();
   const [pickupStates, setPickupStates] = useState(
-    new Array(numPickupStations).fill(ERobotStates.empty)
+    new Array(numPickupStations).fill(ERobotState.empty)
   );
   const eventCreator = useEventCreator();
 
   const robotStateToImage = (state) => {
     switch (state) {
-      case ERobotStates.note:
+      case ERobotState.note:
         return note;
       default:
         return emptyImage;
@@ -40,8 +40,8 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   };
 
   const clearRobotStateAndPickup = () => {
-    setPickupStates(new Array(numPickupStations).fill(ERobotStates.empty));
-    setRobotState(ERobotStates.empty);
+    setPickupStates(new Array(numPickupStations).fill(ERobotState.empty));
+    setRobotState(ERobotState.empty);
   };
 
   const onDrop = () => {
@@ -64,12 +64,12 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         style={pickupStationStyles[i]}
         imageStyle={gamepieceStyles[i]}
         gamePieceSrc={robotStateToImage(pickupStates[i])}
-        isHidden={pickupStates[i] === ERobotStates.empty}
+        isHidden={pickupStates[i] === ERobotState.empty}
         setHidden={(isHidden) => {
           if (!isHidden) {
-            const newPickupStates = new Array(numPickupStations).fill(ERobotStates.empty);
+            const newPickupStates = new Array(numPickupStations).fill(ERobotState.empty);
 
-            newPickupStates[i] = ERobotStates.note;
+            newPickupStates[i] = ERobotState.note;
 
             setLastPickup(eventCreator.createPickup(robotState, pickupStationNames[i], isAuto));
 

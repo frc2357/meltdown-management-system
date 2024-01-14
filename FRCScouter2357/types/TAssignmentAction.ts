@@ -1,6 +1,6 @@
-import { EAssignmentActionTypes } from "./EAssignmentActionTypes"
+import { EAssignmentActionType } from "./EAssignmentActionType"
 
 export type TAssignmentAction = {
-  type: EAssignmentActionTypes;
+  type: EAssignmentActionType;
   loadData?: any;
 }

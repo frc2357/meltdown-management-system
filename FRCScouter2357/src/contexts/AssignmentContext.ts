@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { EAssignmentActionTypes, TAssignment, TAssignmentAction } from '../../types';
+import { EAssignmentActionType, TAssignment, TAssignmentAction } from '../../types';
 
 export const AssignmentContext: React.Context<TAssignment> = createContext<TAssignment>({
   scouter: '',
@@ -18,9 +18,9 @@ export const AssignmentReducer: (
   action: TAssignmentAction
 ) => TAssignment = (assignment: TAssignment, action: TAssignmentAction): TAssignment => {
   switch (action.type) {
-    case EAssignmentActionTypes.load:
+    case EAssignmentActionType.load:
       return action.loadData;
-    case EAssignmentActionTypes.nextMatch:
+    case EAssignmentActionType.nextMatch:
       assignment.currentMatch++;
       return assignment;
   }

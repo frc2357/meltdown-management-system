@@ -1,4 +1,4 @@
-export * from './ERobotStates';
+export * from './ERobotState';
 export * from './TGamepieceButtonProps';
 export * from './TRadioButtonListProps';
 export * from './TTeleopLayoutProps';
@@ -13,7 +13,7 @@ export * from './TRootStackParamList';
 export * from './TAssignment';
 export * from './TAssignmentMatch';
 export * from './TAssignmentAction';
-export * from './EAssignmentActionTypes';
+export * from './EAssignmentActionType';
 export * from './TLog';
 export * from './ELogActionTypes';
 export * from './TLogAction';

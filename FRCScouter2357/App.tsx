@@ -4,7 +4,7 @@ import { Prematch } from './src/components/screens/Prematch';
 import { Endgame } from './src/components/screens/Endgame';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ERobotStates, TRootStackParamList } from './types';
+import { ERobotState, TRootStackParamList } from './types';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
 import { LogContext } from './src/contexts/LogContext';
 import { Startup } from './src/components/screens/Startup';
@@ -47,7 +47,7 @@ function App() {
                 name="TeleopLayout"
                 component={TeleopLayout}
                 options={{ headerShown: false }}
-                initialParams={{ initialRobotState: ERobotStates.empty, isAuto: false }}
+                initialParams={{ initialRobotState: ERobotState.empty, isAuto: false }}
               />
               <NavStack.Screen
                 name="Endgame"
