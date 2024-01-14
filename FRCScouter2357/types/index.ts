@@ -10,3 +10,7 @@ export * from './TQRCaptureProps';
 export * from './TQRShowProps';
 export * from './TStartupProps';
 export * from './TRootStackParamList';
+export * from './TAssignment';
+export * from './TAssignmentMatch';
+export * from './TAssignmentAction';
+export * from './EAssignmentActionTypes';

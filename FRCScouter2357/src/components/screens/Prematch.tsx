@@ -1,13 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { Box, Text, Button, Pressable, HStack, VStack } from '@react-native-material/core';
+import React, { useState } from 'react';
+import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import { DataTable } from 'react-native-paper';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { ERobotStates } from '../../../types';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import { AssignmentContext } from '../../contexts/AssignmentContext';
 import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
+import {AssignmentTable} from '../tables/AssignmentTable';
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
 export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
@@ -16,15 +15,6 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   );
   const [preload, setPreload] = useState(ERobotStates.empty);
   const eventCreator = useEventCreator();
-
-  const assignment = useContext(AssignmentContext);
-
-  const scouterName = assignment?.scouter ? assignment.scouter : '';
-
-  const teamNum = assignment?.teamNum ?? '';
-  const matchNum = assignment?.matchNum ?? 0;
-  const alliance = assignment?.alliance ?? '';
-  const alliancePos = assignment?.alliancePos ?? '';
 
   const onConfirm = () => {
     let startPos = '';
@@ -44,52 +34,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
     <Box>
       <Text variant="h4">Pre-Match</Text>
       <HStack spacing={2}>
-        <DataTable style={styles.dataTable}>
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>Scouter</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{scouterName}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>Team #</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{teamNum}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>Match #</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{matchNum}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>Alliance</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{alliance}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Title>
-              <Text>Alliance Pos</Text>
-            </DataTable.Title>
-            <DataTable.Cell>
-              <Text>{alliancePos}</Text>
-            </DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
+        <AssignmentTable/>
         <Box style={styles.form}>
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
@@ -140,9 +85,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 510,
     width: 450,
-  },
-  dataTable: {
-    width: 400,
   },
   form: {
     marginLeft: 150,
