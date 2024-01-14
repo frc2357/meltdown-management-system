@@ -1,4 +1,4 @@
-export enum ERobotStates {
+export enum ERobotState {
   note = 'note',
   empty = 'empty',
 }

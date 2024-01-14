@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Text } from '@react-native-material/core';
 import fs from 'react-native-fs';
 import { TMatchLogsProps } from '../../../types';
-import { zip, unzip, unzipAssets, subscribe } from 'react-native-zip-archive'
+import { zip, unzip, unzipAssets, subscribe } from 'react-native-zip-archive';
 
 const sampleMatch = {
   teamNum: '1986',
@@ -78,15 +78,15 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({ navigation }) => {
 
       await fs.writeFile(`${unzippedPath}/test.txt`, JSON.stringify(sampleMatch));
 
-      const unzippedFiles = (await fs.readDir(unzippedPath)).map(elem => elem.name).join('\n')
+      const unzippedFiles = (await fs.readDir(unzippedPath)).map((elem) => elem.name).join('\n');
       console.log(unzippedFiles);
 
       await zip([`${unzippedPath}/test.txt`], `${zippedPath}/test.zip`);
 
-      const zippedFiles = (await fs.readDir(zippedPath)).map(elem => elem.name).join('\n')
+      const zippedFiles = (await fs.readDir(zippedPath)).map((elem) => elem.name).join('\n');
       console.log(zippedFiles);
     } catch (err) {
-      console.log("err")
+      console.log('err');
       console.log(JSON.stringify(err));
     }
   };
