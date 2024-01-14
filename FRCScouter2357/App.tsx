@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ERobotStates, TRootStackParamList } from './types';
 import { AssignmentContext } from './src/contexts/AssignmentContext';
-import { LogsContext } from './src/contexts/LogsContext';
+import { LogContext } from './src/contexts/LogContext';
 import { Startup } from './src/components/screens/Startup';
 import { QRCapture } from './src/components/screens/QRCapture';
 import { QRShow } from './src/components/screens/QRShow';
@@ -20,7 +20,7 @@ function App() {
     <>
       <StatusBar hidden={true} />
       <AssignmentContext.Provider value={{}}>
-        <LogsContext.Provider value={{}}>
+        <LogContext.Provider value={{}}>
           <NavigationContainer>
             <NavStack.Navigator initialRouteName="Startup" screenOptions={{ headerShown: false }}>
               <NavStack.Screen
@@ -57,7 +57,7 @@ function App() {
               <NavStack.Screen name="QRShow" component={QRShow} options={{ headerShown: false }} />
             </NavStack.Navigator>
           </NavigationContainer>
-        </LogsContext.Provider>
+        </LogContext.Provider>
       </AssignmentContext.Provider>
     </>
   );

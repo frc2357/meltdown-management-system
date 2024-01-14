@@ -1,21 +1,20 @@
 import React from 'react';
-import { TAssignmentMatch } from '../../../types';
+import { TAssignment, TAssignmentMatch } from '../../../types';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { DataTable } from 'react-native-paper';
 import { Text } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
 
 export const AssignmentTable: React.FC = () => {
-  const assignment = useAssignment();
+  const assignment: TAssignment = useAssignment();
   const currentMatch: TAssignmentMatch = assignment.matches.find(
     (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch
   );
 
-  const scouterName = assignment?.scouter ? assignment.scouter : '';
-
-  const teamNum = currentMatch.teamNum;
-  const matchNum = currentMatch.matchNum;
-  const alliance = assignment.alliance;
+  const scouterName: string = assignment.scouter;
+  const teamNum: number = currentMatch.teamNum;
+  const matchNum: number = currentMatch.matchNum;
+  const alliance: string = `${assignment.alliance} ${assignment.alliancePos}`;
 
   return (
     <DataTable style={styles.dataTable}>

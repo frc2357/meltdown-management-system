@@ -6,6 +6,7 @@ export const AssignmentContext: React.Context<TAssignment> = createContext<TAssi
   alliance: '',
   currentMatch: 0,
   matches: [],
+  alliancePos: ''
 });
 
 export const useAssignment: () => TAssignment = (): TAssignment => {
