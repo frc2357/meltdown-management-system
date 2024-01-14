@@ -5,13 +5,13 @@ import { Endgame } from './src/components/screens/Endgame';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ERobotState, TRootStackParamList } from './types';
-import { AssignmentContext } from './src/contexts/AssignmentContext';
-import { LogContext } from './src/contexts/LogContext';
+import { AssignmentContext, AssignmentProvider } from './src/contexts/AssignmentContext';
 import { Startup } from './src/components/screens/Startup';
 import { QRCapture } from './src/components/screens/QRCapture';
 import { QRShow } from './src/components/screens/QRShow';
 import { MatchLogs } from './src/components/screens/MatchLogs';
 import { StatusBar } from 'expo-status-bar';
+import { LogProvider } from './src/contexts/LogContext';
 
 const NavStack = createNativeStackNavigator<TRootStackParamList>();
 
@@ -19,8 +19,8 @@ function App() {
   return (
     <>
       <StatusBar hidden={true} />
-      <AssignmentContext.Provider value={{}}>
-        <LogContext.Provider value={{}}>
+      <AssignmentProvider>
+        <LogProvider>
           <NavigationContainer>
             <NavStack.Navigator initialRouteName="Startup" screenOptions={{ headerShown: false }}>
               <NavStack.Screen
@@ -57,8 +57,8 @@ function App() {
               <NavStack.Screen name="QRShow" component={QRShow} options={{ headerShown: false }} />
             </NavStack.Navigator>
           </NavigationContainer>
-        </LogContext.Provider>
-      </AssignmentContext.Provider>
+        </LogProvider>
+      </AssignmentProvider>
     </>
   );
 }

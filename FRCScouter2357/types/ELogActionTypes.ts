@@ -1,3 +1,1 @@
-export enum ELogActionTypes {
-  
-}
+export enum ELogActionTypes {}

@@ -1,5 +1,5 @@
-import { EEventTypes } from "./EEventTypes"
+import { EEventTypes } from './EEventTypes';
 
 export type TLogAction = {
-  type: EEventTypes
-}
+  type: EEventTypes;
+};

@@ -6,7 +6,7 @@ import { ERobotState } from '../../../types';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
-import {AssignmentTable} from '../tables/AssignmentTable';
+import { AssignmentTable } from '../tables/AssignmentTable';
 const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
 
 export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
@@ -34,7 +34,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
     <Box>
       <Text variant="h4">Pre-Match</Text>
       <HStack spacing={2}>
-        <AssignmentTable/>
+        <AssignmentTable />
         <Box style={styles.form}>
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList

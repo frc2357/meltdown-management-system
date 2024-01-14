@@ -1,4 +1,4 @@
-import { TEvent } from "./TEvent";
+import { TEvent } from './TEvent';
 
 export type TLog = {
   teamNum: number;
