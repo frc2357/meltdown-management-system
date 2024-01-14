@@ -46,7 +46,9 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
 ): TAssignment => {
   switch (action.type) {
     case EAssignmentActionType.load:
-      return action.loadData;
+      const newValue: TAssignment = JSON.parse(action.loadData);
+      // TODO: Check if assignment valid and do something if it is not
+      return newValue;
     case EAssignmentActionType.nextMatch:
       assignment.currentMatch++;
       return assignment;

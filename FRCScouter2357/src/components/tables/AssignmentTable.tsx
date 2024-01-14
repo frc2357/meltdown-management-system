@@ -7,13 +7,13 @@ import { StyleSheet } from 'react-native';
 
 export const AssignmentTable: React.FC = () => {
   const assignment: TAssignment = useAssignment();
-  const currentMatch: TAssignmentMatch = assignment.matches.find(
+  const currentMatch: TAssignmentMatch | undefined = assignment.matches.find(
     (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch
   );
 
   const scouterName: string = assignment.scouter;
-  const teamNum: number = currentMatch.teamNum;
-  const matchNum: number = currentMatch.matchNum;
+  const teamNum: number = currentMatch?.teamNum ?? 0;
+  const matchNum: number = currentMatch?.matchNum ?? 0;
   const alliance: string = `${assignment.alliance} ${assignment.alliancePos}`;
 
   return (
