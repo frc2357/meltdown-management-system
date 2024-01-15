@@ -75,7 +75,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={[ERobotState.note, ERobotState.empty]}
+            labels={Object.values(ERobotState)}
             selected={preload}
             setSelected={(value: ERobotState) => setPreload(value)}
           />

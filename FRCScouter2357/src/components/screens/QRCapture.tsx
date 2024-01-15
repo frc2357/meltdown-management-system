@@ -6,8 +6,7 @@ import {
   useCodeScanner,
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
-import { EAssignmentActionType, TAssignmentAction, TQRCaptureProps } from '../../../types';
-import { unzipAscii } from '../../util/unzipAscii';
+import { EAssignmentActionType, TQRCaptureProps } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 
 const testAssignment = {
