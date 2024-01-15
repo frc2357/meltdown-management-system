@@ -48,7 +48,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
           value="Harmony"
           status={harmony}
           onPress={() => {
-            setSpotlit(harmony === 'unchecked' ? 'checked' : 'unchecked');
+            setHarmony(harmony === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
         <RadioButton.Item
