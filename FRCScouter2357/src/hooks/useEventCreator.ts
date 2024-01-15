@@ -1,36 +1,59 @@
 import React from 'react';
+import {
+  EEndgameLocation,
+  EPickupLocation,
+  EScoreLocation,
+  EStartLocation,
+  TEvent,
+} from '../../types';
+import { EEventTypes } from '../../types/EEventTypes';
+import { useTimer } from '../contexts/TimerContext';
 
 export const useEventCreator = () => {
-  const startTimeSeconds = 0.0;
+  const timer = useTimer();
 
-  const createStart = (location, piece) => {
-    const type = 'start';
-    return { type, location, piece, timestamp: 0 };
-  };
-
-  const createPickup = (piece, location, isAuto) => {
-    const type = 'pickup';
-    return createEvent({ type, piece, location, isAuto });
-  };
-  const createDrop = (piece, isAuto) => {
-    const type = 'drop';
-    return createEvent({ type, piece, isAuto });
-  };
-  const createScore = (piece, row, col, isAuto) => {
-    const type = 'score';
-    return createEvent({ type, piece, row, col, isAuto });
-  };
-  const createAuto = (hasMobility, location) => {
-    const type = 'auto';
-    return createEvent({ type, hasMobility, location });
-  };
-  const createEndgame = (location, notes) => {
-    const type = 'endgame';
-    return createEvent({ type, location, notes });
+  const createStart = (location: EStartLocation): TEvent => {
+    const type = EEventTypes.start;
+    return { type, location, timestamp: 0 };
   };
 
-  const createEvent = (obj) => {
-    const timeStamp = Date.now() / 1000 - startTimeSeconds;
+  const createPickup = (location: EPickupLocation): TEvent => {
+    const type = EEventTypes.pickup;
+    return createEvent({ type, location });
+  };
+  const createDrop = (): TEvent => {
+    const type = EEventTypes.drop;
+    return createEvent({ type });
+  };
+
+  const createMiss = (): TEvent => {
+    const type = EEventTypes.miss;
+    return createEvent({ type });
+  };
+
+  const createScore = (location: EScoreLocation): TEvent => {
+    const type = EEventTypes.score;
+    return createEvent({ type, location });
+  };
+
+  const createAuto = (leave: boolean): TEvent => {
+    const type = EEventTypes.auto;
+    return createEvent({ type, leave });
+  };
+
+  const createEndgame = (
+    location: EEndgameLocation,
+    notes: string,
+    harmony: boolean,
+    spotlit: boolean,
+    trap: boolean
+  ): TEvent => {
+    const type = EEventTypes.endgame;
+    return createEvent({ type, location, notes, harmony, spotlit, trap });
+  };
+
+  const createEvent = (obj): TEvent => {
+    const timeStamp = Date.now() / 1000 - timer.getTimeSeconds();
     const event = { timestamp: timeStamp, ...obj };
     return event;
   };
@@ -39,6 +62,7 @@ export const useEventCreator = () => {
     createStart,
     createPickup,
     createDrop,
+    createMiss,
     createScore,
     createAuto,
     createEndgame,

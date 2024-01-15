@@ -35,28 +35,31 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
   const device = useCameraDevice('back');
 
+  const advance = async (codes) => {
+    console.log(`Scanned ${codes.length} codes!`);
+
+    console.log(codes[0].value);
+
+    if (!codes[0].value) return;
+
+    // const assignmentTxt: string = await unzipAscii(codes[0].value);
+
+    // const action: TAssignmentAction = {
+    //   type: EAssignmentActionType.load,
+    //   loadData: assignmentTxt,
+    // };
+
+    // dispatch(action);
+    dispatch({
+      type: EAssignmentActionType.load,
+      loadData: JSON.stringify(testAssignment),
+    });
+    navigation.navigate<'Prematch'>('Prematch');
+  }
+
   const codeScanner = useCodeScanner({
     codeTypes: ['qr'],
-    onCodeScanned: async (codes) => {
-      console.log(`Scanned ${codes.length} codes!`);
-      console.log(codes[0].value);
-
-      if (!codes[0].value) return;
-
-      // const assignmentTxt: string = await unzipAscii(codes[0].value);
-
-      // const action: TAssignmentAction = {
-      //   type: EAssignmentActionType.load,
-      //   loadData: assignmentTxt,
-      // };
-
-      // dispatch(action);
-      dispatch({
-        type: EAssignmentActionType.load,
-        loadData: JSON.stringify(testAssignment),
-      });
-      navigation.navigate<'Prematch'>('Prematch');
-    },
+    onCodeScanned: advance,
   });
 
   useEffect(() => {
@@ -86,9 +89,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       <Button
         title="Next"
         variant="contained"
-        onPress={() => {
-          navigation.navigate('TeleopLayout');
-        }}
+        onPress={() => {advance([{value: "hello"}])}}
       />
     </Box>
   );

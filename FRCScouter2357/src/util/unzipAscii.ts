@@ -13,6 +13,6 @@ export const unzipAscii = async (inputAscii: string) => {
   await unzip(zipPath, unzippedPath, 'US-ASCII');
 
   const output: string = await fs.readFile(outFile);
-  
+
   return output;
 };

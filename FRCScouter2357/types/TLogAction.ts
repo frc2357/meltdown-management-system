@@ -1,5 +1,9 @@
-import { EEventTypes } from './EEventTypes';
+import { ELogActionType } from './ELogActionType';
+import { TAssignmentBase } from './TAssignmentBase';
+import { TEvent } from './TEvent';
 
 export type TLogAction = {
-  type: EEventTypes;
+  type: ELogActionType;
+  event?: TEvent;
+  assignment?: { teamNum: number; matchNum: number } & TAssignmentBase;
 };

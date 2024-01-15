@@ -2,30 +2,66 @@ import React, { useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import { ERobotState } from '../../../types';
+import {
+  ELogActionType,
+  ERobotState,
+  EStartLocation,
+  TAssignmentMatch,
+  TLogAction,
+} from '../../../types';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
-const startPosLabels = ['open lane', 'charge station', 'cable bump', 'outside community'];
+import { useLogDispatch } from '../../contexts/LogContext';
+import { useAssignment } from '../../contexts/AssignmentContext';
+import { useTimer } from '../../contexts/TimerContext';
 
 export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
-  const [startPosPressed, setStartPosPressed] = useState(
-    new Array(startPosLabels.length).fill(false)
-  );
+  const locations: EStartLocation[] = Object.values(EStartLocation);
+
+  const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
   const [preload, setPreload] = useState(ERobotState.empty);
+  const logDispatch = useLogDispatch();
+  const assignment = useAssignment();
   const eventCreator = useEventCreator();
+  const timer = useTimer();
 
   const onConfirm = () => {
-    let startPos = '';
-    for (let i = 0; i < startPosLabels.length; i++) {
-      if (startPosPressed[i]) {
-        startPos = startPosLabels[i];
-      }
-    }
+    let startPos: EStartLocation = EStartLocation.center;
 
-    setStartPosPressed(new Array(startPosLabels.length).fill(false));
+    locations.forEach((location, i) => {
+      if (startPosPressed[i]) {
+        startPos = location;
+      }
+    });
+
+    setStartPosPressed(new Array(locations.length).fill(false));
     setPreload(ERobotState.empty);
+
+    const currentMatch: TAssignmentMatch | undefined = assignment.matches.find(
+      (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch
+    );
+
+    const initLog: TLogAction = {
+      type: ELogActionType.initLog,
+      assignment: {
+        teamNum: currentMatch?.teamNum ?? 0,
+        scouter: assignment.scouter,
+        matchNum: assignment.currentMatch,
+        alliance: assignment.alliance,
+        alliancePos: assignment.alliancePos,
+      },
+    };
+    logDispatch(initLog);
+
+    timer.start();
+
+    const startEvent: TLogAction = {
+      type: ELogActionType.addEvent,
+      event: eventCreator.createStart(startPos),
+    };
+    logDispatch(startEvent);
 
     navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
   };
@@ -70,14 +106,14 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
   );
 };
 
-const communityLeft = 12;
-const communityTop = 280;
+const autoAreaLeft = 12;
+const autoAreaTop = 280;
 const styles = StyleSheet.create({
   autoField: {
     height: 225,
-    left: communityLeft,
+    left: autoAreaLeft,
     position: 'absolute',
-    top: communityTop,
+    top: autoAreaTop,
     width: 1000,
   },
   confirm: {
@@ -92,30 +128,30 @@ const styles = StyleSheet.create({
   },
   posFour: {
     height: 225,
-    left: communityLeft + 220 + 185 + 220,
+    left: autoAreaLeft + 220 + 185 + 220,
     position: 'absolute',
-    top: communityTop,
+    top: autoAreaTop,
     width: 375,
   },
   posOne: {
     height: 225,
-    left: communityLeft,
+    left: autoAreaLeft,
     position: 'absolute',
-    top: communityTop,
+    top: autoAreaTop,
     width: 220,
   },
   posThree: {
     height: 225,
-    left: communityLeft + 220 + 185,
+    left: autoAreaLeft + 220 + 185,
     position: 'absolute',
-    top: communityTop,
+    top: autoAreaTop,
     width: 220,
   },
   posTwo: {
     height: 120,
-    left: communityLeft + 220,
+    left: autoAreaLeft + 220,
     position: 'absolute',
-    top: communityTop,
+    top: autoAreaTop,
     width: 185,
   },
 });

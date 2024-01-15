@@ -15,7 +15,7 @@ export * from './TAssignmentMatch';
 export * from './TAssignmentAction';
 export * from './EAssignmentActionType';
 export * from './TLog';
-export * from './ELogActionTypes';
+export * from './ELogActionType';
 export * from './TLogAction';
 export * from './TEvent';
 export * from './EScoreLocation';
