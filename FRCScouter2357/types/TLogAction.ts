@@ -5,5 +5,5 @@ import { TEvent } from './TEvent';
 export type TLogAction = {
   type: ELogActionType;
   event?: TEvent;
-  assignment?: { teamNum: number; matchNum: number } & TAssignmentBase;
+  assignment?: { teamNum: number; matchNum: number; scouter: string } & TAssignmentBase;
 };

@@ -4,27 +4,27 @@ import {
   useCameraDevice,
   Camera,
   useCodeScanner,
+  Code,
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
 import { EAssignmentActionType, TQRCaptureProps } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 
 const testAssignment = {
-  scouter: 'John Smith',
   alliance: 'RED',
   alliancePos: '2',
   currentMatch: 1,
   matches: [
-    { matchNum: 1, teamNum: 2357 },
-    { matchNum: 2, teamNum: 2357 },
-    { matchNum: 3, teamNum: 2357 },
-    { matchNum: 4, teamNum: 2357 },
-    { matchNum: 5, teamNum: 2357 },
-    { matchNum: 6, teamNum: 2357 },
-    { matchNum: 7, teamNum: 2357 },
-    { matchNum: 8, teamNum: 2357 },
-    { matchNum: 9, teamNum: 2357 },
-    { matchNum: 10, teamNum: 2357 },
+    { matchNum: 1, teamNum: 2357, scouter: 'John' },
+    { matchNum: 2, teamNum: 2357, scouter: 'Kevin' },
+    { matchNum: 3, teamNum: 2357, scouter: 'John' },
+    { matchNum: 4, teamNum: 2357, scouter: 'John' },
+    { matchNum: 5, teamNum: 2357, scouter: 'John' },
+    { matchNum: 6, teamNum: 2357, scouter: 'John' },
+    { matchNum: 7, teamNum: 2357, scouter: 'John' },
+    { matchNum: 8, teamNum: 2357, scouter: 'John' },
+    { matchNum: 9, teamNum: 2357, scouter: 'John' },
+    { matchNum: 10, teamNum: 2357, scouter: 'John' },
   ],
 };
 
@@ -34,7 +34,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
   const device = useCameraDevice('back');
 
-  const advance = async (codes) => {
+  const advance = async (codes: Code[]) => {
     console.log(`Scanned ${codes.length} codes!`);
 
     console.log(codes[0].value);
@@ -54,7 +54,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       loadData: JSON.stringify(testAssignment),
     });
     navigation.navigate<'Prematch'>('Prematch');
-  }
+  };
 
   const codeScanner = useCodeScanner({
     codeTypes: ['qr'],
@@ -75,7 +75,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       <Text>No camera</Text>
     ) : (
       <Camera
-        style={{ height: '90%', width: '100%' }}
+        style={{ height: '100%', width: '100%' }}
         device={device}
         isActive={true}
         codeScanner={codeScanner}
@@ -88,7 +88,10 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       <Button
         title="Next"
         variant="contained"
-        onPress={() => {advance([{value: "hello"}])}}
+        onPress={() => {
+          advance([{ value: 'hello', type: 'unknown' }]);
+        }}
+        style={{position: 'absolute', left: '0%', top: '90%'}}
       />
     </Box>
   );

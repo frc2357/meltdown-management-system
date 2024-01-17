@@ -47,7 +47,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
       type: ELogActionType.initLog,
       assignment: {
         teamNum: currentMatch?.teamNum ?? 0,
-        scouter: assignment.scouter,
+        scouter: currentMatch?.scouter ?? '',
         matchNum: assignment.currentMatch,
         alliance: assignment.alliance,
         alliancePos: assignment.alliancePos,

@@ -7,30 +7,31 @@ import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotState } from '../../../types/ERobotState';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
-import { TTeleopLayoutProps } from '../../../types';
+import { EPickupLocation, TEvent, TTeleopLayoutProps } from '../../../types';
 import scoringImage from '../../../assets/scoring.png';
 import sourceImage from '../../../assets/source.png';
 import floorImage from '../../../assets/floor.png';
+import { useLogDispatch } from '../../contexts/LogContext';
 
-const numPickupStations = 2;
-
-const pickupStationNames = ['doubleSub', 'singleSub', 'floor'];
+const pickupStationNames: EPickupLocation[] = Object.values(EPickupLocation);
+const numPickupStations = pickupStationNames.length;
 
 export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   route: {
-    params: { initialRobotState, isAuto },
+    params: { initialRobotState },
   },
   navigation,
 }) => {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState(initialRobotState);
-  const [lastPickup, setLastPickup] = useState();
+  const [lastPickup, setLastPickup] = useState<TEvent>();
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(ERobotState.empty)
   );
   const eventCreator = useEventCreator();
+  const logDispatch = useLogDispatch();
 
-  const robotStateToImage = (state) => {
+  const robotStateToImage = (state: ERobotState) => {
     switch (state) {
       case ERobotState.note:
         return note;
@@ -45,6 +46,8 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   };
 
   const onDrop = () => {
+    logDispatch(lastPickup)
+    logDispatch(eventCreator.createDrop())
     clearRobotStateAndPickup();
   };
 
@@ -71,7 +74,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
 
             newPickupStates[i] = ERobotState.note;
 
-            setLastPickup(eventCreator.createPickup(robotState, pickupStationNames[i], isAuto));
+            setLastPickup(eventCreator.createPickup(pickupStationNames[i]));
 
             setRobotState(newPickupStates[i]);
 

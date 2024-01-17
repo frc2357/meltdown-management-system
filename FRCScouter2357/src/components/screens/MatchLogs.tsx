@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Text } from '@react-native-material/core';
 import fs from 'react-native-fs';
 import { TMatchLogsProps } from '../../../types';
-import { zip, unzip, unzipAssets, subscribe } from 'react-native-zip-archive';
+import { zip } from 'react-native-zip-archive';
 
 const sampleMatch = {
   teamNum: '1986',

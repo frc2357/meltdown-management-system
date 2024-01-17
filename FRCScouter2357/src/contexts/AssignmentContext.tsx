@@ -2,7 +2,6 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { EAssignmentActionType, TAssignment, TAssignmentAction } from '../../types';
 
 const assignmentDefault: TAssignment = {
-  scouter: '',
   alliance: '',
   currentMatch: 0,
   matches: [],

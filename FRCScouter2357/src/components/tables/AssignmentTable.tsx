@@ -11,7 +11,7 @@ export const AssignmentTable: React.FC = () => {
     (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch
   );
 
-  const scouterName: string = assignment.scouter;
+  const scouterName: string = currentMatch?.scouter ?? '';
   const teamNum: number = currentMatch?.teamNum ?? 0;
   const matchNum: number = currentMatch?.matchNum ?? 0;
   const alliance: string = `${assignment.alliance} ${assignment.alliancePos}`;
