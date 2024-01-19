@@ -23,9 +23,9 @@ export const LoadingSymbol: React.FC = () => {
     <View style={styles.view}>
       <Animated.Image
         style={{ transform: [{ rotate: spin }], ...styles.gear }}
-        source={require('../../images/gear.png')}
+        source={require('../../../assets/gear.png')}
       />
-      <Image style={styles.radioactiveSymbol} source={require('../../images/radioactive.png')} />
+      <Image style={styles.radioactiveSymbol} source={require('../../../assets/radioactive.png')} />
     </View>
   );
 };

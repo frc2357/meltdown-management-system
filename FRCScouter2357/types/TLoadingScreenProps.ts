@@ -1,5 +1,5 @@
 export type TLoadingScreenProps = {
   message: string;
-  buttonText: string;
-  onPress: () => void;
+  buttonText?: string;
+  onPress?: () => void;
 };

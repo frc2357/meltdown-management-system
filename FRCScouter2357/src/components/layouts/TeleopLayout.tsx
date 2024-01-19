@@ -152,7 +152,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             if (robotState === ERobotState.empty) {
               return;
             }
-            showNoteIcon(event.nativeEvent.locationX-25, event.nativeEvent.locationY-25);
+            showNoteIcon(event.nativeEvent.locationX - 25, event.nativeEvent.locationY - 25);
             onScore(EScoreLocation.speaker);
           }}
           pressEffect={'none'}
@@ -177,10 +177,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             alt="note"
             source={noteImage}
             style={{
-              resizeMode: 'stretch',
-              position: 'absolute',
-              height: 50,
-              width: 50,
+              ...styles.noteIcon,
               left: noteIconCoords.x,
               top: noteIconCoords.y,
             }}
@@ -201,6 +198,12 @@ const baseStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
+  noteIcon: {
+    resizeMode: 'stretch',
+    position: 'absolute',
+    height: 50,
+    width: 50,
+  },
   ampPressable: {
     height: 80,
     left: 0,

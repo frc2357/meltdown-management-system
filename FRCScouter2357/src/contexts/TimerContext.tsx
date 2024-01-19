@@ -9,7 +9,7 @@ export const useTimer = () => {
   const [startTimeSeconds, setTime] = useContext(TimerContext);
 
   const getTimeSeconds = (): number => {
-    const timestampSeconds: number = (Date.now() / 1000) - startTimeSeconds;
+    const timestampSeconds: number = Date.now() / 1000 - startTimeSeconds;
     return Math.round((timestampSeconds + Number.EPSILON) * 100) / 100;
   };
 

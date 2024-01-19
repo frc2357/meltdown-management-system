@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { ELogActionType, TLog, TLogAction } from '../../types';
-import { useTimer } from './TimerContext';
 
 const logDefault: TLog = {
   teamNum: 0,
-  scouter: '',
   matchNum: 0,
+  scouter: '',
   alliance: 'RED',
   alliancePos: '1',
   events: [],
@@ -43,7 +42,7 @@ export const logReducer: React.Reducer<TLog, TLogAction> = (
   switch (action.type) {
     case ELogActionType.initLog:
       const newLog: TLog = { ...action.assignment, events: [] };
-    
+
       console.log(JSON.stringify(newLog, null, 1));
       return newLog;
     case ELogActionType.addEvent:

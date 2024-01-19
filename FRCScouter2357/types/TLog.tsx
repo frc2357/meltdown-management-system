@@ -5,4 +5,5 @@ export type TLog = {
   teamNum: number;
   matchNum: number;
   events: TEvent[];
+  scouter: string;
 } & TAssignmentBase;

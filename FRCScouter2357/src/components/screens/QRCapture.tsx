@@ -91,7 +91,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
         onPress={() => {
           advance([{ value: 'hello', type: 'unknown' }]);
         }}
-        style={{position: 'absolute', left: '0%', top: '90%'}}
+        style={{ position: 'absolute', left: '0%', top: '90%' }}
       />
     </Box>
   );
