@@ -1,11 +1,11 @@
-import { ERobotState } from '.';
+import { ERobotState, TLog } from '.';
 
 export type TRootStackParamList = {
   Startup: undefined;
   MatchLogs: undefined;
   QRCapture: undefined;
   Prematch: undefined;
-  TeleopLayout: { initialRobotState: ERobotState; isAuto: boolean };
+  TeleopLayout: { initialRobotState: ERobotState};
   Endgame: undefined;
-  QRShow: undefined;
+  QRShow: { routeName: keyof TRootStackParamList; log: TLog };
 };
