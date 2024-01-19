@@ -8,8 +8,9 @@ const TimerContext = createContext<[number, React.Dispatch<React.SetStateAction<
 export const useTimer = () => {
   const [startTimeSeconds, setTime] = useContext(TimerContext);
 
-  const getTimeSeconds = () => {
-    return Date.now() / 1000 - startTimeSeconds;
+  const getTimeSeconds = (): number => {
+    const timestampSeconds: number = (Date.now() / 1000) - startTimeSeconds;
+    return Math.round((timestampSeconds + Number.EPSILON) * 100) / 100;
   };
 
   const start = () => {

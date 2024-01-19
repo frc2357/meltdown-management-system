@@ -53,7 +53,7 @@ export const useEventCreator = () => {
   };
 
   const createEvent = (obj): TEvent => {
-    const timeStamp = Date.now() / 1000 - timer.getTimeSeconds();
+    const timeStamp = timer.getTimeSeconds();
     const event = { timestamp: timeStamp, ...obj };
     return event;
   };
