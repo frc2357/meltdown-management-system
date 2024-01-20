@@ -16,9 +16,7 @@ export const QRShow: React.FC<TQRShowProps> = ({
   const fileManager = useFileManager();
 
   const generateQRCode = async () => {
-    const output: string = await fileManager.saveLog(log)
-    console.log(output);
-
+    const output: string = await fileManager.saveLog(log);
     setQrContent(output);
     setLoading(false);
   };

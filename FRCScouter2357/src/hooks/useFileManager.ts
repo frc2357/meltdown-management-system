@@ -1,15 +1,27 @@
 import fs from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
 import { TLog } from '../../types';
+import { useAssignment } from '../contexts/AssignmentContext';
 
 export const useFileManager = () => {
-  const logs = `${fs.DocumentDirectoryPath}/logs`;
-  const unzippedLogsPath = `${logs}/unzipped`;
-  const zippedLogsPath = `${logs}/zipped`;
+  const { event } = useAssignment();
+
+  const logsRoot = `${fs.DocumentDirectoryPath}/logs`;
+  const logsEvent = `${logsRoot}/${event}`;
+  const unzippedLogsPath = `${logsEvent}/unzipped`;
+  const zippedLogsPath = `${logsEvent}/zipped`;
   const tempPath = `${fs.DocumentDirectoryPath}/temp`;
   const assignmentFilePath = `${fs.DocumentDirectoryPath}/assignment/assignment.txt`;
 
-  const createDirs = async (): Promise<void> => {
+  const createBaseDirs = async (): Promise<void> => {
+    const promises: Promise<void>[] = [];
+    promises.push(fs.mkdir(logsRoot));
+    promises.push(fs.mkdir(tempPath));
+
+    await Promise.all(promises);
+  };
+
+  const createEventDirs = async (): Promise<void> => {
     const promises: Promise<void>[] = [];
     promises.push(fs.mkdir(unzippedLogsPath));
     promises.push(fs.mkdir(zippedLogsPath));
@@ -19,7 +31,6 @@ export const useFileManager = () => {
   };
 
   const saveLog = async (log: TLog): Promise<string> => {
-    
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.teamNum}`;
     const logString: string = JSON.stringify(log);
 
@@ -28,9 +39,9 @@ export const useFileManager = () => {
     await zip([`${unzippedLogsPath}/${fileName}`], `${zippedLogsPath}/${fileName}`);
 
     const output = await fs.readFile(`${zippedLogsPath}/${fileName}`, 'ascii');
-    
-    return output
-  }
+
+    return output;
+  };
 
   const unzipAscii = async (inputAscii: string, outFilePath: string): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
@@ -49,7 +60,8 @@ export const useFileManager = () => {
   };
 
   return {
-    createDirs,
+    createBaseDirs,
+    createEventDirs,
     unzipAssignment,
     unzipAscii,
     saveLog,

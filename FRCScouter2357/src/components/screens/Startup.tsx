@@ -1,8 +1,15 @@
 import { Box, VStack, Button } from '@react-native-material/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TStartupProps } from '../../../types';
+import { useFileManager } from '../../hooks/useFileManager';
 
 export const Startup: React.FC<TStartupProps> = ({ navigation }) => {
+  const fileManager = useFileManager();
+
+  useEffect(() => {
+    fileManager.createBaseDirs();
+  }, []);
+
   return (
     <Box>
       <VStack>

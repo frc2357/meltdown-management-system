@@ -63,7 +63,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
     };
     logDispatch(startEvent);
 
-    navigation.navigate('TeleopLayout', { initialRobotState: preload, isAuto: true });
+    navigation.navigate('TeleopLayout', { initialRobotState: preload });
   };
 
   return (

@@ -4,6 +4,7 @@ import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import {
+  EAssignmentActionType,
   EEndgameLocation,
   ELogActionType,
   TEndgameScreenProps,
@@ -12,6 +13,7 @@ import {
 } from '../../../types';
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
+import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -27,6 +29,8 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const logDispatch = useLogDispatch();
   const eventCreator = useEventCreator();
 
+  const assignmentDispatch = useAssignmentDispatch();
+
   const onSubmit = () => {
     const endgameEvent: TEvent = eventCreator.createEndgame(
       endgameLocation,
@@ -38,6 +42,10 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
     logDispatch({
       type: ELogActionType.addEvent,
       event: endgameEvent,
+    });
+
+    assignmentDispatch({
+      type: EAssignmentActionType.nextMatch,
     });
 
     navigation.navigate('QRShow', { routeName: 'Prematch', log });

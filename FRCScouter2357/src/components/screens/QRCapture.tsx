@@ -7,14 +7,15 @@ import {
   Code,
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
-import { EAssignmentActionType, TQRCaptureProps } from '../../../types';
+import { EAssignmentActionType, TAssignment, TQRCaptureProps } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
-import { useFileManager} from '../../hooks/useFileManager';
+import { useFileManager } from '../../hooks/useFileManager';
 
-const testAssignment = {
+const testAssignment: TAssignment = {
   alliance: 'RED',
   alliancePos: '2',
   currentMatch: 1,
+  event: 'test',
   matches: [
     { matchNum: 1, teamNum: 2357, scouter: 'John' },
     { matchNum: 2, teamNum: 2357, scouter: 'Kevin' },
@@ -55,6 +56,9 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       type: EAssignmentActionType.load,
       loadData: JSON.stringify(testAssignment),
     });
+
+    fileManager.createEventDirs();
+
     navigation.navigate<'Prematch'>('Prematch');
   };
 

@@ -49,7 +49,7 @@ function App() {
                   name="TeleopLayout"
                   component={TeleopLayout}
                   options={{ headerShown: false }}
-                  initialParams={{ initialRobotState: ERobotState.empty, isAuto: false }}
+                  initialParams={{ initialRobotState: ERobotState.empty }}
                 />
                 <NavStack.Screen
                   name="Endgame"

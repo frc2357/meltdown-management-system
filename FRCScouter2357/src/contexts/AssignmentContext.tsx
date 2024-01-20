@@ -4,6 +4,7 @@ import { EAssignmentActionType, TAssignment, TAssignmentAction } from '../../typ
 const assignmentDefault: TAssignment = {
   alliance: '',
   currentMatch: 0,
+  event: '',
   matches: [],
   alliancePos: '',
 };
