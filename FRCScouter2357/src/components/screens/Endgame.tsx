@@ -3,8 +3,15 @@ import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-mate
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import { EEndgameLocation, TEndgameScreenProps } from '../../../types';
+import {
+  EEndgameLocation,
+  ELogActionType,
+  TEndgameScreenProps,
+  TEvent,
+  TLog,
+} from '../../../types';
 import { RadioButton } from 'react-native-paper';
+import { useLog, useLogDispatch } from '../../contexts/LogContext';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -15,11 +22,25 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [trap, setTrap] = useState<'checked' | 'unchecked'>('unchecked');
 
   const [notes, setNotes] = useState('');
+
+  const log: TLog = useLog();
+  const logDispatch = useLogDispatch();
   const eventCreator = useEventCreator();
 
   const onSubmit = () => {
-    DeviceEventEmitter.emit('event.uploadMatch');
-    navigation.navigate('QRShow');
+    const endgameEvent: TEvent = eventCreator.createEndgame(
+      endgameLocation,
+      notes,
+      harmony === 'checked',
+      trap === 'checked',
+      spotlit === 'checked'
+    );
+    logDispatch({
+      type: ELogActionType.addEvent,
+      event: endgameEvent,
+    });
+
+    navigation.navigate('QRShow', { routeName: 'Prematch', log });
   };
 
   return (

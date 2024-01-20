@@ -9,6 +9,7 @@ import {
 import React, { useEffect } from 'react';
 import { EAssignmentActionType, TQRCaptureProps } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
+import { useFileManager} from '../../hooks/useFileManager';
 
 const testAssignment = {
   alliance: 'RED',
@@ -31,6 +32,7 @@ const testAssignment = {
 export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const { hasPermission, requestPermission } = useCameraPermission();
   const dispatch = useAssignmentDispatch();
+  const fileManager = useFileManager();
 
   const device = useCameraDevice('back');
 
@@ -41,7 +43,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     if (!codes[0].value) return;
 
-    // const assignmentTxt: string = await unzipAscii(codes[0].value);
+    // const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
 
     // const action: TAssignmentAction = {
     //   type: EAssignmentActionType.load,

@@ -3,8 +3,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { Box, Button } from '@react-native-material/core';
 import { TQRShowProps } from '../../../types';
 import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
-import fs from 'react-native-fs';
-import { zip } from 'react-native-zip-archive';
+import { useFileManager } from '../../hooks/useFileManager';
 
 export const QRShow: React.FC<TQRShowProps> = ({
   navigation,
@@ -14,20 +13,10 @@ export const QRShow: React.FC<TQRShowProps> = ({
 }) => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [qrContent, setQrContent] = useState<string>('a');
+  const fileManager = useFileManager();
 
   const generateQRCode = async () => {
-    const logs = `${fs.DocumentDirectoryPath}/logs`;
-    const unzippedPath = `${logs}/unzipped`;
-    const zippedPath = `${logs}/zipped`;
-
-    const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.teamNum}`;
-    const logString: string = JSON.stringify(log);
-
-    await fs.writeFile(`${unzippedPath}/${fileName}`, logString);
-
-    await zip([`${unzippedPath}/${fileName}`], `${zippedPath}/${fileName}`);
-
-    const output = await fs.readFile(`${zippedPath}/${fileName}`, 'ascii');
+    const output: string = await fileManager.saveLog(log)
     console.log(output);
 
     setQrContent(output);

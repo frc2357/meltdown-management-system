@@ -45,8 +45,8 @@ export const useEventCreator = () => {
     location: EEndgameLocation,
     notes: string,
     harmony: boolean,
-    spotlit: boolean,
-    trap: boolean
+    trap: boolean,
+    spotlit: boolean
   ): TEvent => {
     const type = EEventTypes.endgame;
     return createEvent({ type, location, notes, harmony, spotlit, trap });
