@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { EAssignmentActionType, TAssignment, TAssignmentAction } from '../../types';
+import {
+  EAssignmentActionType,
+  TAssignment,
+  TAssignmentAction,
+  TAssignmentMatch,
+} from '../../types';
 
 const assignmentDefault: TAssignment = {
   alliance: '',
-  currentMatch: 0,
   event: '',
   matches: [],
   alliancePos: '',
@@ -47,10 +51,15 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
   switch (action.type) {
     case EAssignmentActionType.load:
       const newValue: TAssignment = JSON.parse(action.loadData);
+
+      newValue.currentMatch = newValue.matches[0];
       // TODO: Check if assignment valid and do something if it is not
       return newValue;
     case EAssignmentActionType.nextMatch:
-      assignment.currentMatch++;
+      const nextMatch: TAssignmentMatch | undefined = assignment.matches.find(
+        (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch.matchNum + 1
+      );
+      assignment.currentMatch = nextMatch;
       return assignment;
   }
 };

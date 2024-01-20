@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, HStack, Pressable } from '@react-native-material/core';
+import { Box, Button, HStack, Pressable, Text } from '@react-native-material/core';
 import { GestureResponderEvent, Image, StyleSheet } from 'react-native';
 import noteImage from '../../../assets/note.png';
 import emptyImage from '../../../assets/empty.png';
@@ -18,6 +18,8 @@ import scoringImage from '../../../assets/scoring.png';
 import sourceImage from '../../../assets/source.png';
 import floorImage from '../../../assets/floor.png';
 import { useLogDispatch } from '../../contexts/LogContext';
+import { useAssignment } from '../../contexts/AssignmentContext';
+import { ViewTimer } from '../basics/ViewTimer';
 
 const pickupStationNames: EPickupLocation[] = Object.values(EPickupLocation);
 const numPickupStations = pickupStationNames.length;
@@ -38,6 +40,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   const [noteIconCoords, setNoteIconCoords] = useState({ x: 0, y: 0 });
   const eventCreator = useEventCreator();
   const logDispatch = useLogDispatch();
+  const assignment = useAssignment();
 
   const robotStateToImage = (state: ERobotState) => {
     switch (state) {
@@ -64,30 +67,36 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     setRobotState(ERobotState.empty);
   };
 
-  const onDrop = () => {
-    logDispatch({
-      type: ELogActionType.addEvent,
-      event: lastPickup,
-    });
-    logDispatch({
-      type: ELogActionType.addEvent,
-      event: eventCreator.createDrop(),
-    });
-    clearRobotStateAndPickup();
-  };
-
-  const onScore = (location: EScoreLocation) => {
+  const onEvent = (action: { type: ELogActionType; event: TEvent }) => {
     if (lastPickup) {
       logDispatch({
         type: ELogActionType.addEvent,
         event: lastPickup,
       });
     }
-    logDispatch({
+    logDispatch(action);
+    clearRobotStateAndPickup();
+  };
+
+  const onDrop = () => {
+    onEvent({
+      type: ELogActionType.addEvent,
+      event: eventCreator.createDrop(),
+    });
+  };
+
+  const onMiss = () => {
+    onEvent({
+      type: ELogActionType.addEvent,
+      event: eventCreator.createMiss(),
+    });
+  };
+
+  const onScore = (location: EScoreLocation) => {
+    onEvent({
       type: ELogActionType.addEvent,
       event: eventCreator.createScore(location),
     });
-    clearRobotStateAndPickup();
   };
 
   const toEndgame = () => {
@@ -130,6 +139,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   return (
     <Box>
       <HStack spacing={6} style={styles.buttonStack}>
+        <Text>{assignment?.currentMatch.teamNum ?? ''}</Text>
         <RadioButton.Item
           label="Leave"
           value="leave"
@@ -138,9 +148,11 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             setLeave(leave === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
+        <Button variant="contained" title="Miss" onPress={onMiss} style={styles.button} />
         <Button variant="contained" title="Drop" onPress={onDrop} style={styles.button} />
         <Button variant="contained" title="Endgame" onPress={toEndgame} style={styles.button} />
         <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
+        <ViewTimer />
       </HStack>
       <Box style={styles.images}>
         <Image alt="Field" source={scoringImage} style={styles.field} />

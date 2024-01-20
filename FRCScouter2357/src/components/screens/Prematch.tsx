@@ -39,16 +39,12 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
     setStartPosPressed(new Array(locations.length).fill(false));
     setPreload(ERobotState.empty);
 
-    const currentMatch: TAssignmentMatch | undefined = assignment.matches.find(
-      (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch
-    );
-
     const initLog: TLogAction = {
       type: ELogActionType.initLog,
       assignment: {
-        teamNum: currentMatch?.teamNum ?? 0,
-        scouter: currentMatch?.scouter ?? '',
-        matchNum: assignment.currentMatch,
+        teamNum: assignment?.currentMatch.teamNum ?? 0,
+        scouter: assignment?.currentMatch.scouter ?? '',
+        matchNum: assignment?.currentMatch.matchNum ?? 0,
         alliance: assignment.alliance,
         alliancePos: assignment.alliancePos,
       },
