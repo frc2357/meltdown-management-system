@@ -13,4 +13,5 @@ export type TEvent = {
   harmony?: boolean;
   spotlit?: boolean;
   trap?: boolean;
+  miss?: boolean;
 };

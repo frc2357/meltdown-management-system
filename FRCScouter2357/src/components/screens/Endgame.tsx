@@ -106,13 +106,6 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
 
       <HStack>
         <Button
-          title="Cancel"
-          compact
-          variant="outlined"
-          onPress={() => navigation.navigate('TeleopLayout')}
-          style={styles.button}
-        />
-        <Button
           title="Submit"
           compact
           variant="contained"

@@ -33,6 +33,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState(initialRobotState);
   const [lastPickup, setLastPickup] = useState<TEvent>();
+  const [lastScore, setLastScore] = useState<TEvent>();
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(ERobotState.empty)
   );
@@ -67,36 +68,41 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     setRobotState(ERobotState.empty);
   };
 
-  const onEvent = (action: { type: ELogActionType; event: TEvent }) => {
+  const onEvent = (event: TEvent) => {
     if (lastPickup) {
       logDispatch({
         type: ELogActionType.addEvent,
         event: lastPickup,
       });
     }
-    logDispatch(action);
+    logDispatch({
+      type: ELogActionType.addEvent,
+      event: event,
+    });
     clearRobotStateAndPickup();
+    setLastScore(null);
+    setLastPickup(null);
   };
 
   const onDrop = () => {
-    onEvent({
-      type: ELogActionType.addEvent,
-      event: eventCreator.createDrop(),
-    });
+    onEvent(eventCreator.createDrop());
   };
 
   const onMiss = () => {
-    onEvent({
-      type: ELogActionType.addEvent,
-      event: eventCreator.createMiss(),
-    });
+    const missScore = { ...lastScore, miss: true };
+    onEvent(missScore);
   };
 
   const onScore = (location: EScoreLocation) => {
-    onEvent({
-      type: ELogActionType.addEvent,
-      event: eventCreator.createScore(location),
-    });
+    const lastScore = eventCreator.createScore(location, false);
+    setLastScore(lastScore);
+    clearRobotStateAndPickup();
+  };
+
+  const confirmScore = () => {
+    if (lastScore) {
+      onEvent(lastScore);
+    }
   };
 
   const toEndgame = () => {
@@ -104,6 +110,23 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
       type: ELogActionType.addEvent,
       event: eventCreator.createAuto(leave === 'checked'),
     });
+
+    if (lastPickup) {
+      logDispatch({
+        type: ELogActionType.addEvent,
+        event: lastPickup,
+      });
+      setLastPickup(null);
+    }
+
+    if (lastScore) {
+      logDispatch({
+        type: ELogActionType.addEvent,
+        event: lastScore,
+      });
+      setLastScore(null);
+    }
+
     navigation.navigate('Endgame');
   };
 
@@ -124,6 +147,8 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             const newPickupStates = new Array(numPickupStations).fill(ERobotState.empty);
 
             newPickupStates[i] = ERobotState.note;
+
+            confirmScore();
 
             setLastPickup(eventCreator.createPickup(pickupStationNames[i]));
 
@@ -148,8 +173,20 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             setLeave(leave === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
-        <Button variant="contained" title="Miss" onPress={onMiss} style={styles.button} />
-        <Button variant="contained" title="Drop" onPress={onDrop} style={styles.button} />
+        <Button
+          variant="contained"
+          title="Miss"
+          onPress={onMiss}
+          style={styles.button}
+          disabled={!lastScore}
+        />
+        <Button
+          variant="contained"
+          title="Drop"
+          onPress={onDrop}
+          style={styles.button}
+          disabled={robotState === ERobotState.empty}
+        />
         <Button variant="contained" title="Endgame" onPress={toEndgame} style={styles.button} />
         <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
         <ViewTimer />
@@ -225,11 +262,12 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 120,
+    marginTop: 10
   },
   buttonStack: {
     alignItems: 'center',
     height: 40,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     margin: 4,
   },
   field: {

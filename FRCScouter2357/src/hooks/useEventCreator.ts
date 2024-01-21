@@ -26,14 +26,9 @@ export const useEventCreator = () => {
     return createEvent({ type });
   };
 
-  const createMiss = (): TEvent => {
-    const type = EEventTypes.miss;
-    return createEvent({ type });
-  };
-
-  const createScore = (location: EScoreLocation): TEvent => {
+  const createScore = (location: EScoreLocation, miss: boolean): TEvent => {
     const type = EEventTypes.score;
-    return createEvent({ type, location });
+    return createEvent({ type, location, miss });
   };
 
   const createAuto = (leave: boolean): TEvent => {
@@ -62,7 +57,6 @@ export const useEventCreator = () => {
     createStart,
     createPickup,
     createDrop,
-    createMiss,
     createScore,
     createAuto,
     createEndgame,
