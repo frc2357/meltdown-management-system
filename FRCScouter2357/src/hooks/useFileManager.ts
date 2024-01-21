@@ -42,7 +42,7 @@ export const useFileManager = () => {
 
   const deleteFile = async (path: string): Promise<void> => {
     await fs.unlink(path);
-  }
+  };
 
   const unzipAscii = async (inputAscii: string, outFilePath: string): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
@@ -92,6 +92,6 @@ export const useFileManager = () => {
     getZippedLog,
     getEventLogInfo,
     getLogStructure,
-    deleteFile
+    deleteFile,
   };
 };

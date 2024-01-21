@@ -31,10 +31,7 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({ navigation }) => {
   const createLogButton = (path: string, deleteFile: () => void) => {
     return (
       <>
-        <IconButton
-          icon={(props) => <List.Icon icon="delete" />}
-          onPress={deleteFile}
-        />
+        <IconButton icon={(props) => <List.Icon icon="delete" />} onPress={deleteFile} />
         <IconButton
           icon={(props) => <List.Icon icon="export" />}
           onPress={() => {
@@ -55,11 +52,13 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({ navigation }) => {
               <List.Item
                 key={matchLog.name}
                 title={matchLog.name}
-                right={() => createLogButton(matchLog.path, () => {
-                  fileManager.deleteFile(matchLog.path);
-                  logStructure[eventName].splice(index, 1);
-                  setLogStructure({...logStructure});
-                })}
+                right={() =>
+                  createLogButton(matchLog.path, () => {
+                    fileManager.deleteFile(matchLog.path);
+                    logStructure[eventName].splice(index, 1);
+                    setLogStructure({ ...logStructure });
+                  })
+                }
               />
             );
           })}
