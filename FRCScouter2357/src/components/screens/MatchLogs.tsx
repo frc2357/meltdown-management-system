@@ -1,110 +1,89 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Text } from '@react-native-material/core';
-import fs from 'react-native-fs';
-import { TMatchLogsProps } from '../../../types';
-import { zip } from 'react-native-zip-archive';
-
-const sampleMatch = {
-  teamNum: '1986',
-  scouterName: 'test2',
-  matchNum: 6,
-  alliance: 'RED',
-  alliancePos: '2',
-  events: [
-    { type: 'start', location: 'open lane', piece: 'cone', timestamp: 0 },
-    { timestamp: 38.723999977111816, type: 'score', piece: 'cone', row: 0, col: 0, isAuto: false },
-    {
-      timestamp: 48.812000036239624,
-      type: 'pickup',
-      piece: 'cube',
-      location: 'doubleSub',
-      isAuto: false,
-    },
-    { timestamp: 59.20300006866455, type: 'score', piece: 'cone', row: 0, col: 5, isAuto: false },
-    {
-      timestamp: 67.32100009918213,
-      type: 'pickup',
-      piece: 'cone',
-      location: 'doubleSub',
-      isAuto: false,
-    },
-    { timestamp: 74.48600006103516, type: 'score', piece: 'cube', row: 0, col: 1, isAuto: false },
-    {
-      timestamp: 87.77300000190735,
-      type: 'pickup',
-      piece: 'empty',
-      location: 'singleSub',
-      isAuto: false,
-    },
-    { timestamp: 100.99399995803833, type: 'score', piece: 'cone', row: 0, col: 2, isAuto: false },
-    {
-      timestamp: 122.62299990653992,
-      type: 'pickup',
-      piece: 'cone',
-      location: 'floor',
-      isAuto: false,
-    },
-    { timestamp: 135.33699989318848, type: 'score', piece: 'cube', row: 2, col: 1, isAuto: false },
-    {
-      timestamp: 138.38700008392334,
-      type: 'pickup',
-      piece: 'cone',
-      location: 'floor',
-      isAuto: false,
-    },
-    { timestamp: 140.62400007247925, type: 'drop', piece: 'cube', isAuto: false },
-    { timestamp: 147.84100008010864, type: 'auto', hasMobility: false, location: 'None' },
-    {
-      timestamp: 178.04999995231628,
-      type: 'endgame',
-      location: 'Engaged',
-      notes: 'No movement in auto',
-    },
-  ],
-};
+import React, { useState } from 'react';
+import { Button, Divider, HStack, IconButton, Text } from '@react-native-material/core';
+import { TLogStructure, TMatchLogsProps } from '../../../types';
+import { useFileManager } from '../../hooks/useFileManager';
+import { List } from 'react-native-paper';
+import { NavigationHelpersContext, useFocusEffect } from '@react-navigation/native';
+import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
 
 export const MatchLogs: React.FC<TMatchLogsProps> = ({ navigation }) => {
-  const [fileInfo, setFileInfo] = useState('');
+  const [logStructure, setLogStructure] = useState<TLogStructure>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const fileManager = useFileManager();
 
-  const handleFiles = async () => {
-    try {
-      const logs = `${fs.DocumentDirectoryPath}/logs`;
-      const unzippedPath = `${logs}/unzipped`;
-      const zippedPath = `${logs}/zipped`;
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      fileManager
+        .getLogStructure()
+        .then((value: TLogStructure) => {
+          setLogStructure(value);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('ERROR');
+          console.log(JSON.stringify(err, null, 1));
+          setIsLoading(false);
+        });
+    }, [])
+  );
 
-      await fs.mkdir(logs);
-      await fs.mkdir(unzippedPath);
-      await fs.mkdir(zippedPath);
-
-      await fs.writeFile(`${unzippedPath}/test.txt`, JSON.stringify(sampleMatch));
-
-      const unzippedFiles = (await fs.readDir(unzippedPath)).map((elem) => elem.name).join('\n');
-      console.log(unzippedFiles);
-
-      await zip([`${unzippedPath}/test.txt`], `${zippedPath}/test.zip`);
-
-      const zippedFiles = (await fs.readDir(zippedPath)).map((elem) => elem.name).join('\n');
-      console.log(zippedFiles);
-    } catch (err) {
-      console.log('err');
-      console.log(JSON.stringify(err));
-    }
+  const createLogButton = (path: string, deleteFile: () => void) => {
+    return (
+      <>
+        <IconButton
+          icon={(props) => <List.Icon icon="delete" />}
+          onPress={deleteFile}
+        />
+        <IconButton
+          icon={(props) => <List.Icon icon="export" />}
+          onPress={() => {
+            navigation.navigate('QRShow', { routeName: 'MatchLogs', path: path });
+          }}
+        />
+      </>
+    );
   };
 
-  useEffect(() => {
-    handleFiles();
-  }, []);
+  const createEventList = () => {
+    const events = [];
+    for (const eventName in logStructure) {
+      events.push(
+        <List.Accordion title={eventName} id={eventName} key={eventName}>
+          {logStructure[eventName].map((matchLog, index) => {
+            return (
+              <List.Item
+                key={matchLog.name}
+                title={matchLog.name}
+                right={() => createLogButton(matchLog.path, () => {
+                  fileManager.deleteFile(matchLog.path);
+                  logStructure[eventName].splice(index, 1);
+                  setLogStructure({...logStructure});
+                })}
+              />
+            );
+          })}
+        </List.Accordion>
+      );
+    }
+
+    return <List.AccordionGroup>{events}</List.AccordionGroup>;
+  };
 
   return (
-    <Box>
-      <Text>{fileInfo}</Text>
-      <Button
-        title="Startup"
-        variant="contained"
-        onPress={() => {
-          navigation.navigate('Startup');
-        }}
-      />
-    </Box>
+    <LoadingWrapper isLoading={isLoading} message="Loading Logs">
+      <HStack spacing={50}>
+        <Button
+          title="Back"
+          variant="contained"
+          onPress={() => {
+            navigation.navigate('Startup');
+          }}
+        />
+        <Text variant="h4">Match Logs</Text>
+      </HStack>
+      <Divider />
+      {createEventList()}
+    </LoadingWrapper>
   );
 };

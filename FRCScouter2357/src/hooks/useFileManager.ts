@@ -1,6 +1,6 @@
 import fs from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
-import { TLog } from '../../types';
+import { TLog, TLogStructure } from '../../types';
 import { useAssignment } from '../contexts/AssignmentContext';
 
 export const useFileManager = () => {
@@ -21,27 +21,28 @@ export const useFileManager = () => {
     await Promise.all(promises);
   };
 
-  const createEventDirs = async (): Promise<void> => {
-    const promises: Promise<void>[] = [];
-    promises.push(fs.mkdir(unzippedLogsPath));
-    promises.push(fs.mkdir(zippedLogsPath));
-    promises.push(fs.mkdir(tempPath));
-
-    await Promise.all(promises);
-  };
-
   const saveLog = async (log: TLog): Promise<string> => {
-    const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.teamNum}`;
+    const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
     const logString: string = JSON.stringify(log);
+
+    await fs.mkdir(unzippedLogsPath);
+    await fs.mkdir(zippedLogsPath);
 
     await fs.writeFile(`${unzippedLogsPath}/${fileName}`, logString);
 
     await zip([`${unzippedLogsPath}/${fileName}`], `${zippedLogsPath}/${fileName}`);
+    await fs.unlink(`${unzippedLogsPath}/${fileName}`);
 
-    const output = await fs.readFile(`${zippedLogsPath}/${fileName}`, 'ascii');
-
-    return output;
+    return `${zippedLogsPath}/${fileName}`;
   };
+
+  const getZippedLog = async (path: string): Promise<string> => {
+    return await fs.readFile(path, 'ascii');
+  };
+
+  const deleteFile = async (path: string): Promise<void> => {
+    await fs.unlink(path);
+  }
 
   const unzipAscii = async (inputAscii: string, outFilePath: string): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
@@ -55,15 +56,42 @@ export const useFileManager = () => {
     return output;
   };
 
+  const getLogStructure = async (): Promise<TLogStructure> => {
+    const eventDirs = await fs.readDir(logsRoot);
+
+    const logStructure: TLogStructure = eventDirs
+      .filter((dir) => dir.isDirectory)
+      .reduce((structure: TLogStructure, eventDir) => ({ ...structure, [eventDir.name]: [] }), {});
+
+    for (const event in logStructure) {
+      logStructure[event] = await getEventLogInfo(event);
+    }
+
+    return logStructure;
+  };
+
+  const getEventLogInfo = async (eventName: string): Promise<TLogStructure['event']> => {
+    const files = await fs.readDir(`${logsRoot}/${eventName}/zipped`);
+
+    const logInfo: TLogStructure['event'] = files
+      .filter((file) => file.isFile)
+      .map((file) => ({ name: file.name, path: file.path }));
+
+    return logInfo;
+  };
+
   const unzipAssignment = async (assignmentAscii: string): Promise<string> => {
     return await unzipAscii(assignmentAscii, assignmentFilePath);
   };
 
   return {
     createBaseDirs,
-    createEventDirs,
     unzipAssignment,
     unzipAscii,
     saveLog,
+    getZippedLog,
+    getEventLogInfo,
+    getLogStructure,
+    deleteFile
   };
 };

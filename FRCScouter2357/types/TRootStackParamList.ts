@@ -7,5 +7,5 @@ export type TRootStackParamList = {
   Prematch: undefined;
   TeleopLayout: { initialRobotState: ERobotState };
   Endgame: undefined;
-  QRShow: { routeName: keyof TRootStackParamList; log: TLog };
+  QRShow: { routeName: keyof TRootStackParamList; path: string };
 };

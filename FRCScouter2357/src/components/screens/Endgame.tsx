@@ -14,6 +14,7 @@ import {
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
+import { useFileManager } from '../../hooks/useFileManager';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -22,8 +23,9 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
   const [trap, setTrap] = useState<'checked' | 'unchecked'>('unchecked');
-
   const [notes, setNotes] = useState('');
+
+  const fileManager = useFileManager();
 
   const log: TLog = useLog();
   const logDispatch = useLogDispatch();
@@ -48,7 +50,9 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
       type: EAssignmentActionType.nextMatch,
     });
 
-    navigation.navigate('QRShow', { routeName: 'Prematch', log });
+    fileManager.saveLog(log).then((path) => {
+      navigation.navigate('QRShow', { routeName: 'Prematch', path });
+    });
   };
 
   return (

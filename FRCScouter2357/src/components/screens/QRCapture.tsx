@@ -14,8 +14,7 @@ import { useFileManager } from '../../hooks/useFileManager';
 const testAssignment: TAssignment = {
   alliance: 'RED',
   alliancePos: '2',
-  currentMatch: 1,
-  event: 'test',
+  event: 'test1',
   matches: [
     { matchNum: 1, teamNum: 2357, scouter: 'John' },
     { matchNum: 2, teamNum: 2357, scouter: 'Kevin' },
@@ -56,8 +55,6 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
       type: EAssignmentActionType.load,
       loadData: JSON.stringify(testAssignment),
     });
-
-    fileManager.createEventDirs();
 
     navigation.navigate<'Prematch'>('Prematch');
   };

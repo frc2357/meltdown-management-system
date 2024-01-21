@@ -8,7 +8,7 @@ import { useFileManager } from '../../hooks/useFileManager';
 export const QRShow: React.FC<TQRShowProps> = ({
   navigation,
   route: {
-    params: { routeName, log },
+    params: { routeName, path },
   },
 }) => {
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -16,7 +16,7 @@ export const QRShow: React.FC<TQRShowProps> = ({
   const fileManager = useFileManager();
 
   const generateQRCode = async () => {
-    const output: string = await fileManager.saveLog(log);
+    const output: string = await fileManager.getZippedLog(path);
     setQrContent(output);
     setLoading(false);
   };
