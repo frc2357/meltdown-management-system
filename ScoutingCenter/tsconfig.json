@@ -1,5 +1,0 @@
-{
-  "include": ["./src/**/*.ts, ./src/**/*.tsx", "src/App.tsx", "./types/**/*.ts", "./assets/**/*.png"],
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
-  "extends": "@react-native/typescript-config/tsconfig.json"
-}
