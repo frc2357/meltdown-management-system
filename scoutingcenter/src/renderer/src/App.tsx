@@ -1,29 +1,35 @@
+import { Button } from '@mui/material';
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
+import QrReader from 'react-qr-scanner';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [result, setResult] = useState("");
+  const [test, setTest] = useState(false);
 
+  const handleScan = (data) => {
+    console.log(JSON.stringify(data));
+    setResult(JSON.stringify(data))
+  }
+
+  const handleError = (err) => {
+    console.error(err)
+  }
+ 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <p>HELLO</p>
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+        <QrReader
+          delay={100}
+          style={{
+            height: 240,
+            width: 320,
+          }}
+          onError={handleError}
+          onScan={handleScan}
+          />
+        <p>{result}</p>
+        <Button onClick={() => {setTest(!test)}}>Button</Button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
   );
 }
 
