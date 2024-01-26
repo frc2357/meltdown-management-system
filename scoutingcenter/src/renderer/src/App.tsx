@@ -1,36 +1,21 @@
-import { Button } from '@mui/material';
-import { useState } from 'react';
-import QrReader from 'react-qr-scanner';
-import './App.css';
+import { Box } from '@mui/material';
+import React, { ReactElement } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Capturer } from './components/Capturer';
+import { Distributor } from './components/Distributor';
 
-function App() {
-  const [result, setResult] = useState("");
-  const [test, setTest] = useState(false);
-
-  const handleScan = (data) => {
-    console.log(JSON.stringify(data));
-    setResult(JSON.stringify(data))
-  }
-
-  const handleError = (err) => {
-    console.error(err)
-  }
- 
+export const App: React.FC = (): ReactElement => {
   return (
-    <div>
-        <QrReader
-          delay={100}
-          style={{
-            height: 240,
-            width: 320,
-          }}
-          onError={handleError}
-          onScan={handleScan}
-          />
-        <p>{result}</p>
-        <Button onClick={() => {setTest(!test)}}>Button</Button>
-      </div>
+    <Box
+      sx={{
+        minHeight: 600,
+        minWidth: 600,
+      }}
+    >
+      <Routes>
+        <Route path="/" element={<Distributor />} />
+        <Route path="/capturer" element={<Capturer />} />
+      </Routes>
+    </Box>
   );
-}
-
-export default App;
+};

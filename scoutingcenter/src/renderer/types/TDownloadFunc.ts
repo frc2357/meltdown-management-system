@@ -1,0 +1,1 @@
+export type TDownloadFunc = (fileContent: string, fileName: string) => void
