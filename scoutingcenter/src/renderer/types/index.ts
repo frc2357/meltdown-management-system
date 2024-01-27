@@ -1,1 +1,1 @@
-export * from "./TDownloadFunc"
+export * from './TDownloadFunc';

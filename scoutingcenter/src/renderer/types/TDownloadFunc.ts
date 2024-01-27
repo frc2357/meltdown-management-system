@@ -1,1 +1,1 @@
-export type TDownloadFunc = (fileContent: string, fileName: string) => void
+export type TDownloadFunc = (fileName: string, fileContent: string) => void;
