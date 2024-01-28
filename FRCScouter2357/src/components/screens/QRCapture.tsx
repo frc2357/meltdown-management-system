@@ -49,8 +49,8 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     if (!codes[0].value) return;
 
-    // const ascii = Buffer.from(codes[0].value, 'base64').toString('ascii');
-    // console.log(ascii);
+    const ascii = Buffer.from(codes[0].value, 'base64').toString('ascii');
+    console.log(ascii);
 
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
 

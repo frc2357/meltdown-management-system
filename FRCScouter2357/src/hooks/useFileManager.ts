@@ -22,7 +22,7 @@ export const useFileManager = () => {
   };
 
   const saveLog = async (log: TLog): Promise<string> => {
-    const fileName: string = `assignment.txt`;
+    const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
     const logString: string = JSON.stringify(log);
 
     await fs.mkdir(unzippedLogsPath);

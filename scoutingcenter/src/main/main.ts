@@ -3,6 +3,7 @@ import path from "node:path"
 import fs from "node:fs"
 import { TFullAssignment, TFullAssignmentMatch, TTabletAssignment } from '../renderer/types';
 import AdmZip from 'adm-zip';
+import archiver from 'archiver';
 
 let mainWindow: BrowserWindow | null;
 
@@ -136,22 +137,23 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
 
 
 //console.log(JSON.stringify(tabletAssignments, null, 1))
-  const zippedAssignments: string[] = tabletAssignments.map((tabletAssignment: TTabletAssignment, index): any => {
-    const zip = new AdmZip();
-    const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8')
-    console.log(buffer.length)
-    zip.addFile('assignment/assignment.txt', buffer);
-  
-    zip.writeZip(path.resolve(__dirname, "test"));
-    console.log("INDEX: "+index);
-    const test = zip.toBuffer();
-    console.log(test.toString('ascii'))
-    const result = test.toString('base64').slice(0, 500);
-    console.log(result);
-    return result
-  }) 
+  const zippedAssignments: string[] = [];
+   for (const tabletAssignment of tabletAssignments) {
+    const outStream = fs.createWriteStream(__dirname + '/temp.zip');
+    const archive = archiver('zip');
 
-  //console.log(zippedAssignments)
-   return zippedAssignments;
-  //return tabletAssignments.map((elem) => JSON.stringify(elem).slice(0, 500))
+    archive.pipe(outStream);
+    archive.append(JSON.stringify(tabletAssignment), {name: 'assignment.txt'});
+
+    await archive.finalize();
+
+    const outBuffer = fs.readFileSync(__dirname+'/temp.zip');
+    console.log(tabletAssignment.alliance + " " + tabletAssignment.alliancePos);
+    console.log(outBuffer.toString('base64'));
+    console.log(outBuffer.toString('ascii'))
+    
+    zippedAssignments.push( outBuffer.toString('ascii'));
+  } 
+
+  return zippedAssignments
 }) 
