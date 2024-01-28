@@ -11,7 +11,7 @@ export const useFileManager = () => {
   const unzippedLogsPath = `${logsEvent}/unzipped`;
   const zippedLogsPath = `${logsEvent}/zipped`;
   const tempPath = `${fs.DocumentDirectoryPath}/temp`;
-  const assignmentFilePath = `${fs.DocumentDirectoryPath}/assignment/assignment.txt`;
+  const assignmentFilePath = `${fs.DocumentDirectoryPath}/assignment`;
 
   const createBaseDirs = async (): Promise<void> => {
     const promises: Promise<void>[] = [];
@@ -44,14 +44,18 @@ export const useFileManager = () => {
     await fs.unlink(path);
   };
 
-  const unzipAscii = async (inputAscii: string, outFilePath: string): Promise<string> => {
+  const unzipAscii = async (
+    inputAscii: string,
+    outFilePath: string,
+    fileName: string
+  ): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
 
     await fs.writeFile(tempZip, inputAscii, 'ascii');
     await unzip(tempZip, outFilePath, 'US-ASCII');
     await fs.unlink(tempZip);
 
-    const output: string = await fs.readFile(outFilePath);
+    const output: string = await fs.readFile(`${outFilePath}/${fileName}`);
 
     return output;
   };
@@ -81,7 +85,7 @@ export const useFileManager = () => {
   };
 
   const unzipAssignment = async (assignmentAscii: string): Promise<string> => {
-    return await unzipAscii(assignmentAscii, assignmentFilePath);
+    return await unzipAscii(assignmentAscii, assignmentFilePath, 'assignment.txt');
   };
 
   return {
