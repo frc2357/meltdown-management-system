@@ -49,10 +49,12 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     if (!codes[0].value) return;
 
-    const buffer = Buffer.from(codes[0].value, 'ascii').toString('hex');
-    console.log(buffer);
+    const ascii = Buffer.from(codes[0].value, 'base64').toString('ascii');
+    console.log(ascii);
 
-    // const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
+    const assignmentTxt: string = await fileManager.unzipAssignment(ascii);
+
+    console.log(assignmentTxt);
 
     // const action: TAssignmentAction = {
     //   type: EAssignmentActionType.load,
@@ -61,7 +63,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     // dispatch(action);
 
-    // navigation.navigate<'Prematch'>('Prematch');
+    //navigation.navigate<'Prematch'>('Prematch');
   };
 
   const testAdvance = () => {

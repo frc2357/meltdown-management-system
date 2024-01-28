@@ -139,14 +139,19 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
   const zippedAssignments: string[] = tabletAssignments.map((tabletAssignment: TTabletAssignment, index): any => {
     const zip = new AdmZip();
     const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8')
-    zip.addFile('assignment.txt', buffer);
+    console.log(buffer.length)
+    zip.addFile('assignment/assignment.txt', buffer);
   
     zip.writeZip(path.resolve(__dirname, "test"));
     console.log("INDEX: "+index);
-    console.log(zip.toBuffer().toString('hex'))
-    return zip.toBuffer().toString('ascii');
+    const test = zip.toBuffer();
+    console.log(test.toString('ascii'))
+    const result = test.toString('base64').slice(0, 500);
+    console.log(result);
+    return result
   }) 
 
   //console.log(zippedAssignments)
-  return zippedAssignments;
+   return zippedAssignments;
+  //return tabletAssignments.map((elem) => JSON.stringify(elem).slice(0, 500))
 }) 

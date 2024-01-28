@@ -1,18 +1,22 @@
 import { Box, Button, ButtonGroup } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import React, { ReactElement, useState } from 'react';
-import QRCode from 'react-qr-code';
+import React, { ReactElement, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TDownloadFunc } from '../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
+import { QRCodeSVG } from 'qrcode.react';
+import QRCode from 'qrcode';
 
 export const Distributor: React.FC = (): ReactElement => {
   const downloadFile: TDownloadFunc = useDownloadFile();
   const [tabletAssignments, setTabletAssignments] = useState<string[]|null>(null);
   const [assignmentIndex, setAssignmentIndex] = useState(0);
+  const qrRef = useRef();
 
   const template: string =
     'match,red1,scout,red2,scout,red3,scout,blue1,scout,blue2,scout,blue3,scout';
+
+  const alliances: string[] = ['RED 1', 'RED 2', 'RED 3', 'BLUE 1', 'BLUE 2', 'BLUE 3']
 
   const qrShow = () => {
     if(!tabletAssignments) {
@@ -21,19 +25,23 @@ export const Distributor: React.FC = (): ReactElement => {
 
     const qrCodes = [];
 
-
     for(let i = 0; i < 6; i++) {
-      qrCodes.push(<QRCode value={tabletAssignments[i]} size={500} style={{
-        position: 'absolute',
+      QRCode.toCanvas(qrRef.current, tabletAssignments[i], {
+        width: 500,
+        margin: 0
+      }, (error: any) => console.log("Error" + error))
+    
+      qrCodes.push(<canvas 
+        ref={qrRef}
+        style={{
         display: assignmentIndex === i ? 'inline' : 'none'
       }}/>)
     }
-
     return qrCodes
   }
 
   const onImportCSV = () => {
-    // @ts-ignore
+    //@ts-ignore
     window.api.openAssignment().then((zippedAssignments: string[]): void => {
       console.log(zippedAssignments);
       setTabletAssignments(zippedAssignments)
@@ -48,7 +56,7 @@ export const Distributor: React.FC = (): ReactElement => {
         variant="contained"
         onClick={(): void => downloadFile( 'eventName.csv', template)}
       >
-        Download Template
+        Download template
       </Button>
       <Button variant="contained">Export Data</Button>
       <Button variant="contained" component={Link} to="/Capturer">
@@ -56,8 +64,9 @@ export const Distributor: React.FC = (): ReactElement => {
       </Button>
       { tabletAssignments === null ? <Typography>No CSV Loaded</Typography> : 
       <Box>
+        <Typography>{alliances[assignmentIndex]}</Typography>
       <Box sx={{ alignItems: 'center', background: 'white', padding: '16px', height: '500px', width: '500px' }}>
-        {qrShow()}
+      {qrShow()}
       </Box>
       <ButtonGroup variant="outlined">
         <Button onClick={() => {
