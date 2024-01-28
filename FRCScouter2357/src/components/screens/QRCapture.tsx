@@ -7,9 +7,15 @@ import {
   Code,
 } from 'react-native-vision-camera';
 import React, { useEffect } from 'react';
-import { EAssignmentActionType, TAssignment, TQRCaptureProps } from '../../../types';
+import {
+  EAssignmentActionType,
+  TAssignment,
+  TAssignmentAction,
+  TQRCaptureProps,
+} from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
+import { Buffer } from 'buffer';
 
 const testAssignment: TAssignment = {
   alliance: 'RED',
@@ -43,6 +49,9 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     if (!codes[0].value) return;
 
+    const buffer = Buffer.from(codes[0].value, 'ascii').toString('hex');
+    console.log(buffer);
+
     // const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
 
     // const action: TAssignmentAction = {
@@ -51,6 +60,11 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     // };
 
     // dispatch(action);
+
+    // navigation.navigate<'Prematch'>('Prematch');
+  };
+
+  const testAdvance = () => {
     dispatch({
       type: EAssignmentActionType.load,
       loadData: JSON.stringify(testAssignment),
@@ -92,7 +106,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
         title="Next"
         variant="contained"
         onPress={() => {
-          advance([{ value: 'hello', type: 'unknown' }]);
+          testAdvance();
         }}
         style={{ position: 'absolute', left: '0%', top: '90%' }}
       />
