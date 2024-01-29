@@ -44,14 +44,13 @@ export const useFileManager = () => {
     await fs.unlink(path);
   };
 
-  const unzipAscii = async (
-    inputAscii: string,
+  const unzipB64 = async (
+    inputB64: string,
     outFilePath: string,
     fileName: string
   ): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
-
-    await fs.writeFile(tempZip, inputAscii, 'ascii');
+    await fs.writeFile(tempZip, inputB64, 'base64');
     await unzip(tempZip, outFilePath, 'US-ASCII');
     await fs.unlink(tempZip);
 
@@ -84,14 +83,14 @@ export const useFileManager = () => {
     return logInfo;
   };
 
-  const unzipAssignment = async (assignmentAscii: string): Promise<string> => {
-    return await unzipAscii(assignmentAscii, assignmentFilePath, 'assignment.txt');
+  const unzipAssignment = async (assignmentB64: string): Promise<string> => {
+    return await unzipB64(assignmentB64, assignmentFilePath, 'assignment.txt');
   };
 
   return {
     createBaseDirs,
     unzipAssignment,
-    unzipAscii,
+    unzipB64,
     saveLog,
     getZippedLog,
     getEventLogInfo,

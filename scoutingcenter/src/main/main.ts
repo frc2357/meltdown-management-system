@@ -1,18 +1,18 @@
 import { app, BrowserWindow, dialog, ipcMain, IpcMainEvent, SaveDialogReturnValue } from 'electron';
-import path from "node:path"
-import fs from "node:fs"
-import { TFullAssignment, TFullAssignmentMatch, TTabletAssignment } from '../renderer/types';
+import path from 'node:path';
+import fs from 'node:fs';
+import { TTabletAssignment } from '../renderer/types';
 import AdmZip from 'adm-zip';
 
 let mainWindow: BrowserWindow | null;
 
 function createWindow(): void {
-  console.log(path.join(__dirname, '../preload/preload.js' ))
+  console.log(path.join(__dirname, '../preload/preload.js'));
   mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, '../preload/preload.js' )
-    }
+      preload: path.join(__dirname, '../preload/preload.js'),
+    },
   });
 
   // Vite dev server URL
@@ -36,42 +36,40 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('saveFile', async (event: IpcMainEvent, fileName: string, fileContent: string): Promise<void> => {
-  const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
-    title: 'Download File',
-    defaultPath: `${app.getPath('documents')}/${fileName}`,
-    filters: [
-      { name: 'csv', extensions: ['csv', 'txt'] }],
-      
-  });
+ipcMain.on(
+  'saveFile',
+  async (event: IpcMainEvent, fileName: string, fileContent: string): Promise<void> => {
+    const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
+      title: 'Download File',
+      defaultPath: `${app.getPath('documents')}/${fileName}`,
+      filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
+    });
 
-  console.log(JSON.stringify(saveInfo))
-  if (saveInfo.canceled || saveInfo.filePath === undefined) {
-    return;
+    console.log(JSON.stringify(saveInfo));
+    if (saveInfo.canceled || saveInfo.filePath === undefined) {
+      return;
+    }
+
+    fs.writeFileSync(saveInfo.filePath, fileContent);
   }
+);
 
-  fs.writeFileSync(saveInfo.filePath, fileContent);
-})
-
-ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
+ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
   const openInfo = await dialog.showOpenDialog({
     title: 'Open Assignment',
     defaultPath: app.getPath('documents'),
     properties: ['openFile'],
-    filters: [
-      {name: 'csv', extensions: ['csv', 'txt']}
-    ]
+    filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
   });
 
-  if(openInfo.canceled || openInfo.filePaths.length === 0) {
-    return null
+  if (openInfo.canceled || openInfo.filePaths.length === 0) {
+    return null;
   }
 
-  const event: string = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? "";
-  console.log(`event: ${event}`)
+  const event: string = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? '';
 
   const assignmentCsv: string = fs.readFileSync(openInfo.filePaths[0], {
-    encoding: 'utf-8'
+    encoding: 'utf-8',
   });
 
   const rows: string[] = assignmentCsv.split('\n');
@@ -80,73 +78,67 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
 
   const tabletAssignments: TTabletAssignment[] = [
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '1',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '1',
+      m: [],
     },
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '2',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '2',
+      m: [],
     },
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '3',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '3',
+      m: [],
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '1',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '1',
+      m: [],
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '2',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '2',
+      m: [],
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '3',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '3',
+      m: [],
     },
-  ]
-
+  ];
 
   rows.forEach((row: string): void => {
     const fields: string[] = row.split(',');
 
     const matchNum: number = Number(fields[0]);
 
-    for(let i: number = 0; i<12; i+=2) {
-      tabletAssignments[i/2].matches.push(
-        {
-          matchNum: matchNum,
-          teamNum: Number(fields[i+1]),
-          scouter: fields[i+2]
-        }
-      )
-    }    
-  })
+    for (let i: number = 0; i < 12; i += 2) {
+      tabletAssignments[i / 2].m.push({
+        m: matchNum,
+        t: Number(fields[i + 1]),
+        s: fields[i + 2],
+      });
+    }
+  });
 
+  const zippedAssignments: string[] = tabletAssignments.map(
+    (tabletAssignment: TTabletAssignment, index): any => {
+      const zip = new AdmZip();
+      const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8');
+      zip.addFile('assignment.txt', buffer);
 
-//console.log(JSON.stringify(tabletAssignments, null, 1))
-  const zippedAssignments: string[] = tabletAssignments.map((tabletAssignment: TTabletAssignment, index): any => {
-    const zip = new AdmZip();
-    const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8')
-    zip.addFile('assignment.txt', buffer);
-  
-    zip.writeZip(path.resolve(__dirname, "test"));
-    console.log("INDEX: "+index);
-    console.log(zip.toBuffer().toString('hex'))
-    return zip.toBuffer().toString('ascii');
-  }) 
+      zip.writeZip(path.resolve(__dirname, 'test'));
+      return zip.toBuffer().toString('base64');
+    }
+  );
 
-  //console.log(zippedAssignments)
   return zippedAssignments;
-}) 
+});
