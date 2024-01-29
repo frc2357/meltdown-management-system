@@ -1,9 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain, IpcMainEvent, SaveDialogReturnValue } from 'electron';
 import path from "node:path"
 import fs from "node:fs"
-import { TFullAssignment, TFullAssignmentMatch, TTabletAssignment } from '../renderer/types';
+import { TTabletAssignment } from '../renderer/types';
 import AdmZip from 'adm-zip';
-import archiver from 'archiver';
 
 let mainWindow: BrowserWindow | null;
 
@@ -69,7 +68,6 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
   }
 
   const event: string = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? "";
-  console.log(`event: ${event}`)
 
   const assignmentCsv: string = fs.readFileSync(openInfo.filePaths[0], {
     encoding: 'utf-8'
@@ -81,43 +79,42 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
 
   const tabletAssignments: TTabletAssignment[] = [
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '1',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '1',
+      m: []
     },
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '2',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '2',
+      m: []
     },
     {
-      event,
-      alliance: 'RED',
-      alliancePos: '3',
-      matches: []
+      e: event,
+      a: 'RED',
+      ap: '3',
+      m: []
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '1',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '1',
+      m: []
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '2',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '2',
+      m: []
     },
     {
-      event,
-      alliance: 'BLUE',
-      alliancePos: '3',
-      matches: []
+      e: event,
+      a: 'BLUE',
+      ap: '3',
+      m: []
     },
   ]
-
 
   rows.forEach((row: string): void => {
     const fields: string[] = row.split(',');
@@ -125,36 +122,24 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
     const matchNum: number = Number(fields[0]);
 
     for(let i: number = 0; i<12; i+=2) {
-      tabletAssignments[i/2].matches.push(
+      tabletAssignments[i/2].m.push(
         {
-          matchNum: matchNum,
-          teamNum: Number(fields[i+1]),
-          scouter: fields[i+2]
+          m: matchNum,
+          t: Number(fields[i+1]),
+          s: fields[i+2]
         }
       )
     }    
   })
 
-  console.log(JSON.stringify(tabletAssignments, null, 1))
-  const zippedAssignments: string[] = [];
-   for (const tabletAssignment of tabletAssignments) {
-    const outStream = fs.createWriteStream(__dirname + '/temp.zip');
-    const archive = archiver('zip', {
-      forceZip64: true
-    });
-
-    archive.pipe(outStream);
-    console.log(JSON.stringify(tabletAssignment))
-    archive.append(JSON.stringify(tabletAssignment), {name: 'assignment.txt'});
-
-    await archive.finalize();
-
-    const outBuffer = fs.readFileSync(__dirname+'/temp.zip', 'base64');
-    console.log(tabletAssignment.alliance + " " + tabletAssignment.alliancePos);
-    console.log(outBuffer)
-
-    zippedAssignments.push( outBuffer);
-  } 
+  const zippedAssignments: string[] = tabletAssignments.map((tabletAssignment: TTabletAssignment, index): any => {
+    const zip = new AdmZip();
+    const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8')
+    zip.addFile('assignment.txt', buffer);
+  
+    zip.writeZip(path.resolve(__dirname, "test"));
+    return zip.toBuffer().toString('base64');
+  }) 
 
   return zippedAssignments
 }) 

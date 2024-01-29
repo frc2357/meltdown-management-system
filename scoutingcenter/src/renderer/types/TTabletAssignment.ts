@@ -1,6 +1,6 @@
 export type TTabletAssignment = {
-  event: string;
-  alliance: 'RED' | 'BLUE' | '';
-  alliancePos: '1' | '2' | '3' | '';
-  matches: {matchNum: number, teamNum: number, scouter: string}[];
+  e: string; // event name
+  a: 'RED' | 'BLUE' | ''; // alliance
+  ap: '1' | '2' | '3' | ''; // alliance pos
+  m: {m: number, t: number, s: string}[]; // matches: {matchNum, teamNum, scouter}
 };
