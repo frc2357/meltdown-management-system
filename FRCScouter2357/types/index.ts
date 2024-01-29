@@ -23,3 +23,4 @@ export * from './EStartLocation';
 export * from './EPickupLocation';
 export * from './EEndgameLocation';
 export * from './TLogStructure';
+export * from './TInputAssignment';

@@ -4,6 +4,7 @@ import {
   TAssignment,
   TAssignmentAction,
   TAssignmentMatch,
+  TInputAssignment,
 } from '../../types';
 
 const assignmentDefault: TAssignment = {
@@ -50,11 +51,26 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
 ): TAssignment => {
   switch (action.type) {
     case EAssignmentActionType.load:
-      const newValue: TAssignment = JSON.parse(action.loadData);
+      const inputAssignment: TInputAssignment = JSON.parse(action.loadData);
 
-      newValue.currentMatch = newValue.matches[0];
+      const newAssignment: TAssignment = {
+        event: inputAssignment.e,
+        alliance: inputAssignment.a,
+        alliancePos: inputAssignment.ap,
+        matches: [],
+      };
+
+      newAssignment.matches = inputAssignment.m.map(
+        (inputMatch): TAssignmentMatch => ({
+          matchNum: inputMatch.m,
+          teamNum: inputMatch.t,
+          scouter: inputMatch.s,
+        })
+      );
+
+      newAssignment.currentMatch = newAssignment.matches[0];
       // TODO: Check if assignment valid and do something if it is not
-      return newValue;
+      return newAssignment;
     case EAssignmentActionType.nextMatch:
       const nextMatch: TAssignmentMatch | undefined = assignment.matches.find(
         (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch.matchNum + 1

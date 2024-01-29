@@ -45,25 +45,18 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const advance = async (codes: Code[]) => {
     console.log(`Scanned ${codes.length} codes!`);
 
-    console.log(codes[0].value);
-
     if (!codes[0].value) return;
-
-    const ascii = Buffer.from(codes[0].value, 'base64').toString('ascii');
-    console.log(ascii);
 
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
 
-    console.log(assignmentTxt);
+    const action: TAssignmentAction = {
+      type: EAssignmentActionType.load,
+      loadData: assignmentTxt,
+    };
 
-    // const action: TAssignmentAction = {
-    //   type: EAssignmentActionType.load,
-    //   loadData: assignmentTxt,
-    // };
+    dispatch(action);
 
-    // dispatch(action);
-
-    //navigation.navigate<'Prematch'>('Prematch');
+    navigation.navigate<'Prematch'>('Prematch');
   };
 
   const testAdvance = () => {
