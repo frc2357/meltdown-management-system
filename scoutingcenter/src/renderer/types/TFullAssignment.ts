@@ -1,6 +1,6 @@
-import { TFullAssignmentMatch } from "."
+import { TFullAssignmentMatch } from '.';
 
 export type TFullAssignment = {
-  event: string,
-  matches: TFullAssignmentMatch[]
-}
+  event: string;
+  matches: TFullAssignmentMatch[];
+};
