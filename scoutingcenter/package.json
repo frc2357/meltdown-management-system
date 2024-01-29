@@ -19,8 +19,6 @@
     "@yudiel/react-qr-scanner": "^1.2.6",
     "adm-zip": "^0.5.10",
     "archiver": "^6.0.1",
-    "qrcode": "^1.5.3",
-    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.12",

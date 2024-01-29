@@ -4,8 +4,7 @@ import React, { ReactElement, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TDownloadFunc } from '../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
-import { QRCodeSVG } from 'qrcode.react';
-import QRCode from 'qrcode';
+import QRCode from 'react-qr-code';
 
 export const Distributor: React.FC = (): ReactElement => {
   const downloadFile: TDownloadFunc = useDownloadFile();
@@ -25,19 +24,15 @@ export const Distributor: React.FC = (): ReactElement => {
 
     const qrCodes = [];
 
+
     for(let i = 0; i < 6; i++) {
-      QRCode.toCanvas(qrRef.current, tabletAssignments[i], {
-        width: 500,
-        margin: 0
-      }, (error: any) => console.log("Error" + error))
-    
-      qrCodes.push(<canvas 
-        ref={qrRef}
-        style={{
+      qrCodes.push(<QRCode value={tabletAssignments[i]} size={500} style={{
+        position: 'absolute',
         display: assignmentIndex === i ? 'inline' : 'none'
       }}/>)
     }
-    return qrCodes
+
+    return qrCodes;
   }
 
   const onImportCSV = () => {
