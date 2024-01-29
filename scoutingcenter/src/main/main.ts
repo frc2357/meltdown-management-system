@@ -140,19 +140,20 @@ ipcMain.handle('openAssignment', async (): Promise<string[]|null> => {
   const zippedAssignments: string[] = [];
    for (const tabletAssignment of tabletAssignments) {
     const outStream = fs.createWriteStream(__dirname + '/temp.zip');
-    const archive = archiver('zip');
+    const archive = archiver('zip', {
+      forceZip64: true
+    });
 
     archive.pipe(outStream);
     archive.append(JSON.stringify(tabletAssignment), {name: 'assignment.txt'});
 
     await archive.finalize();
 
-    const outBuffer = fs.readFileSync(__dirname+'/temp.zip');
+    const outBuffer = fs.readFileSync(__dirname+'/temp.zip', 'base64');
     console.log(tabletAssignment.alliance + " " + tabletAssignment.alliancePos);
-    console.log(outBuffer.toString('base64'));
-    console.log(outBuffer.toString('ascii'))
-    
-    zippedAssignments.push( outBuffer.toString('ascii'));
+    console.log(outBuffer)
+
+    zippedAssignments.push( outBuffer);
   } 
 
   return zippedAssignments

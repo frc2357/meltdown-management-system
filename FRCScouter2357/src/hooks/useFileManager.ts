@@ -50,7 +50,7 @@ export const useFileManager = () => {
     fileName: string
   ): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
-    await fs.writeFile(tempZip, inputAscii, 'ascii');
+    await fs.writeFile(tempZip, inputAscii, 'base64');
     await unzip(tempZip, outFilePath, 'US-ASCII');
     await fs.unlink(tempZip);
 
