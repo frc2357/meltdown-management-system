@@ -37,7 +37,7 @@ export const useFileManager = () => {
   };
 
   const getZippedLog = async (path: string): Promise<string> => {
-    return await fs.readFile(path, 'ascii');
+    return await fs.readFile(path, 'base64');
   };
 
   const deleteFile = async (path: string): Promise<void> => {

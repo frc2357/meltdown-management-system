@@ -1,10 +1,19 @@
-import { app, BrowserWindow, dialog, ipcMain, IpcMainEvent, SaveDialogReturnValue } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  ipcMain,
+  IpcMainEvent,
+  IpcMainInvokeEvent,
+  SaveDialogReturnValue,
+} from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
 import { TTabletAssignment } from '../renderer/types';
-import AdmZip from 'adm-zip';
+import AdmZip, { IZipEntry } from 'adm-zip';
 
 let mainWindow: BrowserWindow | null;
+let eventName: string = '';
 
 function createWindow(): void {
   console.log(path.join(__dirname, '../preload/preload.js'));
@@ -54,6 +63,25 @@ ipcMain.on(
   }
 );
 
+ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Promise<boolean> => {
+  try {
+    const zip = new AdmZip(Buffer.from(b64, 'base64'));
+    const entries: IZipEntry[] = zip.getEntries();
+
+    entries.forEach((entry: IZipEntry): void => {
+      const text: string = zip.readAsText(entry);
+      const dir: string = path.resolve(app.getPath('documents'), 'matchLog', eventName);
+      fs.mkdirSync(dir, { recursive: true });
+      const filePath: string = path.resolve(dir, `${entry.name}.txt`);
+      fs.writeFileSync(filePath, text);
+    });
+  } catch (err: any) {
+    console.log(`ERROR SAVING FILE: ${err}`);
+    return false;
+  }
+  return true;
+});
+
 ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
   const openInfo = await dialog.showOpenDialog({
     title: 'Open Assignment',
@@ -66,7 +94,7 @@ ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
     return null;
   }
 
-  const event: string = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? '';
+  eventName = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? '';
 
   const assignmentCsv: string = fs.readFileSync(openInfo.filePaths[0], {
     encoding: 'utf-8',
@@ -78,37 +106,37 @@ ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
 
   const tabletAssignments: TTabletAssignment[] = [
     {
-      e: event,
+      e: eventName,
       a: 'RED',
       ap: '1',
       m: [],
     },
     {
-      e: event,
+      e: eventName,
       a: 'RED',
       ap: '2',
       m: [],
     },
     {
-      e: event,
+      e: eventName,
       a: 'RED',
       ap: '3',
       m: [],
     },
     {
-      e: event,
+      e: eventName,
       a: 'BLUE',
       ap: '1',
       m: [],
     },
     {
-      e: event,
+      e: eventName,
       a: 'BLUE',
       ap: '2',
       m: [],
     },
     {
-      e: event,
+      e: eventName,
       a: 'BLUE',
       ap: '3',
       m: [],

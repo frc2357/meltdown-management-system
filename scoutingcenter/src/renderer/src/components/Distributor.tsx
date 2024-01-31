@@ -27,6 +27,7 @@ export const Distributor: React.FC = (): ReactElement => {
     for (let i = 0; i < 6; i++) {
       qrCodes.push(
         <QRCode
+          key={i}
           value={tabletAssignments[i]}
           size={500}
           style={{

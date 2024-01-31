@@ -1,35 +1,67 @@
-import { Box, Button } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  LinearProgress,
+} from '@mui/material';
 import { QrScanner } from '@yudiel/react-qr-scanner';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const Capturer: React.FC = (): ReactElement => {
-  const [result, setResult] = useState('');
-  const [test, setTest] = useState(false);
+  const [isProcessing, setProcessing] = useState<boolean>(false);
+  const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
+  const [goodScan, setGoodScan] = useState<boolean>(false);
 
-  const handleScan: (data: any) => void = (data: any): void => {
+  const handleScan: (data: string) => void = (data: string): void => {
+    setProcessing(true);
+    setAlertOpen(true);
     console.log(data);
-    setResult(data);
+    // @ts-ignore
+    window.api.handleScan(data).then((success: boolean) => {
+      setProcessing(false);
+      setGoodScan(success);
+    });
   };
 
   const handleError: (err: any) => void = (err: any): void => {
     console.error(err);
   };
 
+  const handleClose: () => void = (): void => {
+    if (isProcessing) return;
+    setAlertOpen(false);
+  };
+
   return (
     <Box>
-      <QrScanner onDecode={handleScan} onError={handleError} />
-      <p>{result}</p>
-      <Button
-        onClick={(): void => {
-          setTest(!test);
-        }}
-      >
-        Button
-      </Button>
-      <Button component={Link} to="/">
+      <QrScanner stopDecoding={isAlertOpen} onDecode={handleScan} onError={handleError} />
+      <Button variant="contained" component={Link} to="/">
         Distributor
       </Button>
+      <Dialog
+        open={isAlertOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Saving File'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {isProcessing ? 'Saving...' : goodScan ? 'Save Successful' : 'Save Failed'}
+          </DialogContentText>
+          {isProcessing && <LinearProgress />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
