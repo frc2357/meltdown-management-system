@@ -5,8 +5,9 @@ import {
   Camera,
   useCodeScanner,
   Code,
+  CameraDevice,
 } from 'react-native-vision-camera';
-import React, { useEffect } from 'react';
+import React, { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import {
   EAssignmentActionType,
   TAssignment,
@@ -16,6 +17,7 @@ import {
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
 import { Buffer } from 'buffer';
+import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
 
 const testAssignment: TAssignment = {
   alliance: 'RED',
@@ -37,15 +39,18 @@ const testAssignment: TAssignment = {
 
 export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const { hasPermission, requestPermission } = useCameraPermission();
-  const dispatch = useAssignmentDispatch();
+  const dispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
+  const [isLoading, setLoading] = useState<boolean>(false);
   const fileManager = useFileManager();
 
-  const device = useCameraDevice('back');
+  const device: CameraDevice = useCameraDevice('back');
 
-  const advance = async (codes: Code[]) => {
+  const advance: (codes: Code[]) => Promise<void> = async (codes: Code[]): Promise<void> => {
     console.log(`Scanned ${codes.length} codes!`);
 
     if (!codes[0].value) return;
+
+    setLoading(true);
 
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
 
@@ -56,6 +61,7 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     dispatch(action);
 
+    setLoading(false);
     navigation.navigate<'Prematch'>('Prematch');
   };
 
@@ -95,16 +101,18 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     );
 
   return (
-    <Box>
-      {cam}
-      <Button
-        title="Next"
-        variant="contained"
-        onPress={() => {
-          testAdvance();
-        }}
-        style={{ position: 'absolute', left: '0%', top: '90%' }}
-      />
-    </Box>
+    <LoadingWrapper message="QR Code Generating" isLoading={isLoading}>
+      <Box>
+        {cam}
+        <Button
+          title="Next"
+          variant="contained"
+          onPress={() => {
+            testAdvance();
+          }}
+          style={{ position: 'absolute', left: '0%', top: '90%' }}
+        />
+      </Box>
+    </LoadingWrapper>
   );
 };
