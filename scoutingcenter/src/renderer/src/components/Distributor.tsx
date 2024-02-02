@@ -41,7 +41,7 @@ export const Distributor: React.FC = (): ReactElement => {
     return qrCodes;
   };
 
-  const onImportCSV = () => {
+  const onImportCSV: () => void = (): void => {
     //@ts-ignore
     window.api.openAssignment().then((zippedAssignments: string[]): void => {
       console.log(zippedAssignments);
@@ -58,7 +58,15 @@ export const Distributor: React.FC = (): ReactElement => {
       <Button variant="contained" onClick={(): void => downloadFile('eventName.csv', template)}>
         Download template
       </Button>
-      <Button variant="contained">Export Data</Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          //@ts-ignore
+          window.api.exportMatches();
+        }}
+      >
+        Export Data
+      </Button>
       <Button variant="contained" component={Link} to="/Capturer">
         Capturer
       </Button>

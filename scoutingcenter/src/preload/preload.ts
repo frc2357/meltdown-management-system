@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
+  exportMatches: (): void => {
+    ipcRenderer.send('exportMatches');
+  },
   saveFile: (fileName: string, fileContent: string): void => {
     ipcRenderer.send('saveFile', fileName, fileContent);
   },

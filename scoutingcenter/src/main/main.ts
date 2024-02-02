@@ -11,9 +11,11 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { TTabletAssignment } from '../renderer/types';
 import AdmZip, { IZipEntry } from 'adm-zip';
+import { spawn, Serializable, ChildProcessWithoutNullStreams } from 'child_process';
 
 let mainWindow: BrowserWindow | null;
 let eventName: string = '';
+let matchLogPath: string = '';
 
 function createWindow(): void {
   console.log(path.join(__dirname, '../preload/preload.js'));
@@ -45,6 +47,37 @@ app.on('activate', () => {
   }
 });
 
+ipcMain.on('exportMatches', async (): Promise<void> => {
+  const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
+    title: 'Download File',
+    defaultPath: `${app.getPath('documents')}/${eventName}`,
+    filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
+  });
+
+  const savePath: string | undefined = saveInfo.filePath;
+  console.log(JSON.stringify(saveInfo));
+  if (saveInfo.canceled || savePath === undefined) {
+    return;
+  }
+
+  const pythonProcess: ChildProcessWithoutNullStreams = spawn('python', [
+    './src/main/python/exportMatches.py',
+    savePath,
+    matchLogPath,
+  ]);
+  pythonProcess.on('error', (err: Error) => {
+    console.log(JSON.stringify(err));
+  });
+  pythonProcess.stdout.on('data', (data: Buffer) => {
+    console.log(`Data from stdout: ${data.toString()}`);
+  });
+  pythonProcess.stderr.on('data', (data: Buffer) =>
+    console.log(`Data from stdout: ${data.toString()}`)
+  );
+  pythonProcess.stdout.on('error', (err: Error) => console.log(`ERROR ${JSON.stringify(err)}`));
+  pythonProcess.stderr.on('error', (err: Error) => console.log(`ERROR ${JSON.stringify(err)}`));
+});
+
 ipcMain.on(
   'saveFile',
   async (event: IpcMainEvent, fileName: string, fileContent: string): Promise<void> => {
@@ -70,9 +103,7 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
 
     entries.forEach((entry: IZipEntry): void => {
       const text: string = zip.readAsText(entry);
-      const dir: string = path.resolve(app.getPath('documents'), 'matchLog', eventName);
-      fs.mkdirSync(dir, { recursive: true });
-      const filePath: string = path.resolve(dir, `${entry.name}.txt`);
+      const filePath: string = path.resolve(matchLogPath, `${entry.name}.txt`);
       fs.writeFileSync(filePath, text);
     });
   } catch (err: any) {
@@ -95,6 +126,8 @@ ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
   }
 
   eventName = openInfo.filePaths[0].split('\\').pop()?.slice(0, -4) ?? '';
+  matchLogPath = path.resolve(app.getPath('documents'), 'matchLog', eventName);
+  fs.mkdirSync(matchLogPath, { recursive: true });
 
   const assignmentCsv: string = fs.readFileSync(openInfo.filePaths[0], {
     encoding: 'utf-8',
