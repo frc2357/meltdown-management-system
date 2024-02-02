@@ -51,7 +51,6 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
     });
 
     log.events.push(endgameEvent);
-    console.log(JSON.stringify(log));
     fileManager.saveLog(log).then((path) => {
       navigation.navigate('QRShow', { routeName: 'Prematch', path });
     });

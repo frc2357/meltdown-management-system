@@ -17,7 +17,6 @@ export const QRShow: React.FC<TQRShowProps> = ({
 
   const generateQRCode: () => Promise<void> = async (): Promise<void> => {
     const output: string = await fileManager.getZippedLog(path);
-    console.log(output);
     setQrContent(output);
     setLoading(false);
   };

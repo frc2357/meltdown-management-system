@@ -18,7 +18,6 @@ let eventName: string = '';
 let matchLogPath: string = '';
 
 function createWindow(): void {
-  console.log(path.join(__dirname, '../preload/preload.js'));
   mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -55,7 +54,6 @@ ipcMain.on('exportMatches', async (): Promise<void> => {
   });
 
   const savePath: string | undefined = saveInfo.filePath;
-  console.log(JSON.stringify(saveInfo));
   if (saveInfo.canceled || savePath === undefined) {
     return;
   }
@@ -87,7 +85,6 @@ ipcMain.on(
       filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
     });
 
-    console.log(JSON.stringify(saveInfo));
     if (saveInfo.canceled || saveInfo.filePath === undefined) {
       return;
     }

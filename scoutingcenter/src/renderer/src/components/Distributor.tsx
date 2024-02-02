@@ -1,16 +1,23 @@
 import { Box, Button, ButtonGroup } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TDownloadFunc } from '../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
 import QRCode from 'react-qr-code';
 
 export const Distributor: React.FC = (): ReactElement => {
+  const defaultStringTabletAssignments: string | null = localStorage.getItem('tabletAssignments');
+  let defaultTabletAssignments: string[] | null = null;
+  if (defaultStringTabletAssignments) {
+    defaultTabletAssignments = JSON.parse(defaultStringTabletAssignments);
+  }
+
   const downloadFile: TDownloadFunc = useDownloadFile();
-  const [tabletAssignments, setTabletAssignments] = useState<string[] | null>(null);
+  const [tabletAssignments, setTabletAssignments] = useState<string[] | null>(
+    defaultTabletAssignments
+  );
   const [assignmentIndex, setAssignmentIndex] = useState(0);
-  const qrRef = useRef();
 
   const template: string =
     'match,red1,scout,red2,scout,red3,scout,blue1,scout,blue2,scout,blue3,scout';
@@ -22,7 +29,7 @@ export const Distributor: React.FC = (): ReactElement => {
       return <Typography>No CSV Loaded</Typography>;
     }
 
-    const qrCodes = [];
+    const qrCodes: any[] = [];
 
     for (let i = 0; i < 6; i++) {
       qrCodes.push(
@@ -44,7 +51,7 @@ export const Distributor: React.FC = (): ReactElement => {
   const onImportCSV: () => void = (): void => {
     //@ts-ignore
     window.api.openAssignment().then((zippedAssignments: string[]): void => {
-      console.log(zippedAssignments);
+      localStorage.setItem('tabletAssignments', JSON.stringify(zippedAssignments));
       setTabletAssignments(zippedAssignments);
     });
   };

@@ -43,7 +43,6 @@ export const logReducer: React.Reducer<TLog, TLogAction> = (
     case ELogActionType.initLog:
       const newLog: TLog = { ...action.assignment, events: [] };
 
-      console.log(JSON.stringify(newLog, null, 1));
       return newLog;
     case ELogActionType.addEvent:
       log.events.push(action.event);
