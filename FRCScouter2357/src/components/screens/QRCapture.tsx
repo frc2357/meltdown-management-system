@@ -7,7 +7,7 @@ import {
   Code,
   CameraDevice,
 } from 'react-native-vision-camera';
-import React, { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import {
   EAssignmentActionType,
   TAssignment,
@@ -16,8 +16,6 @@ import {
 } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
-import { Buffer } from 'buffer';
-import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
 
 const testAssignment: TAssignment = {
   alliance: 'RED',
@@ -42,7 +40,6 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
   const dispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
   const [isLoading, setLoading] = useState<boolean>(false);
   const fileManager = useFileManager();
-
   const device: CameraDevice = useCameraDevice('back');
 
   const advance: (codes: Code[]) => Promise<void> = async (codes: Code[]): Promise<void> => {
@@ -79,40 +76,34 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     onCodeScanned: advance,
   });
 
-  useEffect(() => {
-    if (!hasPermission) {
-      console.log('No permission');
-      requestPermission();
-    } else {
-      console.log('Permission granted');
-    }
-  }, [hasPermission]);
+  if (!hasPermission) {
+    console.log('No permission');
+    requestPermission();
+  }
 
   const cam =
-    device === null ? (
+    device === null || !hasPermission ? (
       <Text>No camera</Text>
     ) : (
       <Camera
         style={{ height: '100%', width: '100%' }}
         device={device}
-        isActive={true}
+        isActive={!isLoading}
         codeScanner={codeScanner}
       />
     );
 
   return (
-    <LoadingWrapper message="QR Code Generating" isLoading={isLoading}>
-      <Box>
-        {cam}
-        <Button
-          title="Next"
-          variant="contained"
-          onPress={() => {
-            testAdvance();
-          }}
-          style={{ position: 'absolute', left: '0%', top: '90%' }}
-        />
-      </Box>
-    </LoadingWrapper>
+    <Box>
+      {cam}
+      <Button
+        title="Next"
+        variant="contained"
+        onPress={(): void => {
+          testAdvance();
+        }}
+        style={{ position: 'absolute', left: '0%', top: '90%' }}
+      />
+    </Box>
   );
 };
