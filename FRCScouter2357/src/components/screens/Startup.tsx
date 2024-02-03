@@ -1,22 +1,25 @@
-import { Box, VStack, Button } from '@react-native-material/core';
+import { Box, VStack, Button, Text } from '@react-native-material/core';
 import React, { useEffect } from 'react';
-import { TStartupProps } from '../../../types';
+import { TFileManager, TStartupProps } from '../../../types';
 import { useFileManager } from '../../hooks/useFileManager';
 
-export const Startup: React.FC<TStartupProps> = ({ navigation }) => {
-  const fileManager = useFileManager();
+export const Startup: React.FC<TStartupProps> = ({
+  navigation,
+}: TStartupProps): React.ReactNode => {
+  const fileManager: TFileManager = useFileManager();
 
-  useEffect(() => {
+  useEffect((): void => {
     fileManager.createBaseDirs();
   }, []);
 
   return (
-    <Box>
-      <VStack>
+    <Box style={{ margin: 20, alignItems: 'center' }}>
+      <VStack spacing={50}>
+        <Text variant="h1">Scouting Tablet</Text>
         <Button
           title="Match Logs"
           variant="contained"
-          onPress={() => {
+          onPress={(): void => {
             navigation.navigate('MatchLogs');
           }}
         />

@@ -97,7 +97,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
           />
         );
       })}
-      <Button title="Confirm" variant="contained" style={styles.confirm} onPress={onConfirm} />
+      <Button title="START" variant="contained" style={styles.confirm} onPress={onConfirm} />
     </Box>
   );
 };
@@ -113,10 +113,10 @@ const styles = StyleSheet.create({
     width: 1000,
   },
   confirm: {
-    left: 562,
     position: 'absolute',
     top: 510,
-    width: 450,
+    marginLeft: 12,
+    width: 1000,
   },
   form: {
     marginLeft: 150,

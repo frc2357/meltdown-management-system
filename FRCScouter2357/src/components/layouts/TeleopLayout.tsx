@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { Box, Button, HStack, Pressable, Text } from '@react-native-material/core';
 import { GestureResponderEvent, Image, StyleSheet } from 'react-native';
 import noteImage from '../../../assets/note.png';
@@ -11,7 +11,9 @@ import {
   ELogActionType,
   EPickupLocation,
   EScoreLocation,
+  TAssignment,
   TEvent,
+  TLogAction,
   TTeleopLayoutProps,
 } from '../../../types';
 import scoringImage from '../../../assets/scoring.png';
@@ -22,16 +24,16 @@ import { useAssignment } from '../../contexts/AssignmentContext';
 import { ViewTimer } from '../basics/ViewTimer';
 
 const pickupStationNames: EPickupLocation[] = Object.values(EPickupLocation);
-const numPickupStations = pickupStationNames.length;
+const numPickupStations: number = pickupStationNames.length;
 
 export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   route: {
     params: { initialRobotState },
   },
   navigation,
-}) => {
+}: TTeleopLayoutProps): React.ReactNode => {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
-  const [robotState, setRobotState] = useState(initialRobotState);
+  const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
   const [lastPickup, setLastPickup] = useState<TEvent>();
   const [lastScore, setLastScore] = useState<TEvent>();
   const [pickupStates, setPickupStates] = useState(
@@ -40,10 +42,10 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
   const [noteIconVisible, setNoteIconVisible] = useState(false);
   const [noteIconCoords, setNoteIconCoords] = useState({ x: 0, y: 0 });
   const eventCreator = useEventCreator();
-  const logDispatch = useLogDispatch();
-  const assignment = useAssignment();
+  const logDispatch: Dispatch<TLogAction> = useLogDispatch();
+  const assignment: TAssignment = useAssignment();
 
-  const robotStateToImage = (state: ERobotState) => {
+  const robotStateToImage: (state: ERobotState) => number = (state: ERobotState): number => {
     switch (state) {
       case ERobotState.note:
         return noteImage;
@@ -52,7 +54,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     }
   };
 
-  const showNoteIcon = (x: number, y: number): void => {
+  const showNoteIcon: (x: number, y: number) => void = (x: number, y: number): void => {
     setNoteIconVisible(true);
     const newNoteIconCoords = {
       x,
@@ -60,15 +62,15 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     };
     setNoteIconCoords(newNoteIconCoords);
 
-    setTimeout(() => setNoteIconVisible(false), 500);
+    setTimeout((): void => setNoteIconVisible(false), 500);
   };
 
-  const clearRobotStateAndPickup = () => {
+  const clearRobotStateAndPickup: () => void = (): void => {
     setPickupStates(new Array(numPickupStations).fill(ERobotState.empty));
     setRobotState(ERobotState.empty);
   };
 
-  const onEvent = (event: TEvent) => {
+  const onEvent: (event: TEvent) => void = (event: TEvent): void => {
     if (lastPickup) {
       logDispatch({
         type: ELogActionType.addEvent,
@@ -84,28 +86,32 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     setLastPickup(null);
   };
 
-  const onDrop = () => {
+  const onDrop: () => void = (): void => {
     onEvent(eventCreator.createDrop());
   };
 
-  const onMiss = () => {
+  const onMiss: () => void = (): void => {
     const missScore = { ...lastScore, miss: true };
     onEvent(missScore);
   };
 
-  const onScore = (location: EScoreLocation) => {
-    const lastScore = eventCreator.createScore(location, false);
+  const onScore: (location: EScoreLocation, x: number, y: number) => void = (
+    location: EScoreLocation,
+    x: number,
+    y: number
+  ): void => {
+    const lastScore: TEvent = eventCreator.createScore(location, false, x, y);
     setLastScore(lastScore);
     clearRobotStateAndPickup();
   };
 
-  const confirmScore = () => {
+  const confirmScore: () => void = (): void => {
     if (lastScore) {
       onEvent(lastScore);
     }
   };
 
-  const toEndgame = () => {
+  const toEndgame: () => void = (): void => {
     logDispatch({
       type: ELogActionType.addEvent,
       event: eventCreator.createAuto(leave === 'checked'),
@@ -132,9 +138,9 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
 
   const pickupStationStyles = [buttonStyles.sourcePressable, buttonStyles.floorPressable];
   const gamepieceStyles = [buttonStyles.sourceImage, buttonStyles.floorImage];
-  const pickupStations = [];
+  const pickupStations: any[] = [];
 
-  for (let i = 0; i < numPickupStations; i++) {
+  for (let i: number = 0; i < numPickupStations; i++) {
     pickupStations.push(
       <GamepieceButton
         key={pickupStationNames[i]}
@@ -163,13 +169,13 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
 
   return (
     <Box>
-      <HStack spacing={6} style={styles.buttonStack}>
-        <Text>{assignment?.currentMatch.teamNum ?? ''}</Text>
+      <HStack spacing={0} style={styles.buttonStack}>
+        <Text variant="body1">Team: {assignment?.currentMatch.teamNum ?? ''}</Text>
         <RadioButton.Item
           label="Leave"
           value="leave"
           status={leave}
-          onPress={() => {
+          onPress={(): void => {
             setLeave(leave === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
@@ -197,12 +203,14 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         <Image alt="floor intake" source={floorImage} style={styles.floor} />
         <Pressable
           style={styles.field}
-          onPress={(event: GestureResponderEvent) => {
+          onPress={(event: GestureResponderEvent): void => {
             if (robotState === ERobotState.empty) {
               return;
             }
-            showNoteIcon(event.nativeEvent.locationX - 25, event.nativeEvent.locationY - 25);
-            onScore(EScoreLocation.speaker);
+            const x = event.nativeEvent.locationX;
+            const y = event.nativeEvent.locationY;
+            showNoteIcon(x - 25, y - 25);
+            onScore(EScoreLocation.speaker, x, y);
           }}
           pressEffect={'none'}
         />
@@ -217,7 +225,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
               return;
             }
             showNoteIcon(100, 15);
-            onScore(EScoreLocation.amp);
+            onScore(EScoreLocation.amp, 0, 0);
           }}
           disabled={robotState === ERobotState.empty}
         />
@@ -291,6 +299,7 @@ const styles = StyleSheet.create({
   robotState: {
     height: 50,
     width: 50,
+    marginTop: 8,
   },
   source: {
     height: 256,

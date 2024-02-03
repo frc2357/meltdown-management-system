@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup } from '@mui/material';
+import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -57,64 +57,77 @@ export const Distributor: React.FC = (): ReactElement => {
   };
 
   return (
-    <Box sx={{ height: '100%', width: '100%', alignContent: 'center', alignItems: 'center' }}>
-      <Typography variant="h4">Scouting Center</Typography>
-      <Button variant="contained" onClick={onImportCSV}>
-        Import CSV
-      </Button>
-      <Button variant="contained" onClick={(): void => downloadFile('eventName.csv', template)}>
-        Download template
-      </Button>
-      <Button
-        variant="contained"
-        onClick={() => {
-          //@ts-ignore
-          window.api.exportMatches();
-        }}
-      >
-        Export Data
-      </Button>
-      <Button variant="contained" component={Link} to="/Capturer">
-        Capturer
-      </Button>
-      {tabletAssignments === null ? (
-        <Typography>No CSV Loaded</Typography>
-      ) : (
-        <Box>
-          <Typography>{alliances[assignmentIndex]}</Typography>
-          <Box
-            sx={{
-              alignItems: 'center',
-              background: 'white',
-              padding: '16px',
-              height: '500px',
-              width: '500px',
+    <Box sx={{ marginLeft: '16px', height: '100%', width: '100%', alignContent: 'center', alignItems: 'center' }}>
+      <Typography variant="h4">
+        Scouting Center
+      </Typography>
+      <Stack direction="row">
+        {tabletAssignments === null ? (
+          <Typography sx={{color: 'red'}}>No CSV Loaded</Typography>
+        ) : (
+          <Box>
+            <Typography sx={{color: (assignmentIndex/2 > 1 ? "blue" : 'red') }} variant="h6">
+              {alliances[assignmentIndex]}
+            </Typography>
+            <Box
+              sx={{
+                alignItems: 'center',
+                background: 'white',
+                paddingTop: '16px',
+                paddingRight: '16px',
+                paddingBottom: '16px',
+                height: '500px',
+                width: '500px',
+              }}
+            >
+              {qrShow()}
+            </Box>
+            <ButtonGroup variant="outlined">
+              <Button
+                onClick={(): void => {
+                  let newIndex: number = assignmentIndex - 1;
+                  if (newIndex < 0) newIndex = 5;
+                  setAssignmentIndex(newIndex);
+                }}
+              >
+                Prev
+              </Button>
+              <Button
+                onClick={(): void => {
+                  let newIndex: number = assignmentIndex + 1;
+                  if (newIndex > 5) newIndex = 0;
+                  setAssignmentIndex(newIndex);
+                }}
+              >
+                Next
+              </Button>
+            </ButtonGroup>
+          </Box>
+        )}
+        <Stack direction="column" spacing={2} sx={{ margin: 1, paddingTop:  (tabletAssignments === null ? 0 : 5) }}>
+          <Button variant="contained" onClick={onImportCSV}>
+            Import CSV
+          </Button>
+          <Button variant="contained" onClick={(): void => downloadFile('eventName.csv', template)}>
+            Download template
+          </Button>
+          {tabletAssignments !== null && 
+          (          <>
+            <Button
+            variant="contained"
+            onClick={(): void => {
+              //@ts-ignore
+              window.api.exportMatches();
             }}
           >
-            {qrShow()}
-          </Box>
-          <ButtonGroup variant="outlined">
-            <Button
-              onClick={() => {
-                let newIndex = assignmentIndex - 1;
-                if (newIndex < 0) newIndex = 5;
-                setAssignmentIndex(newIndex);
-              }}
-            >
-              Prev
-            </Button>
-            <Button
-              onClick={() => {
-                let newIndex = assignmentIndex + 1;
-                if (newIndex > 5) newIndex = 0;
-                setAssignmentIndex(newIndex);
-              }}
-            >
-              Next
-            </Button>
-          </ButtonGroup>
-        </Box>
-      )}
+            Export Data
+          </Button>
+          <Button variant="contained" component={Link} to="/Capturer">
+            Capturer
+          </Button></>)
+}
+        </Stack>
+      </Stack>
     </Box>
   );
 };

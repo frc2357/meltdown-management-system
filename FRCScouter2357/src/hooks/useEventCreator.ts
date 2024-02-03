@@ -26,9 +26,11 @@ export const useEventCreator = () => {
     return createEvent({ type });
   };
 
-  const createScore = (location: EScoreLocation, miss: boolean): TEvent => {
+  const createScore = (location: EScoreLocation, miss: boolean, x: number, y: number): TEvent => {
+    x = Math.round(x + Number.EPSILON);
+    y = Math.round(y + Number.EPSILON);
     const type = EEventTypes.score;
-    return createEvent({ type, location, miss });
+    return createEvent({ type, location, miss, x, y });
   };
 
   const createAuto = (leave: boolean): TEvent => {

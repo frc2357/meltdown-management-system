@@ -8,6 +8,8 @@ export type TEvent = {
   type: EEventTypes;
   timestamp: number;
   location?: EStartLocation | EPickupLocation | EScoreLocation | EEndgameLocation;
+  x?: number;
+  y?: number;
   leave?: boolean;
   notes?: string;
   harmony?: boolean;

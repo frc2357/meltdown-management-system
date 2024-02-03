@@ -20,7 +20,7 @@ def matchSortVal(match):
 
 def writeMatches(matches, outputFile):
     repetitiveHeaders = ['matchNum', 'alliance', 'alliancePos', 'teamNum']
-    eventHeaders = ['type', 'timestamp','location','leave','notes','harmony','spotlit','trap','miss']
+    eventHeaders = ['type', 'timestamp','location','x','y','leave','notes','harmony','spotlit','trap','miss']
     headers = repetitiveHeaders + eventHeaders
 
     with open (outputFile, 'w', newline='') as stream:

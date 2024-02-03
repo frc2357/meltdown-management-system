@@ -23,6 +23,7 @@ function createWindow(): void {
       nodeIntegration: true,
       preload: path.join(__dirname, '../preload/preload.js'),
     },
+    icon: path.join(__dirname, './assets/logo.png'),
   });
 
   // Vite dev server URL

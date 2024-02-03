@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VStack, TextInput, HStack, Text, Button, Box } from '@react-native-material/core';
+import { VStack, TextInput, HStack, Text, Button, Box, Divider } from '@react-native-material/core';
 import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
@@ -69,6 +69,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
             setEndgameLocation(value);
           }}
         />
+        <Divider />
         <RadioButton.Item
           label="Spotlit"
           value="Spotlit"
@@ -77,6 +78,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
             setSpotlit(spotlit === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
+        <Divider />
         <RadioButton.Item
           label="Harmony"
           value="Harmony"
@@ -85,6 +87,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
             setHarmony(harmony === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
+        <Divider />
         <RadioButton.Item
           label="Trap"
           value="Trap"
@@ -93,6 +96,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
             setTrap(trap === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
+        <Divider />
         <TextInput
           label="Notes"
           variant="outlined"
