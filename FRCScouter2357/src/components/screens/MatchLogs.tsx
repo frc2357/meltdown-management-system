@@ -5,6 +5,7 @@ import { useFileManager } from '../../hooks/useFileManager';
 import { List } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
+import { ScrollView } from 'react-native';
 
 export const MatchLogs: React.FC<TMatchLogsProps> = ({
   navigation,
@@ -35,9 +36,9 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({
     deleteFile: () => void
   ): React.ReactNode => {
     return (
-      <>
+      <HStack spacing={50}>
         <IconButton
-          icon={(): React.ReactElement => <List.Icon icon="delete" />}
+          icon={(): React.ReactElement => <List.Icon color="red" icon="delete" />}
           onPress={deleteFile}
         />
         <IconButton
@@ -46,7 +47,7 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({
             navigation.navigate('QRShow', { routeName: 'MatchLogs', path: path });
           }}
         />
-      </>
+      </HStack>
     );
   };
 
@@ -92,7 +93,7 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({
           <Text variant="h4">Match Logs</Text>
         </HStack>
         <Divider style={{ marginBottom: 10 }} />
-        {createEventList()}
+        <ScrollView>{createEventList()}</ScrollView>
       </Box>
     </LoadingWrapper>
   );
