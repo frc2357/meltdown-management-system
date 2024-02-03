@@ -2,12 +2,12 @@ import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TDownloadFunc } from '../../types/TDownloadFunc';
+import { TDownloadFunc } from '../../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
 import QRCode from 'react-qr-code';
 
 export const Distributor: React.FC = (): ReactElement => {
-  const defaultStringTabletAssignments: string | null = localStorage.getItem('tabletAssignments');
+  const defaultStringTabletAssignments: string | null = sessionStorage.getItem('tabletAssignments');
   let defaultTabletAssignments: string[] | null = null;
   if (defaultStringTabletAssignments) {
     defaultTabletAssignments = JSON.parse(defaultStringTabletAssignments);
@@ -51,22 +51,28 @@ export const Distributor: React.FC = (): ReactElement => {
   const onImportCSV: () => void = (): void => {
     //@ts-ignore
     window.api.openAssignment().then((zippedAssignments: string[]): void => {
-      localStorage.setItem('tabletAssignments', JSON.stringify(zippedAssignments));
+      sessionStorage.setItem('tabletAssignments', JSON.stringify(zippedAssignments));
       setTabletAssignments(zippedAssignments);
     });
   };
 
   return (
-    <Box sx={{ marginLeft: '16px', height: '100%', width: '100%', alignContent: 'center', alignItems: 'center' }}>
-      <Typography variant="h4">
-        Scouting Center
-      </Typography>
+    <Box
+      sx={{
+        marginLeft: '16px',
+        height: '100%',
+        width: '100%',
+        alignContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="h4">Scouting Center</Typography>
       <Stack direction="row">
         {tabletAssignments === null ? (
-          <Typography sx={{color: 'red'}}>No CSV Loaded</Typography>
+          <Typography sx={{ color: 'red' }}>No CSV Loaded</Typography>
         ) : (
           <Box>
-            <Typography sx={{color: (assignmentIndex/2 > 1 ? "blue" : 'red') }} variant="h6">
+            <Typography sx={{ color: assignmentIndex / 2 > 1 ? 'blue' : 'red' }} variant="h6">
               {alliances[assignmentIndex]}
             </Typography>
             <Box
@@ -104,28 +110,33 @@ export const Distributor: React.FC = (): ReactElement => {
             </ButtonGroup>
           </Box>
         )}
-        <Stack direction="column" spacing={2} sx={{ margin: 1, paddingTop:  (tabletAssignments === null ? 0 : 5) }}>
+        <Stack
+          direction="column"
+          spacing={2}
+          sx={{ margin: 1, paddingTop: tabletAssignments === null ? 0 : 5 }}
+        >
           <Button variant="contained" onClick={onImportCSV}>
             Import CSV
           </Button>
           <Button variant="contained" onClick={(): void => downloadFile('eventName.csv', template)}>
             Download template
           </Button>
-          {tabletAssignments !== null && 
-          (          <>
-            <Button
-            variant="contained"
-            onClick={(): void => {
-              //@ts-ignore
-              window.api.exportMatches();
-            }}
-          >
-            Export Data
-          </Button>
-          <Button variant="contained" component={Link} to="/Capturer">
-            Capturer
-          </Button></>)
-}
+          {tabletAssignments !== null && (
+            <>
+              <Button
+                variant="contained"
+                onClick={(): void => {
+                  //@ts-ignore
+                  window.api.exportMatches();
+                }}
+              >
+                Export Data
+              </Button>
+              <Button variant="contained" component={Link} to="/Capturer">
+                Capturer
+              </Button>
+            </>
+          )}
         </Stack>
       </Stack>
     </Box>

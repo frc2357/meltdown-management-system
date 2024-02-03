@@ -1,6 +1,6 @@
 import fs, { ReadDirItem } from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
-import { TFileManager, TLog, TLogStructure } from '../../types';
+import { TDenseEvent, TDenseLog, TEvent, TFileManager, TLog, TLogStructure } from '../../types';
 import { useAssignment } from '../contexts/AssignmentContext';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {
@@ -22,8 +22,61 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   };
 
   const saveLog: TFileManager['saveLog'] = async (log: TLog): Promise<string> => {
+    let denseLog: TDenseLog = {
+      t: log.teamNum, // teamNum
+      m: log.matchNum, // matchNum
+      e: [], // events
+      s: log.scouter, // scouter
+      a: log.alliance, // alliance
+      p: log.alliancePos, // alliancePos
+    };
+
+    denseLog.e = log.events.map((event: TEvent): TDenseEvent => {
+      let denseEvent: TDenseEvent = {};
+      for (const prop in event) {
+        switch (prop) {
+          case 'type':
+            denseEvent.t = event.type;
+            break;
+          case 'timestamp':
+            denseEvent.c = event.timestamp;
+            break;
+          case 'location':
+            denseEvent.l = event.location;
+            break;
+          case 'x':
+            denseEvent.x = event.x;
+            break;
+          case 'y':
+            denseEvent.y = event.y;
+            break;
+          case 'leave':
+            denseEvent.o = event.leave;
+            break;
+          case 'notes':
+            denseEvent.n = event.notes;
+            break;
+          case 'harmony':
+            denseEvent.h = event.harmony;
+            break;
+          case 'spotlit':
+            denseEvent.s = event.spotlit;
+            break;
+          case 'trap':
+            denseEvent.r = event.trap;
+            break;
+          case 'miss':
+            denseEvent.m = event.miss;
+            break;
+        }
+      }
+      return denseEvent;
+    });
+
+    console.log(JSON.stringify(denseLog, null, 1));
+
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
-    const logString: string = JSON.stringify(log);
+    const logString: string = JSON.stringify(denseLog);
 
     await fs.mkdir(unzippedLogsPath);
     await fs.mkdir(zippedLogsPath);

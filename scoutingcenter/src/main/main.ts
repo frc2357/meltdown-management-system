@@ -9,7 +9,7 @@ import {
 } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { TTabletAssignment } from '../renderer/types';
+import { TDenseEvent, TDenseLog, TEvent, TLog, TTabletAssignment } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { spawn, Serializable, ChildProcessWithoutNullStreams } from 'child_process';
 
@@ -101,8 +101,63 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
 
     entries.forEach((entry: IZipEntry): void => {
       const text: string = zip.readAsText(entry);
-      const filePath: string = path.resolve(matchLogPath, `${entry.name}.txt`);
-      fs.writeFileSync(filePath, text);
+
+      const denseLog: TDenseLog = JSON.parse(text);
+      const log: TLog = {
+        teamNum: denseLog.t,
+        matchNum: denseLog.m,
+        events: [],
+        scouter: denseLog.s,
+        alliance: denseLog.a,
+        alliancePos: denseLog.p
+      };
+
+      log.events = denseLog.e.map((denseEvent: TDenseEvent): TEvent => {
+        let event: TEvent = {};
+
+        for (const prop in denseEvent) {
+          switch (prop) {
+            case 't':
+               event.type = denseEvent.t;
+              break;
+            case 'c':
+              event.timestamp = denseEvent.c ;
+              break;
+            case 'l':
+               event.location = denseEvent.l ;
+              break;
+            case 'x':
+               event.x = denseEvent.x;
+              break;
+            case 'y':
+               event.y = denseEvent.y;
+              break;
+            case 'o':
+               event.leave = denseEvent.o;
+              break;
+            case 'n':
+              event.notes = denseEvent.n ;
+              break;
+            case 'h':
+              event.harmony =denseEvent.h ;
+              break;
+            case 's':
+               event.spotlit = denseEvent.s ;
+              break;
+            case 'r':
+              event.trap = denseEvent.r ;
+              break;
+            case 'm':
+              event.miss = denseEvent.m ;
+              break;
+          }
+        }
+        return event;
+      });
+
+      const logString: string = JSON.stringify(log)
+      const filePath: string = path.resolve(matchLogPath, `${entry.name}.json`);
+      fs.writeFileSync(filePath, logString);
     });
   } catch (err: any) {
     console.log(`ERROR SAVING FILE: ${err}`);

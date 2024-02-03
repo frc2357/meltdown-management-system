@@ -38,9 +38,9 @@ export const Capturer: React.FC = (): ReactElement => {
   };
 
   return (
-    <Box sx={{marginLeft: '16px'}}>
+    <Box sx={{ marginLeft: '16px' }}>
       <QrScanner stopDecoding={isAlertOpen} onDecode={handleScan} onError={handleError} />
-      <Button sx={{marginTop: '10px'}} variant="contained" component={Link} to="/">
+      <Button sx={{ marginTop: '10px' }} variant="contained" component={Link} to="/">
         Distributor
       </Button>
       <Dialog

@@ -1,4 +1,4 @@
-import { TDownloadFunc } from '../../types/TDownloadFunc';
+import { TDownloadFunc } from '../../../types/TDownloadFunc';
 
 export const useDownloadFile: () => TDownloadFunc = (): TDownloadFunc => {
   return (fileName: string, fileContent: string): void => {
