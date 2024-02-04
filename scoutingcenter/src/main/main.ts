@@ -11,7 +11,8 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { TDenseEvent, TDenseLog, TEvent, TLog, TTabletAssignment } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
-import { spawn, Serializable, ChildProcessWithoutNullStreams } from 'child_process';
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
+import isDev from 'electron-is-dev';
 
 let mainWindow: BrowserWindow | null;
 let eventName: string = '';
@@ -20,14 +21,17 @@ let matchLogPath: string = '';
 function createWindow(): void {
   mainWindow = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
       preload: path.join(__dirname, '../preload/preload.js'),
     },
     icon: path.join(__dirname, './assets/logo.png'),
   });
 
+  console.log(isDev);
+
   // Vite dev server URL
-  mainWindow.loadURL('http://localhost:5173');
+  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 
@@ -109,7 +113,7 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
         events: [],
         scouter: denseLog.s,
         alliance: denseLog.a,
-        alliancePos: denseLog.p
+        alliancePos: denseLog.p,
       };
 
       log.events = denseLog.e.map((denseEvent: TDenseEvent): TEvent => {
@@ -118,44 +122,44 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
         for (const prop in denseEvent) {
           switch (prop) {
             case 't':
-               event.type = denseEvent.t;
+              event.type = denseEvent.t;
               break;
             case 'c':
-              event.timestamp = denseEvent.c ;
+              event.timestamp = denseEvent.c;
               break;
             case 'l':
-               event.location = denseEvent.l ;
+              event.location = denseEvent.l;
               break;
             case 'x':
-               event.x = denseEvent.x;
+              event.x = denseEvent.x;
               break;
             case 'y':
-               event.y = denseEvent.y;
+              event.y = denseEvent.y;
               break;
             case 'o':
-               event.leave = denseEvent.o;
+              event.leave = denseEvent.o;
               break;
             case 'n':
-              event.notes = denseEvent.n ;
+              event.notes = denseEvent.n;
               break;
             case 'h':
-              event.harmony =denseEvent.h ;
+              event.harmony = denseEvent.h;
               break;
             case 's':
-               event.spotlit = denseEvent.s ;
+              event.spotlit = denseEvent.s;
               break;
             case 'r':
-              event.trap = denseEvent.r ;
+              event.trap = denseEvent.r;
               break;
             case 'm':
-              event.miss = denseEvent.m ;
+              event.miss = denseEvent.m;
               break;
           }
         }
         return event;
       });
 
-      const logString: string = JSON.stringify(log)
+      const logString: string = JSON.stringify(log);
       const filePath: string = path.resolve(matchLogPath, `${entry.name}.json`);
       fs.writeFileSync(filePath, logString);
     });
@@ -166,7 +170,7 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
   return true;
 });
 
-ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
+ipcMain.handle('openAssignment', async (): Promise<string | null> => {
   const openInfo = await dialog.showOpenDialog({
     title: 'Open Assignment',
     defaultPath: app.getPath('documents'),
@@ -254,5 +258,5 @@ ipcMain.handle('openAssignment', async (): Promise<string[] | null> => {
     }
   );
 
-  return zippedAssignments;
+  return JSON.stringify(zippedAssignments);
 });

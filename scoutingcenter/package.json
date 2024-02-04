@@ -1,17 +1,20 @@
 {
   "name": "scoutingcenter",
   "private": true,
-  "version": "0.0.0",
-  "main": "./out/main/main.js",
+  "version": "2024.0.1",
+  "main": "./dist/main/main.js",
   "scripts": {
-    "dev": "electron-vite dev -w",
-    "build": "electron-vite build",
-    "preview": "electron-vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "npx prettier . --write",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "start": "electron-vite preview --outDir=dist",
+    "dev": "electron-vite dev --outDir=dist",
+    "package": "electron-vite build --outDir=dist && electron-forge package",
+    "make": "electron-vite build --outDir=dist && electron-forge make"
+  },
+  "description": "ScoutingCenter",
+  "author": {
+    "name": "SystemMeltdown",
+    "email": "frcrobotics.2357@raypec.org"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -22,6 +25,7 @@
     "@yudiel/react-qr-scanner": "^1.2.6",
     "adm-zip": "^0.5.10",
     "archiver": "^6.0.1",
+    "electron-is-dev": "^3.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

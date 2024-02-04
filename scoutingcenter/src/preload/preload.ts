@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('api', {
   saveFile: (fileName: string, fileContent: string): void => {
     ipcRenderer.send('saveFile', fileName, fileContent);
   },
-  openAssignment: async (): Promise<string[] | null> => {
+  openAssignment: async (): Promise<string | null> => {
     const result = await ipcRenderer.invoke('openAssignment');
     return result;
   },

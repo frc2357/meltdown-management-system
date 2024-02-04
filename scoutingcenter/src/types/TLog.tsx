@@ -7,4 +7,4 @@ export type TLog = {
   scouter: string;
   alliance: string;
   alliancePos: string;
-}
+};

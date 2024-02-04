@@ -1,6 +1,11 @@
 module.exports = {
   packagerConfig: {
-    asar: true,
+    ignore: [
+      /^\/src/,
+      /^\/node_modules/,
+      /^\/out/,
+      /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)|(.eslintignore)|(.prettierignore)|(.prettierrc.json)|(vite.config.mts)/,
+    ],
   },
   rebuildConfig: {},
   makers: [
@@ -18,12 +23,6 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-rpm',
-      config: {},
-    },
-  ],
-  plugins: [
-    {
-      name: '@electron-forge/plugin-auto-unpack-natives',
       config: {},
     },
   ],

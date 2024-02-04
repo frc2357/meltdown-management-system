@@ -50,9 +50,9 @@ export const Distributor: React.FC = (): ReactElement => {
 
   const onImportCSV: () => void = (): void => {
     //@ts-ignore
-    window.api.openAssignment().then((zippedAssignments: string[]): void => {
-      sessionStorage.setItem('tabletAssignments', JSON.stringify(zippedAssignments));
-      setTabletAssignments(zippedAssignments);
+    window.api.openAssignment().then((zippedAssignments: string): void => {
+      sessionStorage.setItem('tabletAssignments', zippedAssignments);
+      setTabletAssignments(JSON.parse(zippedAssignments));
     });
   };
 
