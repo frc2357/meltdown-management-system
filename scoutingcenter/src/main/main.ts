@@ -11,8 +11,8 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { TDenseEvent, TDenseLog, TEvent, TLog, TTabletAssignment } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
-import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import isDev from 'electron-is-dev';
+import { WriteStream } from 'node:original-fs';
 
 let mainWindow: BrowserWindow | null;
 let eventName: string = '';
@@ -31,7 +31,7 @@ function createWindow(): void {
   console.log(isDev);
 
   // Vite dev server URL
-  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
+  mainWindow.loadURL('http://localhost:5173'); //`file://${path.join(__dirname, '../renderer/index.html')}`);
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 
@@ -63,22 +63,75 @@ ipcMain.on('exportMatches', async (): Promise<void> => {
     return;
   }
 
-  const pythonProcess: ChildProcessWithoutNullStreams = spawn('python', [
-    './src/main/python/exportMatches.py',
-    savePath,
-    matchLogPath,
-  ]);
-  pythonProcess.on('error', (err: Error) => {
-    console.log(JSON.stringify(err));
+  const fileNames: string[] = fs.readdirSync(matchLogPath);
+
+  const matches: any[] = fileNames.map((fileName: string): any => {
+    const jsonBuffer: Buffer = fs.readFileSync(path.resolve(matchLogPath, fileName));
+    const jsonString: string = jsonBuffer.toString();
+    return JSON.parse(jsonString);
   });
-  pythonProcess.stdout.on('data', (data: Buffer) => {
-    console.log(`Data from stdout: ${data.toString()}`);
+
+  matches.sort((a: any, b: any): number => {
+    if (a['matchNum'] > b['matchNum']) {
+      return 1;
+    }
+
+    if (a['matchNum'] < b['matchNum']) {
+      return -1;
+    }
+
+    if (a['alliance'].toUpperCase() === 'BLUE' && b['alliance'].toUpperCase() === 'RED') {
+      return 1;
+    }
+
+    if (a['alliance'].toUpperCase() === 'RED' && b['alliance'].toUpperCase() === 'BLUE') {
+      return -1;
+    }
+
+    if (a['alliancePos'] > b['alliancePos']) {
+      return 1;
+    }
+
+    if (a['alliancePos'] < b['alliancePos']) {
+      return -1;
+    }
+
+    return 0;
   });
-  pythonProcess.stderr.on('data', (data: Buffer) =>
-    console.log(`Data from stdout: ${data.toString()}`)
-  );
-  pythonProcess.stdout.on('error', (err: Error) => console.log(`ERROR ${JSON.stringify(err)}`));
-  pythonProcess.stderr.on('error', (err: Error) => console.log(`ERROR ${JSON.stringify(err)}`));
+
+  const repetitiveHeaders: string[] = ['matchNum', 'alliance', 'alliancePos', 'teamNum'];
+  const eventHeaders: string[] = [
+    'type',
+    'timestamp',
+    'location',
+    'x',
+    'y',
+    'leave',
+    'notes',
+    'harmony',
+    'spotlit',
+    'trap',
+    'miss',
+  ];
+  const headers: string[] = repetitiveHeaders.concat(eventHeaders);
+
+  const stream: WriteStream = fs.createWriteStream(savePath);
+
+  stream.write(headers.join(',') + '\n');
+
+  matches.forEach((match: any) => {
+    match.events.forEach((event: any): void => {
+      let row: any[] = [];
+
+      repetitiveHeaders.forEach((header: string): number => row.push(match[header] ?? ''));
+
+      eventHeaders.forEach((header: string): number => row.push(event[header] ?? ''));
+
+      stream.write(row.join(',') + '\n');
+    });
+  });
+
+  stream.end();
 });
 
 ipcMain.on(
