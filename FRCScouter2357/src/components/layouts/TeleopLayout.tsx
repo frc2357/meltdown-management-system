@@ -282,7 +282,6 @@ const styles = StyleSheet.create({
     height: 495,
     left: 0,
     position: 'absolute',
-    resizeMode: 'stretch',
     top: 0,
     width: 700,
   },
