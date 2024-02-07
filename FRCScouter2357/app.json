@@ -13,20 +13,28 @@
     },
     "assetBundlePatterns": "['**/*']",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.frc2357.IScoutPro"
+      "package": "com.frc2357.IScoutPro",
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/logo.png"
     },
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "e513caee-b46c-4e58-af81-3e045911ac8d"
+      }
     },
     "plugins": [
       [
