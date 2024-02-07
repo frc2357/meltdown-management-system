@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FRCScouter2357",
-    "slug": "FRCScouter2357",
+    "name": "IScoutPro",
+    "slug": "IScoutPro",
     "version": "0.1.0",
     "orientation": "landscape",
     "icon": "./assets/logo.png",
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.frc2357.FRCScouter2357"
+      "package": "com.frc2357.IScoutPro"
     },
     "web": {
       "favicon": "./assets/logo.png"

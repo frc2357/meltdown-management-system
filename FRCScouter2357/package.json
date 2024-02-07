@@ -1,6 +1,6 @@
 {
-  "name": "frcscouter2357",
-  "version": "1.0.0",
+  "name": "IScoutPro",
+  "version": "2024.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "npx expo start --dev-client",
