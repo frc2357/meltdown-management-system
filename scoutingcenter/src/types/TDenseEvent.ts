@@ -8,6 +8,6 @@ export type TDenseEvent = {
   n?: string; // notes
   h?: boolean; // harmony
   s?: boolean; // spotlit
-  r?: boolean; // trap
+  r?: number; // trap
   m?: boolean; // miss
 };

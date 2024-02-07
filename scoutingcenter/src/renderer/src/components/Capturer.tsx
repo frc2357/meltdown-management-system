@@ -20,7 +20,6 @@ export const Capturer: React.FC = (): ReactElement => {
   const handleScan: (data: string) => void = (data: string): void => {
     setProcessing(true);
     setAlertOpen(true);
-    console.log(data);
     // @ts-ignore
     window.api.handleScan(data).then((success: boolean) => {
       setProcessing(false);

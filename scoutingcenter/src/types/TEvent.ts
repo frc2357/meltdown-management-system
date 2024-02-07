@@ -8,6 +8,6 @@ export type TEvent = {
   notes?: string;
   harmony?: boolean;
   spotlit?: boolean;
-  trap?: boolean;
+  trap?: number;
   miss?: boolean;
 };

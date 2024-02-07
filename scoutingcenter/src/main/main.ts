@@ -28,8 +28,6 @@ function createWindow(): void {
     icon: path.join(__dirname, './assets/logo.png'),
   });
 
-  console.log(isDev);
-
   // Vite dev server URL
   mainWindow.loadURL('http://localhost:5173'); //`file://${path.join(__dirname, '../renderer/index.html')}`);
   mainWindow.on('closed', (): null => (mainWindow = null));

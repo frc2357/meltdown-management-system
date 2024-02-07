@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { VStack, TextInput, HStack, Text, Button, Box, Divider } from '@react-native-material/core';
-import { StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
+import {
+  VStack,
+  TextInput,
+  HStack,
+  Text,
+  Button,
+  Box,
+  Divider,
+  Spacer,
+} from '@react-native-material/core';
+import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import {
@@ -22,7 +31,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation>(EEndgameLocation.none);
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
-  const [trap, setTrap] = useState<'checked' | 'unchecked'>('unchecked');
+  const [trap, setTrap] = useState<number>(0);
   const [notes, setNotes] = useState('');
 
   const fileManager = useFileManager();
@@ -38,7 +47,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
       endgameLocation,
       notes,
       harmony === 'checked',
-      trap === 'checked',
+      trap,
       spotlit === 'checked'
     );
     logDispatch({
@@ -88,14 +97,22 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
           }}
         />
         <Divider />
-        <RadioButton.Item
-          label="Trap"
-          value="Trap"
-          status={trap}
-          onPress={() => {
-            setTrap(trap === 'unchecked' ? 'checked' : 'unchecked');
-          }}
-        />
+        <HStack
+          style={{ alignContent: 'center', alignItems: 'center', marginLeft: 13, marginRight: 10 }}
+        >
+          <Text>Trap</Text>
+          <Spacer />
+          <Button
+            title={trap.toString()}
+            compact
+            variant="outlined"
+            onPress={() => {
+              let newTrap: number = trap + 1;
+              if (newTrap >= 4) newTrap = 0;
+              setTrap(newTrap);
+            }}
+          />
+        </HStack>
         <Divider />
         <TextInput
           label="Notes"

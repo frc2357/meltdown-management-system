@@ -72,9 +72,6 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       }
       return denseEvent;
     });
-
-    console.log(JSON.stringify(denseLog, null, 1));
-
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
     const logString: string = JSON.stringify(denseLog);
 

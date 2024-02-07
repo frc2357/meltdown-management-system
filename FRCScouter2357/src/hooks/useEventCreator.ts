@@ -42,7 +42,7 @@ export const useEventCreator = () => {
     location: EEndgameLocation,
     notes: string,
     harmony: boolean,
-    trap: boolean,
+    trap: number,
     spotlit: boolean
   ): TEvent => {
     const type = EEventTypes.endgame;
