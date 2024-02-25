@@ -150,6 +150,16 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     return await unzipB64(assignmentB64, assignmentFilePath, 'assignment.txt');
   };
 
+  const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (): Promise<number> => {
+    const logInfo: TLogStructure['event'] = await getEventLogInfo(event);
+
+    return logInfo
+      .map((x): number => {
+        return parseInt(x.name.split('-')[3], 10);
+      })
+      .sort((a: number, b: number): number => a - b)[0];
+  };
+
   return {
     createBaseDirs,
     unzipAssignment,
@@ -159,5 +169,6 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     getEventLogInfo,
     getLogStructure,
     deleteFile,
+    getLastMatchNumber,
   };
 };

@@ -32,6 +32,10 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     };
 
     dispatch(action);
+    dispatch({
+      type: EAssignmentActionType.setMatch,
+      matchNum: await fileManager.getLastMatchNumber(),
+    });
 
     setLoading(false);
     navigation.navigate<'Prematch'>('Prematch');
