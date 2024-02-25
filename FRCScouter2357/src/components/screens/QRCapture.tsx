@@ -25,17 +25,16 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     setLoading(true);
 
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
+    const nextMatchNum: number =
+      (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '')) + 1;
 
     const action: TAssignmentAction = {
       type: EAssignmentActionType.load,
       loadData: assignmentTxt,
+      matchNum: nextMatchNum,
     };
 
     dispatch(action);
-    dispatch({
-      type: EAssignmentActionType.setMatch,
-      matchNum: await fileManager.getLastMatchNumber(),
-    });
 
     setLoading(false);
     navigation.navigate<'Prematch'>('Prematch');

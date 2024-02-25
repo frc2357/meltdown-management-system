@@ -51,7 +51,7 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
 ): TAssignment => {
   switch (action.type) {
     case EAssignmentActionType.load:
-      const inputAssignment: TInputAssignment = JSON.parse(action.loadData);
+      const inputAssignment: TInputAssignment = JSON.parse(action.loadData ?? '');
 
       const newAssignment: TAssignment = {
         event: inputAssignment.e,
@@ -68,26 +68,21 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
         })
       );
 
-      newAssignment.currentMatch = newAssignment.matches[0];
-      // TODO: Check if assignment valid and do something if it is not
-      return newAssignment;
-    case EAssignmentActionType.nextMatch:
-      const nextMatch: TAssignmentMatch | undefined = assignment.matches.find(
-        (x: TAssignmentMatch) => x.matchNum === assignment.currentMatch.matchNum + 1
-      );
-      assignment.currentMatch = nextMatch;
-      return assignment;
-    case EAssignmentActionType.setMatch:
-      const match: TAssignmentMatch = assignment.matches.find(
+      const match: TAssignmentMatch | undefined = newAssignment.matches.find(
         (x: TAssignmentMatch): boolean => x.matchNum === (action?.matchNum ?? 0)
       );
 
       if (match === undefined) {
-        assignment.currentMatch = assignment.matches[0];
+        newAssignment.currentMatch = newAssignment.matches[0];
+      } else {
+        newAssignment.currentMatch = match;
       }
-
-      assignment.currentMatch = match;
-
+      return newAssignment;
+    case EAssignmentActionType.nextMatch:
+      const nextMatch: TAssignmentMatch | undefined = assignment.matches.find(
+        (x: TAssignmentMatch) => x.matchNum === (assignment.currentMatch?.matchNum ?? 0) + 1
+      );
+      assignment.currentMatch = nextMatch;
       return assignment;
   }
 };

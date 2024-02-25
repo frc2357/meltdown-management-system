@@ -123,7 +123,11 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       );
 
     for (const event in logStructure) {
-      logStructure[event] = await getEventLogInfo(event);
+      try {
+        logStructure[event] = await getEventLogInfo(event);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     return logStructure;
@@ -150,14 +154,24 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     return await unzipB64(assignmentB64, assignmentFilePath, 'assignment.txt');
   };
 
-  const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (): Promise<number> => {
-    const logInfo: TLogStructure['event'] = await getEventLogInfo(event);
+  const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
+    eventName: string
+  ): Promise<number> => {
+    if ('') {
+      return -1;
+    }
+    console.log(eventName);
 
-    return logInfo
+    await fs.mkdir(`${logsRoot}/${eventName}/unzipped`);
+    await fs.mkdir(`${logsRoot}/${eventName}/zipped`);
+    const logInfo: TLogStructure['event'] = await getEventLogInfo(eventName);
+    const lastMatchNum = logInfo
       .map((x): number => {
         return parseInt(x.name.split('-')[3], 10);
       })
-      .sort((a: number, b: number): number => a - b)[0];
+      .sort((a: number, b: number): number => b - a)[0];
+    console.log(lastMatchNum);
+    return lastMatchNum;
   };
 
   return {

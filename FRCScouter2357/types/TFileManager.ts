@@ -9,5 +9,5 @@ export type TFileManager = {
   getEventLogInfo: (eventName: string) => Promise<{ name: string; path: string }[]>;
   getLogStructure: () => Promise<TLogStructure>;
   deleteFile: (path: string) => Promise<void>;
-  getLastMatchNumber: () => Promise<number>;
+  getLastMatchNumber: (eventName: string) => Promise<number>;
 };
