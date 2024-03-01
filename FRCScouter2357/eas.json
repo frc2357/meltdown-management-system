@@ -11,6 +11,9 @@
     "preview": {
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "distribution": "internal"
       }
     },
     "preview2": {
@@ -27,6 +30,9 @@
         "distribution": "internal",
         "gradleCommand": ":app:assembleRelease",
         "node": "18.16.0"
+      },
+      "ios": {
+        "distribution": "internal"
       }
     }
   },
