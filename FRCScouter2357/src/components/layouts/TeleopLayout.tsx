@@ -17,6 +17,7 @@ import {
   TTeleopLayoutProps,
 } from '../../../types';
 import scoringImage from '../../../assets/scoring.png';
+import scoringMirroredImage from '../../../assets/scoringMirrored.png';
 import sourceImage from '../../../assets/source.png';
 import floorImage from '../../../assets/floor.png';
 import { useLogDispatch } from '../../contexts/LogContext';
@@ -198,7 +199,11 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         <ViewTimer />
       </HStack>
       <Box style={styles.images}>
-        <Image alt="Field" source={scoringImage} style={styles.field} />
+        <Image
+          alt="Field"
+          source={assignment.alliance === 'BLUE' ? scoringImage : scoringMirroredImage}
+          style={styles.field}
+        />
         <Image alt="double substation" source={sourceImage} style={styles.source} />
         <Image alt="floor intake" source={floorImage} style={styles.floor} />
         <Pressable
