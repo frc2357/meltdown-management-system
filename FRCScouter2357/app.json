@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera."
-      }
+      },
+      "bundleIdentifier": "com.frc2357.IScoutPro"
     },
     "android": {
       "adaptiveIcon": {
