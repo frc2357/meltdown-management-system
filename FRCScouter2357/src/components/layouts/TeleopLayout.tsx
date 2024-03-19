@@ -189,7 +189,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         />
         <Button
           variant="contained"
-          title="Drop"
+          title="Pass"
           onPress={onDrop}
           style={styles.button}
           disabled={robotState === ERobotState.empty}
@@ -212,8 +212,8 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             if (robotState === ERobotState.empty) {
               return;
             }
-            const x = event.nativeEvent.locationX;
-            const y = event.nativeEvent.locationY;
+            const x: number = event.nativeEvent.locationX;
+            const y: number = event.nativeEvent.locationY;
             showNoteIcon(x - 25, y - 25);
             onScore(EScoreLocation.speaker, x, y);
           }}
@@ -222,7 +222,8 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
         <Pressable
           // eslint-disable-next-line react-native/no-color-literals, react-native/no-inline-styles
           style={{
-            ...styles.ampPressable,
+            ...(() =>
+              assignment.alliance === 'BLUE' ? styles.blueAmpPressable : styles.redAmpPressable)(),
             backgroundColor: 'rgba(0,0,0,0.25)',
           }}
           onPress={() => {
@@ -266,7 +267,14 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
   },
-  ampPressable: {
+  blueAmpPressable: {
+    height: 80,
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: 215,
+  },
+  redAmpPressable: {
     height: 80,
     left: 0,
     position: 'absolute',
