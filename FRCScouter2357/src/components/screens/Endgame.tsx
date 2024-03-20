@@ -45,7 +45,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
   const onSubmit = () => {
     const endgameEvent: TEvent = eventCreator.createEndgame(
       endgameLocation,
-      notes,
+      `\"${notes}\"`,
       harmony === 'checked',
       trap,
       spotlit === 'checked'

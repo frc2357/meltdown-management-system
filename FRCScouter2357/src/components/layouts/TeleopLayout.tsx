@@ -226,11 +226,11 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
               assignment.alliance === 'BLUE' ? styles.blueAmpPressable : styles.redAmpPressable)(),
             backgroundColor: 'rgba(0,0,0,0.25)',
           }}
-          onPress={() => {
+          onPress={(): void => {
             if (robotState === ERobotState.empty) {
               return;
             }
-            showNoteIcon(100, 15);
+            showNoteIcon(570, 15);
             onScore(EScoreLocation.amp, 0, 0);
           }}
           disabled={robotState === ERobotState.empty}
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   },
   redAmpPressable: {
     height: 80,
-    left: 0,
+    left: 485,
     position: 'absolute',
     top: 0,
     width: 215,
