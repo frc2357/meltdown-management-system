@@ -1,0 +1,14 @@
+{
+  "name": "meltdownmanagementsystem",
+  "private": true,
+  "version": "2024.0.1",
+  "description": "Meltdown Management System",
+  "author": {
+    "name": "SystemMeltdown",
+    "email": "frcrobotics.2357@raypec.org"
+  },
+  "workspaces": [
+    "scoutingmanagementsystem/overseer",
+    "scoutingmanagementsystem/sentinel"
+  ]
+}

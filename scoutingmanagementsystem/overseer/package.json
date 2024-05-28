@@ -1,5 +1,5 @@
 {
-  "name": "scoutingcenter",
+  "name": "scoutingmanagementsystem-overseer",
   "private": true,
   "version": "2024.0.1",
   "main": "./dist/main/main.js",
@@ -11,7 +11,7 @@
     "package": "electron-vite build --outDir=dist && electron-forge package",
     "make": "electron-vite build --outDir=dist && electron-forge make"
   },
-  "description": "ScoutingCenter",
+  "description": "Overseer",
   "author": {
     "name": "SystemMeltdown",
     "email": "frcrobotics.2357@raypec.org"

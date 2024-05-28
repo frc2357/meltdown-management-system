@@ -1,5 +1,5 @@
 {
-  "name": "iscoutpro",
+  "name": "scoutingmanagementsystem-sentinel",
   "version": "2024.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
