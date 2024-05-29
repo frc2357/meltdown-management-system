@@ -8,6 +8,12 @@ importers:
 
   .: {}
 
+  devops: {}
+
+  pitmanagementsystem/mechanic: {}
+
+  pitmanagementsystem/workshop: {}
+
   scoutingmanagementsystem/overseer:
     dependencies:
       '@emotion/react':
