@@ -5,7 +5,7 @@
   "main": "./dist/main/main.js",
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "npx prettier . --write",
+    "format": "pnpm exec prettier . --write",
     "start": "electron-vite preview --outDir=dist",
     "dev": "electron-vite dev --outDir=dist",
     "package": "electron-vite build --outDir=dist && electron-forge package",
