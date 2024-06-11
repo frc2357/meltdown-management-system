@@ -173,9 +173,6 @@ importers:
       expo-doctor:
         specifier: ^1.6.1
         version: 1.6.1
-      expo-modules-autolinking:
-        specifier: ^1.5.0
-        version: 1.5.1
       expo-splash-screen:
         specifier: ~0.20.5
         version: 0.20.5(encoding@0.1.13)(expo-modules-autolinking@1.5.1)(expo@49.0.23(@babel/core@7.24.6)(encoding@0.1.13))
