@@ -8,8 +8,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "format": "pnpm exec prettier . --write",
-    "build:dev": "pnpm exec eas build --profile development --platform android",
+    "format": "npx prettier . --write",
+    "build:dev": "npx eas build --profile development --platform android",
     "eas-build-pre-install": "corepack enable"
   },
   "dependencies": {
