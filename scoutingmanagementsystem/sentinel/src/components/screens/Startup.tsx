@@ -15,7 +15,7 @@ export const Startup: React.FC<TStartupProps> = ({
   return (
     <Box style={{ margin: 20, alignItems: 'center' }}>
       <VStack spacing={50}>
-        <Text variant="h1">Scouting Management System: Sentinel</Text>
+        <Text variant="h1">IScoutPro</Text>
         <Button
           title="Match Logs"
           variant="contained"

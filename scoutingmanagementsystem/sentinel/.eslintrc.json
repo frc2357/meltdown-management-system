@@ -1,10 +1,19 @@
 {
   "env": {
+    "browser": true,
+    "es2021": true,
     "react-native/react-native": true
   },
-  "extends": ["../../.eslintrc.json"],
+  "extends": ["plugin:react/recommended", "standard", "prettier"],
   "overrides": [],
-  "plugins": ["react-native"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-native"],
   "rules": {
     "react-native/no-unused-styles": 2,
     "react-native/split-platform-components": 2,

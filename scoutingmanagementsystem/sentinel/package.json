@@ -1,5 +1,5 @@
 {
-  "name": "scoutingmanagementsystem-sentinel",
+  "name": "iscoutpro",
   "version": "2024.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "format": "npx prettier . --write",
-    "build:dev": "npx eas build --profile development --platform android"
+    "devBuild": "npx eas build --profile development --platform android"
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
