@@ -1,0 +1,15 @@
+{
+  "name": "pitmanagementsystem-workshop",
+  "version": "1.0.0",
+  "description": "Wokshop",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "SystemMeltdown",
+    "email": "frcrobotics.2357@raypec.org"
+  },
+  "license": "ISC"
+}

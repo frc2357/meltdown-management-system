@@ -29,7 +29,7 @@ function createWindow(): void {
   });
 
   // Vite dev server URL
-  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);//'http://localhost:5173');
+  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`); //'http://localhost:5173');
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 
