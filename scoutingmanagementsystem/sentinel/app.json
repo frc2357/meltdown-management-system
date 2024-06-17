@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "IScoutPro",
-    "slug": "IScoutPro",
+    "name": "scoutingmanagementsystem-sentinel",
+    "slug": "scoutingmanagementsystem-sentinel",
     "version": "0.1.0",
     "orientation": "landscape",
     "icon": "./assets/logo.png",
@@ -17,24 +17,22 @@
       "infoPlist": {
         "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera."
       },
-      "bundleIdentifier": "com.frc2357.IScoutPro"
+      "bundleIdentifier": "com.frc2357.sentinel"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.frc2357.IScoutPro",
-      "permissions": [
-        "android.permission.CAMERA"
-      ]
+      "package": "com.frc2357.sentinel",
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/logo.png"
     },
     "extra": {
       "eas": {
-        "projectId": "9b358532-423f-4ea6-9228-7455b93a69e8"
+        "projectId": ""
       }
     },
     "plugins": [
