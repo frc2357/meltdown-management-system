@@ -13,6 +13,9 @@ import { TDenseEvent, TDenseLog, TEvent, TLog, TTabletAssignment } from '../type
 import AdmZip, { IZipEntry } from 'adm-zip';
 import isDev from 'electron-is-dev';
 import { WriteStream } from 'node:original-fs';
+import electronSquirrelStartup from 'electron-squirrel-startup';
+
+if (electronSquirrelStartup) app.quit();
 
 let mainWindow: BrowserWindow | null;
 let eventName: string = '';

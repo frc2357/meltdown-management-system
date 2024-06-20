@@ -6,9 +6,10 @@
   - Host and manage "Womp Whomp" reports
     - File for easy editable from to update report
     - Save "Womp Whomp" reports
-  - Meltdown Loaner Program
+  - **Meltdown Loaner Program**
     - Manage inventory of loaned tools and spare parts loaned out to other teams
     - Save loaned item report
   - Inventory System
     - File for easy inventory storage
     - Tie to Meltdown Loaner Program to notify if tool is missing out of system
+- Source of truth for data, mechanic syncs to workshop
