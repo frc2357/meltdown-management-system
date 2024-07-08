@@ -21,7 +21,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/lab": "^5.0.0-alpha.162",
-    "@mui/material": "^5.15.21",
+    "@mui/material": "^5.16.0",
     "@yudiel/react-qr-scanner": "^1.2.6",
     "adm-zip": "^0.5.10",
     "archiver": "^7.0.1",
