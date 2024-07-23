@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">sentinel</string>
+    <string name="title_activity_main">sentinel</string>
+    <string name="package_name">ionic.sentinel</string>
+    <string name="custom_url_scheme">ionic.sentinel</string>
+</resources>
