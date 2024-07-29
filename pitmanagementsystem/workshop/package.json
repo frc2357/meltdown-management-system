@@ -44,7 +44,7 @@
     "prettier": "^3.2.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.2",
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.16.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
