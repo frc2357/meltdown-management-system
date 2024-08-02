@@ -1,5 +1,5 @@
 export type TGamepieceButtonProps = {
-  gamePieceSrc: number;
+  gamePieceSrc: string;
   isHidden: boolean;
   setHidden: (isHidden: boolean) => void;
   style: Object;
