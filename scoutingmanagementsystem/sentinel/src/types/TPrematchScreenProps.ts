@@ -1,4 +1,6 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { TRootStackParamList } from './TRootStackParamList';
+// import { NativeStackScreenProps } from '@react-navigation/native-stack';
+// import { TRootStackParamList } from './TRootStackParamList';
 
-export type TPrematchScreenProps = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
+//export type TPrematchScreenProps = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
+
+export type TPrematchScreenProps = any;

@@ -1,8 +1,8 @@
-import { FlexStyle } from 'react-native/types';
+//import { FlexStyle } from 'react-native/types';
 
 export type TRadioButtonListProps = {
   labels: string[];
-  direction?: FlexStyle['flexDirection'];
+  direction?: any;
   position?: 'leading' | 'trailing';
   selected: string;
   setSelected: (value: string) => void;

@@ -1,6 +1,6 @@
 // button.component.tsx
 
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Button as MuiButton, ButtonProps as MuiButtonProps,
 } from '@mui/material';
 
