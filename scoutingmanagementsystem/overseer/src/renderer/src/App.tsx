@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Capturer } from './components/Capturer';
 import { Distributor } from './components/Distributor';
 
-export const App: React.FC = (): ReactElement => {
+export default function Dashboard() {
   return (
     <Box
       sx={{
