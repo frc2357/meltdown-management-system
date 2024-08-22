@@ -12,8 +12,5 @@
     "pitmanagementsystem/mechanic",
     "pitmanagementsystem/workshop",
     "devops"
-  ],
-  "dependencies": {
-    "@mui/x-data-grid": "^7.12.1"
-  }
+  ]
 }

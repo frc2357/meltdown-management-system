@@ -61,7 +61,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-interface Custom_AppBarProps extends AppBarProps {
+type Custom_AppBarProps = AppBarProps & {
   open?: boolean;
 }
 
@@ -102,10 +102,10 @@ const Custom_Drawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'op
 
 export const App: React.FC = (): ReactElement => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = (): void => {
     setOpen(true);
   };
 

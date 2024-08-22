@@ -39,60 +39,60 @@ export const Inventory: React.FC = (): ReactElement => {
         height: `calc(100% - 200px)`,
       }}
     >
-      <Stack sx={{height:'100%'}} spacing={1}>
-      <Typography variant="h4">Inventory</Typography>
-      <Stack justifyContent="flex-end" direction="row" spacing={2.5}>
-        <Button variant="contained" color="primary" size="large">
-          IMPORT
-        </Button>
-        <Button variant="contained" color="primary" size="large">
-          DOWNLOAD TEMPLATE
-        </Button>
-        <Button variant="contained" color="primary" size="large">
-          EXPORT
-        </Button>
-      </Stack>
-      <Divider />
-      <Stack direction="row" spacing={0.5} sx={{ height: '100%' }}>
-        <Divider flexItem />
-        <Box sx={{ width: '100%', height: '100%' }}>
-          <Stack
-            spacing={0.25}
-            sx={{
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <Card
+      <Stack sx={{ height: '100%' }} spacing={1}>
+        <Typography variant="h4">Inventory</Typography>
+        <Stack justifyContent="flex-end" direction="row" spacing={2.5}>
+          <Button variant="contained" color="primary" size="large">
+            IMPORT
+          </Button>
+          <Button variant="contained" color="primary" size="large">
+            DOWNLOAD TEMPLATE
+          </Button>
+          <Button variant="contained" color="primary" size="large">
+            EXPORT
+          </Button>
+        </Stack>
+        <Divider />
+        <Stack direction="row" spacing={0.5} sx={{ height: '100%' }}>
+          <Divider flexItem />
+          <Box sx={{ width: '100%', height: '100%' }}>
+            <Stack
+              spacing={0.25}
               sx={{
                 width: '100%',
                 height: '100%',
               }}
             >
-              <Stack
+              <Card
                 sx={{
+                  width: '100%',
                   height: '100%',
                 }}
               >
-                <Divider />
-                <DataGrid
-                  initialState={{ pagination: { paginationModel: { pageSize: 100 } } }}
-                  pageSizeOptions={[100]}
-                  disableRowSelectionOnClick
-                  rows={inventoryRows}
-                  columns={inventoryColumns}
-                  slots={{ toolbar: GridToolbar }}
-                  slotProps={{
-                    toolbar: {
-                      showQuickFilter: true,
-                    },
+                <Stack
+                  sx={{
+                    height: '100%',
                   }}
-                />
-              </Stack>
-            </Card>
-          </Stack>
-        </Box>
-      </Stack>
+                >
+                  <Divider />
+                  <DataGrid
+                    initialState={{ pagination: { paginationModel: { pageSize: 100 } } }}
+                    pageSizeOptions={[100]}
+                    disableRowSelectionOnClick
+                    rows={inventoryRows}
+                    columns={inventoryColumns}
+                    slots={{ toolbar: GridToolbar }}
+                    slotProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                      },
+                    }}
+                  />
+                </Stack>
+              </Card>
+            </Stack>
+          </Box>
+        </Stack>
       </Stack>
     </Box>
   );
