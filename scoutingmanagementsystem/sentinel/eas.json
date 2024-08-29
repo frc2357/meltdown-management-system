@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 3.12.1",
+    "version": ">= 11.0.2",
     "requireCommit": true
   },
   "build": {
@@ -29,7 +29,7 @@
         "buildType": "apk",
         "distribution": "internal",
         "gradleCommand": ":app:assembleRelease",
-        "node": "18.16.0"
+        "node": "20.15.1"
       },
       "ios": {
         "distribution": "internal"
