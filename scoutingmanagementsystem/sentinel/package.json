@@ -20,7 +20,7 @@
     "@types/react": "~18.2.14",
     "@types/react-test-renderer": "^18.0.7",
     "eas-cli": "^11.0.2",
-    "expo": "~51",
+    "expo": "~49",
     "expo-dev-client": "~2.4.13",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
