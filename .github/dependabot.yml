@@ -8,7 +8,9 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+  
+  # Due to old android tablets, node packages are terribly outdated
   # - package-ecosystem: "npm"
   #   directory: "/scoutingmanagementsystem/sentinel"
   #   schedule:
@@ -17,14 +19,14 @@ updates:
   - package-ecosystem: "npm"
     directory: "/scoutingmanagementsystem/overseer"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
 
   - package-ecosystem: "npm"
     directory: "/pitmanagementsystem/mechanic"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
 
   - package-ecosystem: "npm"
     directory: "/pitmanagementsystem/workshop"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
