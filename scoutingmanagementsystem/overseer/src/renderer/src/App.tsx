@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Capturer } from './components/Capturer';
 import { Distributor } from './components/Distributor';
 
-export default function Dashboard() {
+export function App() {
   return (
     <Box
       sx={{

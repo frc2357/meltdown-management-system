@@ -32,7 +32,14 @@ function createWindow(): void {
   });
 
   // Vite dev server URL
-  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`); //'http://localhost:5173');
+
+  // dev
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:5173');
+  } else {
+    mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
+  }
+  
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 
@@ -73,27 +80,27 @@ ipcMain.on('exportMatches', async (): Promise<void> => {
   });
 
   matches.sort((a: any, b: any): number => {
-    if (a['matchNum'] > b['matchNum']) {
+    if (a.matchNum > b.matchNum) {
       return 1;
     }
 
-    if (a['matchNum'] < b['matchNum']) {
+    if (a.matchNum < b.matchNum) {
       return -1;
     }
 
-    if (a['alliance'].toUpperCase() === 'BLUE' && b['alliance'].toUpperCase() === 'RED') {
+    if (a.alliance.toUpperCase() === 'BLUE' && b.alliance.toUpperCase() === 'RED') {
       return 1;
     }
 
-    if (a['alliance'].toUpperCase() === 'RED' && b['alliance'].toUpperCase() === 'BLUE') {
+    if (a.alliance.toUpperCase() === 'RED' && b.alliance.toUpperCase() === 'BLUE') {
       return -1;
     }
 
-    if (a['alliancePos'] > b['alliancePos']) {
+    if (a.alliancePos > b.alliancePos) {
       return 1;
     }
 
-    if (a['alliancePos'] < b['alliancePos']) {
+    if (a.alliancePos < b.alliancePos) {
       return -1;
     }
 
@@ -122,7 +129,7 @@ ipcMain.on('exportMatches', async (): Promise<void> => {
 
   matches.forEach((match: any) => {
     match.events.forEach((event: any): void => {
-      let row: any[] = [];
+      const row: any[] = [];
 
       repetitiveHeaders.forEach((header: string): number => row.push(match[header] ?? ''));
 
@@ -171,7 +178,7 @@ ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Pro
       };
 
       log.events = denseLog.e.map((denseEvent: TDenseEvent): TEvent => {
-        let event: TEvent = {};
+        const event: TEvent = {};
 
         for (const prop in denseEvent) {
           switch (prop) {
