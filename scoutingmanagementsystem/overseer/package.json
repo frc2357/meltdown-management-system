@@ -19,7 +19,6 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.15.6",
-    "@mui/lab": "^6.0.0-beta.9",
     "@mui/material": "^6.0.1",
     "@yudiel/react-qr-scanner": "^1.2.6",
     "adm-zip": "^0.5.10",
