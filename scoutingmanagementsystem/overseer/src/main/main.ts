@@ -39,7 +39,7 @@ function createWindow(): void {
   } else {
     mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   }
-  
+
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 

@@ -12,7 +12,7 @@ import { QrScanner } from '@yudiel/react-qr-scanner';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export const Capturer: React.FC = (): ReactElement => {
+export function Capturer(): ReactElement {
   const [isProcessing, setProcessing] = useState<boolean>(false);
   const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
   const [goodScan, setGoodScan] = useState<boolean>(false);
@@ -39,7 +39,12 @@ export const Capturer: React.FC = (): ReactElement => {
   return (
     <Box sx={{ marginLeft: '16px' }}>
       <QrScanner stopDecoding={isAlertOpen} onDecode={handleScan} onError={handleError} />
-      <Button sx={{ marginTop: '10px' }} variant="contained" component={Link} to="/">
+      <Button
+        sx={{ marginTop: '10px' }}
+        variant="contained"
+        component={Link}
+        to="/management/distributor"
+      >
         Distributor
       </Button>
       <Dialog
@@ -63,4 +68,4 @@ export const Capturer: React.FC = (): ReactElement => {
       </Dialog>
     </Box>
   );
-};
+}
