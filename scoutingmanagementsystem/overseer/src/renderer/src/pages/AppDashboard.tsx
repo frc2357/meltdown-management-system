@@ -26,7 +26,7 @@ export function AppDashboard() {
       <AppBar sx={{ width: '100%' }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Meltdown Management System: Scouting
+            Meltdown Management System: Overseer
           </Typography>
         </Toolbar>
       </AppBar>

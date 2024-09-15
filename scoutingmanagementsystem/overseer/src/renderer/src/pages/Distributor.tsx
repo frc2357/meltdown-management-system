@@ -66,7 +66,6 @@ export function Distributor(): ReactElement {
         alignItems: 'center',
       }}
     >
-      <Typography variant="h4">Scouting Center</Typography>
       <Stack direction="row">
         {tabletAssignments === null ? (
           <Typography sx={{ color: 'red' }}>No CSV Loaded</Typography>

@@ -40,6 +40,8 @@ function createWindow(): void {
     mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   }
 
+  mainWindow.removeMenu();
+
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 

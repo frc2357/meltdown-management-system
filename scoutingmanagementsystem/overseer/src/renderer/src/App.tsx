@@ -4,6 +4,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { Capturer } from './pages/Capturer';
 import { Distributor } from './pages/Distributor';
 import { AppDashboard } from './pages/AppDashboard';
+import { Management } from './pages/Management';
 
 const router = createHashRouter([
   {
@@ -12,14 +13,19 @@ const router = createHashRouter([
     errorElement: <></>,
   },
   {
-    path: '/management/distributor',
-    element: <Distributor />,
+    path: '/management',
+    element: <Management />,
     errorElement: <></>,
-  },
-  {
-    path: '/management/capturer',
-    element: <Capturer />,
-    errorElement: <></>,
+    children: [
+      {
+        path: 'distributor',
+        element: <Distributor />,
+      },
+      {
+        path: 'capturer',
+        element: <Capturer />,
+      },
+    ],
   },
 ]);
 
