@@ -1,5 +1,5 @@
 {
-  "name": "scoutingmanagementsystem-sentinel",
+  "name": "scouting-sentinel",
   "version": "2024.0.1",
   "main": "./index.js",
   "scripts": {

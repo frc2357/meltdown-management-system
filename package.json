@@ -8,8 +8,8 @@
     "email": "frcrobotics.2357@raypec.org"
   },
   "workspaces": [
-    "scoutingmanagementsystem/overseer",
-    "scoutingmanagementsystem/sentinel",
+    "scouting/overseer",
+    "scouting/sentinel",
     "pitmanagementsystem/mechanic",
     "pitmanagementsystem/workshop",
     "devops"

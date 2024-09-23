@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "scoutingmanagementsystem-sentinel",
-    "slug": "scoutingmanagementsystem-sentinel",
+    "name": "scouting-sentinel",
+    "slug": "scouting-sentinel",
     "version": "0.1.0",
     "orientation": "landscape",
     "icon": "./assets/logo.png",
@@ -34,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "35102120-2bc9-4f8e-8fd2-35988f7a5626"
+        "projectId": ""
       }
     },
     "plugins": [
