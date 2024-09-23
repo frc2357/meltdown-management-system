@@ -14,4 +14,7 @@ contextBridge.exposeInMainWorld('api', {
   handleScan: async (b64: string): Promise<boolean> => {
     return await ipcRenderer.invoke('handleScan', b64);
   },
+  isDev: async (): Promise<boolean> => {
+    return await ipcRenderer.invoke('isDev');
+  }
 });

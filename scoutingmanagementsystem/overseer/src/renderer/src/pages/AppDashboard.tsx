@@ -12,6 +12,7 @@ import {
   styled,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useIsDev } from '../hooks/useIsDev';
 
 const cardStyle: SxProps = {
   height: 250,
@@ -21,6 +22,8 @@ const cardStyle: SxProps = {
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export function AppDashboard() {
+  const isDev = useIsDev();
+
   return (
     <Box>
       <AppBar sx={{ width: '100%' }}>
@@ -43,17 +46,18 @@ export function AppDashboard() {
             </CardContent>
           </CardActionArea>
         </Card>
+       {isDev && 
         <Card sx={cardStyle}>
           <CardActionArea
             component={Link}
-            to="/template/dashboard"
+            to="/template"
             sx={{ height: '100%', width: '100%', alignContent: 'center' }}
           >
             <CardContent>
               <Typography sx={{ textAlign: 'center' }}>Template Builder</Typography>
             </CardContent>
           </CardActionArea>
-        </Card>
+        </Card> }
       </Stack>
     </Box>
   );

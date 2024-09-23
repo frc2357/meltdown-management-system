@@ -37,10 +37,10 @@ function createWindow(): void {
   if (isDev) {
     mainWindow.loadURL('http://localhost:5173');
   } else {
+    mainWindow.removeMenu();
     mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   }
 
-  mainWindow.removeMenu();
 
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
@@ -323,3 +323,7 @@ ipcMain.handle('openAssignment', async (): Promise<string | null> => {
 
   return JSON.stringify(zippedAssignments);
 });
+
+ipcMain.handle('isDev', (): boolean => {
+  return isDev;
+})

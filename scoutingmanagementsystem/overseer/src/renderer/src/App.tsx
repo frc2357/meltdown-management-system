@@ -5,6 +5,7 @@ import { Capturer } from './pages/Capturer';
 import { Distributor } from './pages/Distributor';
 import { AppDashboard } from './pages/AppDashboard';
 import { Management } from './pages/Management';
+import { TemplateDashboard } from './pages/TemplateDashboard';
 
 const router = createHashRouter([
   {
@@ -27,6 +28,16 @@ const router = createHashRouter([
       },
     ],
   },
+  {
+    path: "/template",
+    element: <TemplateDashboard/>,
+    errorElement: <></>,
+  },
+  {
+    path: "/template/:templateId",
+    element: <></>,
+    errorElement: <></>,
+  }
 ]);
 
 export function App() {
