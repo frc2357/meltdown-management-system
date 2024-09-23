@@ -6,7 +6,7 @@ import { TDownloadFunc } from '../../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
 import QRCode from 'react-qr-code';
 
-export const Distributor: React.FC = (): ReactElement => {
+export function Distributor(): ReactElement {
   const defaultStringTabletAssignments: string | null = sessionStorage.getItem('tabletAssignments');
   let defaultTabletAssignments: string[] | null = null;
   if (defaultStringTabletAssignments) {
@@ -49,7 +49,7 @@ export const Distributor: React.FC = (): ReactElement => {
   };
 
   const onImportCSV: () => void = (): void => {
-    //@ts-ignore
+    // @ts-ignore
     window.api.openAssignment().then((zippedAssignments: string): void => {
       sessionStorage.setItem('tabletAssignments', zippedAssignments);
       setTabletAssignments(JSON.parse(zippedAssignments));
@@ -66,7 +66,6 @@ export const Distributor: React.FC = (): ReactElement => {
         alignItems: 'center',
       }}
     >
-      <Typography variant="h4">Scouting Center</Typography>
       <Stack direction="row">
         {tabletAssignments === null ? (
           <Typography sx={{ color: 'red' }}>No CSV Loaded</Typography>
@@ -126,13 +125,13 @@ export const Distributor: React.FC = (): ReactElement => {
               <Button
                 variant="contained"
                 onClick={(): void => {
-                  //@ts-ignore
+                  // @ts-ignore
                   window.api.exportMatches();
                 }}
               >
                 Export Data
               </Button>
-              <Button variant="contained" component={Link} to="/Capturer">
+              <Button variant="contained" component={Link} to="/management/capturer">
                 Capturer
               </Button>
             </>
@@ -141,4 +140,4 @@ export const Distributor: React.FC = (): ReactElement => {
       </Stack>
     </Box>
   );
-};
+}
