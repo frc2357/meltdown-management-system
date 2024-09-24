@@ -12,12 +12,12 @@ updates:
   
   # Due to old android tablets, node packages are terribly outdated
   # - package-ecosystem: "npm"
-  #   directory: "/scoutingmanagementsystem/sentinel"
+  #   directory: "/scouting/sentinel"
   #   schedule:
   #     interval: "weekly"
       
   - package-ecosystem: "npm"
-    directory: "/scoutingmanagementsystem/overseer"
+    directory: "/scouting/overseer"
     schedule:
       interval: "monthly"
 

@@ -1,5 +1,5 @@
 {
-  "name": "scoutingmanagementsystem-overseer",
+  "name": "scouting-overseer",
   "private": true,
   "version": "2024.0.1",
   "main": "./dist/main/main.js",
