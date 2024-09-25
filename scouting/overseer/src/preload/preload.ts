@@ -1,20 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import { EApi } from '../types/EApi';
 
-contextBridge.exposeInMainWorld('api', {
-  exportMatches: (): void => {
-    ipcRenderer.send('exportMatches');
-  },
-  saveFile: (fileName: string, fileContent: string): void => {
-    ipcRenderer.send('saveFile', fileName, fileContent);
-  },
-  openAssignment: async (): Promise<string | null> => {
-    const result = await ipcRenderer.invoke('openAssignment');
-    return result;
-  },
-  handleScan: async (b64: string): Promise<boolean> => {
-    return await ipcRenderer.invoke('handleScan', b64);
-  },
-  isDev: async (): Promise<boolean> => {
-    return await ipcRenderer.invoke('isDev');
-  }
-});
+const api: Record<string, any> = {};
+for (const key in EApi) {
+ api[key] = (args) => ipcRenderer.invoke(key, args);
+}
+contextBridge.exposeInMainWorld('api', api);

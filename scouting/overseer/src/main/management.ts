@@ -17,7 +17,7 @@ let eventName: string = '';
 let matchLogPath: string = '';
 
 
-ipcMain.on('exportMatches', async (): Promise<void> => {
+ipcMain.handle('exportMatches', async (): Promise<void> => {
   const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
     title: 'Download File',
     defaultPath: `${app.getPath('documents')}/${eventName}`,
@@ -100,9 +100,9 @@ ipcMain.on('exportMatches', async (): Promise<void> => {
   stream.end();
 });
 
-ipcMain.on(
+ipcMain.handle(
   'saveFile',
-  async (event: IpcMainEvent, fileName: string, fileContent: string): Promise<void> => {
+  async (_event: IpcMainInvokeEvent,{fileName, fileContent}: {fileName: string, fileContent: string}): Promise<void> => {
     const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
       title: 'Download File',
       defaultPath: `${app.getPath('documents')}/${fileName}`,
@@ -117,7 +117,7 @@ ipcMain.on(
   }
 );
 
-ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, b64: string): Promise<boolean> => {
+ipcMain.handle('handleScan', async (event: IpcMainInvokeEvent, {b64}: {b64: string}): Promise<boolean> => {
   try {
     const zip = new AdmZip(Buffer.from(b64, 'base64'));
     const entries: IZipEntry[] = zip.getEntries();

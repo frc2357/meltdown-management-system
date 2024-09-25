@@ -7,6 +7,7 @@ import path from 'node:path';
 import isDev from 'electron-is-dev';
 import electronSquirrelStartup from 'electron-squirrel-startup';
 import {management} from './management'
+import {template} from './template'
 
 if (electronSquirrelStartup) app.quit();
 
@@ -58,3 +59,4 @@ ipcMain.handle('isDev', (): boolean => {
 })
 
 management();
+template();

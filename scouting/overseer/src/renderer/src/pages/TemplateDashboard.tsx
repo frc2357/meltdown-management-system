@@ -9,6 +9,7 @@ export function TemplateDashboard(): ReactElement {
   const location = useLocation();
   const rawTitle: string = location.pathname.split('/').pop() ?? '';
   const title: string = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+  // const templateIds: string[]  = 
 
   return (
     <>
@@ -30,6 +31,7 @@ export function TemplateDashboard(): ReactElement {
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Offset />
     </>
   );
