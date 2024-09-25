@@ -3,5 +3,6 @@ export enum EApi {
   saveFile = 'saveFile',
   openAssignment = 'openAssignment',
   handleScan = 'handleScan',
-  isDev = 'isDev'
+  isDev = 'isDev',
+  getTemplates = 'getTemplates',
 }

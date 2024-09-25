@@ -6,6 +6,7 @@ import { Distributor } from './pages/Distributor';
 import { AppDashboard } from './pages/AppDashboard';
 import { Management } from './pages/Management';
 import { TemplateDashboard } from './pages/TemplateDashboard';
+import { TemplateEditor } from './pages/TemplateEditor';
 
 const router = createHashRouter([
   {
@@ -29,15 +30,15 @@ const router = createHashRouter([
     ],
   },
   {
-    path: "/template",
-    element: <TemplateDashboard/>,
+    path: '/template',
+    element: <TemplateDashboard />,
     errorElement: <></>,
   },
   {
-    path: "/template/:templateId",
-    element: <></>,
+    path: '/template/:templateId',
+    element: <TemplateEditor />,
     errorElement: <></>,
-  }
+  },
 ]);
 
 export function App() {

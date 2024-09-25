@@ -6,3 +6,4 @@ export * from './TLog';
 export * from './TDenseLog';
 export * from './TEvent';
 export * from './TDenseEvent';
+export * from './EApi';

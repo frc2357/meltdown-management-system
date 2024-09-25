@@ -46,18 +46,19 @@ export function AppDashboard() {
             </CardContent>
           </CardActionArea>
         </Card>
-       {isDev && 
-        <Card sx={cardStyle}>
-          <CardActionArea
-            component={Link}
-            to="/template"
-            sx={{ height: '100%', width: '100%', alignContent: 'center' }}
-          >
-            <CardContent>
-              <Typography sx={{ textAlign: 'center' }}>Template Builder</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card> }
+        {isDev && (
+          <Card sx={cardStyle}>
+            <CardActionArea
+              component={Link}
+              to="/template"
+              sx={{ height: '100%', width: '100%', alignContent: 'center' }}
+            >
+              <CardContent>
+                <Typography sx={{ textAlign: 'center' }}>Template Builder</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        )}
       </Stack>
     </Box>
   );

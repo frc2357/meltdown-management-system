@@ -1,13 +1,9 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-} from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import isDev from 'electron-is-dev';
 import electronSquirrelStartup from 'electron-squirrel-startup';
-import {management} from './management'
-import {template} from './template'
+import { management } from './management';
+import { template } from './template';
 
 if (electronSquirrelStartup) app.quit();
 
@@ -33,7 +29,6 @@ function createWindow(): void {
     mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   }
 
-
   mainWindow.on('closed', (): null => (mainWindow = null));
 }
 
@@ -53,10 +48,9 @@ app.on('activate', () => {
   }
 });
 
-
 ipcMain.handle('isDev', (): boolean => {
   return isDev;
-})
+});
 
 management();
 template();

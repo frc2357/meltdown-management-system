@@ -21,7 +21,7 @@ export function Capturer(): ReactElement {
     setProcessing(true);
     setAlertOpen(true);
     // @ts-expect-error
-    window.api.handleScan({b64: data}).then((success: boolean) => {
+    window.api.handleScan({ b64: data }).then((success: boolean) => {
       setProcessing(false);
       setGoodScan(success);
     });
