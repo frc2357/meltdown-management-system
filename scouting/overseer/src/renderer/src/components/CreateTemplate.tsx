@@ -30,51 +30,51 @@ export function CreateTemplate({ open, setOpen }: PCreateTemplate): React.JSX.El
     const name = formJson.name;
     console.log(name);
 
-    setLoading(true)
-    window.api.createTemplate({name}).then((success: boolean) => {
-      setLoading(false)
+    setLoading(true);
+    window.api.createTemplate({ name }).then((success: boolean) => {
+      setLoading(false);
 
-      if(success) {
-        navigate(`${name}`)
+      if (success) {
+        navigate(`${name}`);
       }
     });
-  }
+  };
 
   return (
     <>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: createTemplate,
-      }}
-      fullWidth
-    >
-      <DialogTitle>Create New Template</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="name"
-          name="name"
-          label="Template Name"
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} variant={'outlined'}>
-          Cancel
-        </Button>
-        <Button type="submit" variant={'contained'}>
-          Create
-        </Button>
-      </DialogActions>
-    </Dialog>
-    <LoadingGear loading={loading} setLoading={setLoading}/>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: 'form',
+          onSubmit: createTemplate,
+        }}
+        fullWidth
+      >
+        <DialogTitle>Create New Template</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="name"
+            label="Template Name"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant={'outlined'}>
+            Cancel
+          </Button>
+          <Button type="submit" variant={'contained'}>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <LoadingGear loading={loading} />
     </>
   );
 }
