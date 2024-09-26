@@ -13,10 +13,13 @@ import { useNavigate } from 'react-router-dom';
 export type PCreateTemplate = {
   open: boolean;
   setOpen: (open: boolean) => void;
+  existingTemplates: string[]
 };
 
-export function CreateTemplate({ open, setOpen }: PCreateTemplate): React.JSX.Element {
+export function CreateTemplate({ open, setOpen, existingTemplates }: PCreateTemplate): React.JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [errorText, setErrorText] = useState<string>("");
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -27,10 +30,19 @@ export function CreateTemplate({ open, setOpen }: PCreateTemplate): React.JSX.El
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    const name = formJson.name;
+    const name = formJson.name as string;
+  
     console.log(name);
 
     setLoading(true);
+
+    if(existingTemplates.includes(name)) {
+      setError(true);
+      setErrorText("Template already exists with the same name")
+      setLoading(false);
+      return
+    }
+
     window.api.createTemplate({ name }).then((success: boolean) => {
       setLoading(false);
 
@@ -63,6 +75,8 @@ export function CreateTemplate({ open, setOpen }: PCreateTemplate): React.JSX.El
             type="text"
             fullWidth
             variant="standard"
+            helperText={errorText}
+            error={error}
           />
         </DialogContent>
         <DialogActions>

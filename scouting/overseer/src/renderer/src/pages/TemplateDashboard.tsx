@@ -11,7 +11,7 @@ import {
   styled,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { CreateTemplate } from '../components/CreateTemplate';
@@ -25,18 +25,37 @@ const cardStyle: SxProps = {
 
 export function TemplateDashboard(): ReactElement {
   const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+  const [templates, setTemplates] = useState<string[]>([]);
 
   const location = useLocation();
+
+  useEffect(() => {
+    window.api.getTemplates().then((templates: string[]) => {
+      setTemplates(templates);
+    })
+  }, [])
+
   const rawTitle: string = location.pathname.split('/').pop() ?? '';
   const title: string = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
-  // const templateIds: string[]  =
 
-  // Build modal to create template -> one field for template name
-  // Generate folder with name of template, that is the template
-  // Then open template editor
+  const templateCards: React.JSX.Element[] = []
 
-  // Call to get names for templates, display them as cards
-  // On click open the template
+  templates.forEach((template: string) => {
+    templateCards.push(
+      <Card sx={cardStyle}>
+            <CardActionArea
+              component={Link}
+              to={template}
+              sx={{ height: '100%', width: '100%', alignContent: 'center' }}
+            >
+              <CardContent>
+                <Typography sx={{ textAlign: 'center' }}>{template}</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+    )
+  })
+
   return (
     <>
       <AppBar sx={{ width: '100%' }}>
@@ -72,8 +91,9 @@ export function TemplateDashboard(): ReactElement {
             </CardContent>
           </CardActionArea>
         </Card>
+        {templateCards}
       </Stack>
-      <CreateTemplate open={openCreateDialog} setOpen={setOpenCreateDialog} />
+      <CreateTemplate open={openCreateDialog} setOpen={setOpenCreateDialog} existingTemplates={templates} />
     </>
   );
 }
