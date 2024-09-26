@@ -11,9 +11,10 @@ import {
   styled,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { CreateTemplate } from '../components/CreateTemplate';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -23,11 +24,19 @@ const cardStyle: SxProps = {
 };
 
 export function TemplateDashboard(): ReactElement {
+  const [openCreateDialog, setOpenCreateDialog] = useState<boolean>(false);
+
   const location = useLocation();
   const rawTitle: string = location.pathname.split('/').pop() ?? '';
   const title: string = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
   // const templateIds: string[]  =
 
+  // Build modal to create template -> one field for template name
+  // Generate folder with name of template, that is the template
+  // Then open template editor
+
+  // Call to get names for templates, display them as cards
+  // On click open the template
   return (
     <>
       <AppBar sx={{ width: '100%' }}>
@@ -52,8 +61,7 @@ export function TemplateDashboard(): ReactElement {
       <Stack direction="row" spacing={2} sx={{ margin: 10 }}>
         <Card sx={cardStyle}>
           <CardActionArea
-            component={Link}
-            to="/template/temp"
+            onClick={() => setOpenCreateDialog(true)}
             sx={{ height: '100%', width: '100%', alignContent: 'center' }}
           >
             <CardContent>
@@ -65,6 +73,7 @@ export function TemplateDashboard(): ReactElement {
           </CardActionArea>
         </Card>
       </Stack>
+      <CreateTemplate open={openCreateDialog} setOpen={setOpenCreateDialog} />
     </>
   );
 }
