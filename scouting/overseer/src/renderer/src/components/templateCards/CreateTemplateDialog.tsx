@@ -6,20 +6,22 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
-import React, { useState } from 'react';
-import { LoadingGear } from './LoadingGear';
+import React, { useContext, useState } from 'react';
+import { LoadingGear } from '../LoadingGear';
 import { useNavigate } from 'react-router-dom';
+import { TemplatesContext } from '../../context/TemplatesContext';
 
 export type PCreateTemplate = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  existingTemplates: string[]
 };
 
-export function CreateTemplate({ open, setOpen, existingTemplates }: PCreateTemplate): React.JSX.Element {
+export function CreateTemplateDialog({ open, setOpen }: PCreateTemplate): React.JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [errorText, setErrorText] = useState<string>("");
+  const [errorText, setErrorText] = useState<string>('');
+  const [templates] = useContext(TemplatesContext);
+
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -31,16 +33,16 @@ export function CreateTemplate({ open, setOpen, existingTemplates }: PCreateTemp
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     const name = formJson.name as string;
-  
+
     console.log(name);
 
     setLoading(true);
 
-    if(existingTemplates.includes(name)) {
+    if (templates.includes(name)) {
       setError(true);
-      setErrorText("Template already exists with the same name")
+      setErrorText('Template already exists with the same name');
       setLoading(false);
-      return
+      return;
     }
 
     window.api.createTemplate({ name }).then((success: boolean) => {
@@ -66,7 +68,7 @@ export function CreateTemplate({ open, setOpen, existingTemplates }: PCreateTemp
         <DialogTitle>Create New Template</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
+            autoFocus={true}
             required
             margin="dense"
             id="name"
