@@ -14,9 +14,16 @@ import { TemplatesContext } from '../../context/TemplatesContext';
 export type PCreateTemplate = {
   open: boolean;
   setOpen: (open: boolean) => void;
+  copy?: boolean;
+  oldName?: string;
 };
 
-export function CreateTemplateDialog({ open, setOpen }: PCreateTemplate): React.JSX.Element {
+export function CreateTemplateDialog({
+  open,
+  setOpen,
+  copy,
+  oldName,
+}: PCreateTemplate): React.JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorText, setErrorText] = useState<string>('');
@@ -45,13 +52,19 @@ export function CreateTemplateDialog({ open, setOpen }: PCreateTemplate): React.
       return;
     }
 
-    window.api.createTemplate({ name }).then((success: boolean) => {
+    const onSuccess = (success: boolean) => {
       setLoading(false);
 
       if (success) {
         navigate(`${name}`);
       }
-    });
+    };
+
+    if (copy) {
+      window.api.copyTemplate({ oldName, newName: name }).then(onSuccess);
+    } else {
+      window.api.createTemplate({ name }).then(onSuccess);
+    }
   };
 
   return (
@@ -79,6 +92,7 @@ export function CreateTemplateDialog({ open, setOpen }: PCreateTemplate): React.
             variant="standard"
             helperText={errorText}
             error={error}
+            defaultValue={copy ? `${oldName}-copy` : ''}
           />
         </DialogContent>
         <DialogActions>
