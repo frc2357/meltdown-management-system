@@ -6,6 +6,9 @@ import { Distributor } from './pages/Distributor';
 import { AppDashboard } from './pages/AppDashboard';
 import { Management } from './pages/Management';
 import { TemplateDashboard } from './pages/TemplateDashboard';
+import { TemplateEditor } from './pages/TemplateEditor';
+import { ThemeProvider } from '@emotion/react';
+import { appTheme } from './theme/appTheme';
 
 const router = createHashRouter([
   {
@@ -29,27 +32,29 @@ const router = createHashRouter([
     ],
   },
   {
-    path: "/template",
-    element: <TemplateDashboard/>,
+    path: '/template',
+    element: <TemplateDashboard />,
     errorElement: <></>,
   },
   {
-    path: "/template/:templateId",
-    element: <></>,
+    path: '/template/:templateId',
+    element: <TemplateEditor />,
     errorElement: <></>,
-  }
+  },
 ]);
 
 export function App() {
   return (
-    <Box
-      sx={{
-        minHeight: 600,
-        minWidth: 600,
-        flexGrow: 1,
-      }}
-    >
-      <RouterProvider router={router}></RouterProvider>
-    </Box>
+    <ThemeProvider theme={appTheme}>
+      <Box
+        sx={{
+          minHeight: 600,
+          minWidth: 600,
+          flexGrow: 1,
+        }}
+      >
+        <RouterProvider router={router}></RouterProvider>
+      </Box>
+    </ThemeProvider>
   );
 }
