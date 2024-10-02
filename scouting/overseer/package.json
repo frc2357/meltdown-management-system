@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.0.1",
-    "@yudiel/react-qr-scanner": "^1.2.6",
+    "@yudiel/react-qr-scanner": "^2.0.8",
     "adm-zip": "^0.5.10",
     "archiver": "^7.0.1",
     "electron-is-dev": "^3.0.1",
