@@ -49,7 +49,7 @@ export function TemplateDashboard(): ReactElement {
         </Toolbar>
       </AppBar>
       <Offset />
-      <Stack direction="row" spacing={2} sx={{ margin: 10 }}>
+      <Stack direction="row" spacing={2} sx={{ margin: 10, flexWrap: 'wrap' }} useFlexGap>
         <CreateTemplateCard />
         {templateCards}
       </Stack>
