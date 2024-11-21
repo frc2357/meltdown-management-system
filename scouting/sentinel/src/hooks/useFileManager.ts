@@ -99,14 +99,40 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     outFilePath: string,
     fileName: string
   ): Promise<string> => {
+    try {
+    console.log("unzipb64");
     const tempZip: string = `${tempPath}/t.zip`;
-    await fs.writeFile(tempZip, inputB64, 'base64');
-    await unzip(tempZip, outFilePath, 'US-ASCII');
-    await fs.unlink(tempZip);
 
-    const output: string = await fs.readFile(`${outFilePath}/${fileName}`);
+    try {
+    await fs.writeFile(tempZip, inputB64, 'base64');
+    } catch(e) {
+      console.log("Error writing file")
+    }
+
+    try {
+    await unzip(tempZip, outFilePath, 'US-ASCII');
+    } catch (e) {
+      console.log("Error unziping")
+    }
+
+    try {
+    await fs.unlink(tempZip);
+    } catch (e) {
+      console.log("Error deleting file")
+    }
+
+    let output: string = "";
+    try {
+    output = await fs.readFile(`${outFilePath}/${fileName}`);
+    } catch (e) {
+      console.log("Error reading file")
+    }
 
     return output;
+    } catch (e) {
+      console.log("ERROR in Unzip b64")
+      console.log(e)
+    }
   };
 
   const getLogStructure: TFileManager['getLogStructure'] = async (): Promise<TLogStructure> => {
@@ -157,6 +183,8 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
     eventName: string
   ): Promise<number> => {
+
+    try {
     if ('') {
       return -1;
     }
@@ -171,7 +199,12 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       })
       .sort((a: number, b: number): number => b - a)[0];
     console.log(lastMatchNum);
+    
     return lastMatchNum;
+    } catch(e) {
+      console.log("ERROR in getlastmatchnumber")
+      console.log(e)
+    }
   };
 
   return {

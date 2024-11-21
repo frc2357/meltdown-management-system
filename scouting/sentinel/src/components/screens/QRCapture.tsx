@@ -24,6 +24,8 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
 
     setLoading(true);
 
+    console.log("CODE:")
+    console.log(codes[0].value)
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
     const nextMatchNum: number =
       (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '')) + 1;
