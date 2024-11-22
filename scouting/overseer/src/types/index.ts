@@ -7,3 +7,4 @@ export * from './TDenseLog';
 export * from './TEvent';
 export * from './TDenseEvent';
 export * from './EApi';
+export * from './TApi';

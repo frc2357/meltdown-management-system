@@ -61,7 +61,7 @@ export function CreateTemplateDialog({
     };
 
     if (copy) {
-      window.api.copyTemplate({ oldName, newName: name }).then(onSuccess);
+      window.api.copyTemplate({ oldName: oldName ?? '', newName: name }).then(onSuccess);
     } else {
       window.api.createTemplate({ name }).then(onSuccess);
     }
