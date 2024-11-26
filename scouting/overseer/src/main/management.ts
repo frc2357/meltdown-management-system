@@ -23,13 +23,13 @@ export function management() {
 
     const fileNames: string[] = fs.readdirSync(matchLogPath);
 
-    const matches: any[] = fileNames.map((fileName: string): any => {
+    const matches: TLog[] = fileNames.map((fileName: string): TLog => {
       const jsonBuffer: Buffer = fs.readFileSync(path.resolve(matchLogPath, fileName));
       const jsonString: string = jsonBuffer.toString();
       return JSON.parse(jsonString);
     });
 
-    matches.sort((a: any, b: any): number => {
+    matches.sort((a: TLog, b: TLog): number => {
       if (a.matchNum > b.matchNum) {
         return 1;
       }
@@ -57,8 +57,8 @@ export function management() {
       return 0;
     });
 
-    const repetitiveHeaders: string[] = ['matchNum', 'alliance', 'alliancePos', 'teamNum'];
-    const eventHeaders: string[] = [
+    const repetitiveHeaders: Array<keyof TLog> = ['matchNum', 'alliance', 'alliancePos', 'teamNum'];
+    const eventHeaders: Array<keyof TEvent> = [
       'type',
       'timestamp',
       'location',
@@ -71,19 +71,19 @@ export function management() {
       'trap',
       'miss',
     ];
-    const headers: string[] = repetitiveHeaders.concat(eventHeaders);
+    const headers: string[] = (repetitiveHeaders as string[]).concat(eventHeaders as string[]);
 
     const stream: WriteStream = fs.createWriteStream(savePath);
 
     stream.write(headers.join(',') + '\n');
 
-    matches.forEach((match: any) => {
-      match.events.forEach((event: any): void => {
-        const row: any[] = [];
+    matches.forEach((match: TLog) => {
+      match.events.forEach((event: TEvent): void => {
+        const row: unknown[] = [];
 
-        repetitiveHeaders.forEach((header: string): number => row.push(match[header] ?? ''));
+        repetitiveHeaders.forEach((header: keyof TLog): number => row.push(match[header] ?? ''));
 
-        eventHeaders.forEach((header: string): number => row.push(event[header] ?? ''));
+        eventHeaders.forEach((header: keyof TEvent): number => row.push(event[header] ?? ''));
 
         stream.write(row.join(',') + '\n');
       });
@@ -179,7 +179,7 @@ export function management() {
           const filePath: string = path.resolve(matchLogPath, `${entry.name}.json`);
           fs.writeFileSync(filePath, logString);
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.log(`ERROR SAVING FILE: ${err}`);
         return false;
       }
@@ -265,7 +265,7 @@ export function management() {
     });
 
     const zippedAssignments: string[] = tabletAssignments.map(
-      (tabletAssignment: TTabletAssignment, index): any => {
+      (tabletAssignment: TTabletAssignment): string => {
         const zip = new AdmZip();
         const buffer: Buffer = Buffer.from(JSON.stringify(tabletAssignment), 'utf-8');
         zip.addFile('assignment.txt', buffer);

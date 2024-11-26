@@ -53,7 +53,7 @@ export function template() {
 
       fs.rmdirSync(toDelete);
 
-      return !fs.statSync(toDelete).isDirectory();
+      return true;
     }
   );
 }

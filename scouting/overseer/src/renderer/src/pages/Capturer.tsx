@@ -20,14 +20,13 @@ export function Capturer(): ReactElement {
   const handleScan: (data: string) => void = (data: string): void => {
     setProcessing(true);
     setAlertOpen(true);
-    // @ts-expect-error
     window.api.handleScan({ b64: data }).then((success: boolean) => {
       setProcessing(false);
       setGoodScan(success);
     });
   };
 
-  const handleError: (err: any) => void = (err: any): void => {
+  const handleError: (err: Error) => void = (err: Error): void => {
     console.error(err);
   };
 

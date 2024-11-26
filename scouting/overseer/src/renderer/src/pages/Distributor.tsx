@@ -29,7 +29,7 @@ export function Distributor(): ReactElement {
       return <Typography>No CSV Loaded</Typography>;
     }
 
-    const qrCodes: any[] = [];
+    const qrCodes: ReactElement[] = [];
 
     for (let i = 0; i < 6; i++) {
       qrCodes.push(
@@ -49,8 +49,10 @@ export function Distributor(): ReactElement {
   };
 
   const onImportCSV: () => void = (): void => {
-    // @ts-ignore
-    window.api.openAssignment().then((zippedAssignments: string): void => {
+    window.api.openAssignment().then((zippedAssignments: string | null): void => {
+      if (zippedAssignments == null) {
+        return;
+      }
       sessionStorage.setItem('tabletAssignments', zippedAssignments);
       setTabletAssignments(JSON.parse(zippedAssignments));
     });
@@ -125,7 +127,6 @@ export function Distributor(): ReactElement {
               <Button
                 variant="contained"
                 onClick={(): void => {
-                  // @ts-ignore
                   window.api.exportMatches();
                 }}
               >

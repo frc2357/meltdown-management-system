@@ -1,7 +1,8 @@
-import { IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Canvas } from '../components/Canvas';
 
 export function TemplateEditor() {
   return (
@@ -18,7 +19,8 @@ export function TemplateEditor() {
         <ArrowBackIcon />
       </IconButton>
 
-      <Typography variant="h1">I AM A TEMPLATE</Typography>
+      <Typography variant="body1">I AM A TEMPLATE</Typography>
+      <Canvas></Canvas>
     </>
   );
 }
