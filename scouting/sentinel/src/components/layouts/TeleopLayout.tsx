@@ -7,15 +7,9 @@ import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotState } from '../../../types/ERobotState';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
-import {
-  ELogActionType,
-  EPickupLocation,
-  EScoreLocation,
-  TAssignment,
-  TEvent,
-  TLogAction,
-  TTeleopLayoutProps,
-} from '../../../types';
+import { ELogActionType, TLogAction, TTeleopLayoutProps } from '../../../types';
+import { TAssignment } from '../../../../common/types';
+import { EPickupLocation, EScoreLocation, TEvent } from '../../../../common/types';
 import scoringImage from '../../../assets/scoring.png';
 import scoringMirroredImage from '../../../assets/scoringMirrored.png';
 import sourceImage from '../../../assets/source.png';

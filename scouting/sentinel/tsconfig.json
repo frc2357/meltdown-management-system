@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
-    "jsx": "react"
+    "jsx": "react",
   },
-  "include": ["./src/**/*.ts, ./src/**/*.tsx", "./App.tsx", "./types/**/*.ts", "./assets/**/*.png"],
+  "include": [
+    "./src/**/*.ts, ./src/**/*.tsx",
+    "./App.tsx",
+    "./types/**/*.ts",
+    "./assets/**/*.png",
+    "../common/**/*",
+  ],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
 }

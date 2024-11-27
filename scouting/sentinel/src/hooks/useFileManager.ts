@@ -1,6 +1,8 @@
 import fs, { ReadDirItem } from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
-import { TDenseEvent, TDenseLog, TEvent, TFileManager, TLog, TLogStructure } from '../../types';
+import { TFileManager, TLogStructure } from '../../types';
+import { TLog } from '../../../common/types';
+import { TDenseEvent, TDenseLog, TEvent } from '../../../common/types';
 import { useAssignment } from '../contexts/AssignmentContext';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {

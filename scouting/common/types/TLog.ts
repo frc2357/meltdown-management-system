@@ -1,5 +1,5 @@
-import { TAssignmentBase } from './TAssignmentBase';
-import { TEvent } from './TEvent';
+import { TAssignmentBase } from '.';
+import { TEvent } from '.';
 
 export type TLog = {
   teamNum: number;

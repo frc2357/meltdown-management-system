@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import {
-  ELogActionType,
-  ERobotState,
-  EStartLocation,
-  TAssignmentMatch,
-  TLogAction,
-} from '../../../types';
+import { ELogActionType, ERobotState, TLogAction } from '../../../types';
+import { EStartLocation } from '../../../../common/types';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';

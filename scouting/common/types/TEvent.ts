@@ -1,5 +1,5 @@
-import { EEndgameLocation } from './EEndgameLocation';
-import { EEventTypes } from './EEventTypes';
+import { EEndgameLocation } from '.';
+import { EEventTypes } from '../../common/types';
 import { EPickupLocation } from './EPickupLocation';
 import { EScoreLocation } from './EScoreLocation';
 import { EStartLocation } from './EStartLocation';

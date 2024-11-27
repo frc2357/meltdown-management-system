@@ -12,14 +12,9 @@ import {
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import {
-  EAssignmentActionType,
-  EEndgameLocation,
-  ELogActionType,
-  TEndgameScreenProps,
-  TEvent,
-  TLog,
-} from '../../../types';
+import { EAssignmentActionType, ELogActionType, TEndgameScreenProps } from '../../../types';
+import { TLog } from '../../../../common/types';
+import { TEvent, EEndgameLocation } from '../../../../common/types';
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';

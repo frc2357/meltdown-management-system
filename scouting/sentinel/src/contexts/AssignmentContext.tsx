@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import {
-  EAssignmentActionType,
-  TAssignment,
-  TAssignmentAction,
-  TAssignmentMatch,
-  TInputAssignment,
-} from '../../types';
+import { EAssignmentActionType, TAssignmentAction } from '../../types';
+import { TAssignment, TAssignmentMatch, TInputAssignment } from '../../../common/types';
 
 const assignmentDefault: TAssignment = {
   alliance: '',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TAssignment } from '../../../types';
+import { TAssignment } from '../../../../common/types';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { DataTable } from 'react-native-paper';
 import { Text } from '@react-native-material/core';

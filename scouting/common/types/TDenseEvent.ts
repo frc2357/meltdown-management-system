@@ -1,8 +1,8 @@
-import { EEndgameLocation } from './EEndgameLocation';
-import { EEventTypes } from './EEventTypes';
-import { EPickupLocation } from './EPickupLocation';
-import { EScoreLocation } from './EScoreLocation';
-import { EStartLocation } from './EStartLocation';
+import { EEndgameLocation } from '.';
+import { EEventTypes } from '.';
+import { EPickupLocation } from '.';
+import { EScoreLocation } from '.';
+import { EStartLocation } from '.';
 
 export type TDenseEvent = {
   t?: EEventTypes; // type

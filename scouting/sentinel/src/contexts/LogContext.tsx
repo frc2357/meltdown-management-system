@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { ELogActionType, TLog, TLogAction } from '../../types';
+import { ELogActionType, TLogAction } from '../../types';
+import { TLog } from '../../../common/types';
 
 const logDefault: TLog = {
   teamNum: 0,
