@@ -102,9 +102,24 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     fileName: string
   ): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
-    await fs.writeFile(tempZip, inputB64, 'base64');
-    await unzip(tempZip, outFilePath, 'US-ASCII');
-    await fs.unlink(tempZip);
+
+    try {
+      await fs.writeFile(tempZip, inputB64, 'base64');
+    } catch (e) {
+      console.log('Unable to write file: ', e);
+    }
+
+    try {
+      await unzip(tempZip, outFilePath, 'US-ASCII');
+    } catch (e) {
+      console.log('Unable to unzip file: ', e);
+    }
+
+    try {
+      await fs.unlink(tempZip);
+    } catch (e) {
+      console.log('Deleting zip file failed: ', e);
+    }
 
     const output: string = await fs.readFile(`${outFilePath}/${fileName}`);
 
@@ -158,7 +173,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
 
   const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
     eventName: string
-  ): Promise<number> => {
+  ): Promise<number | undefined> => {
     if ('') {
       return -1;
     }
@@ -167,7 +182,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await fs.mkdir(`${logsRoot}/${eventName}/unzipped`);
     await fs.mkdir(`${logsRoot}/${eventName}/zipped`);
     const logInfo: TLogStructure['event'] = await getEventLogInfo(eventName);
-    const lastMatchNum = logInfo
+    const lastMatchNum: number | undefined = logInfo
       .map((x): number => {
         return parseInt(x.name.split('-')[3], 10);
       })
