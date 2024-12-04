@@ -8,11 +8,14 @@ import {
   CameraDevice,
 } from 'react-native-vision-camera';
 import React, { Dispatch, useState } from 'react';
-import { EAssignmentActionType, TAssignmentAction, TQRCaptureProps } from '../../../types';
+import { EAssignmentActionType, TAssignmentAction, TRootStackParamList } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
+export type PQRCapture = NativeStackScreenProps<TRootStackParamList, 'QRCapture'>;
+
+export function QRCapture({ navigation }: PQRCapture): React.JSX.Element {
   const { hasPermission, requestPermission } = useCameraPermission();
   const dispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -63,4 +66,4 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     );
 
   return <Box>{cam}</Box>;
-};
+}

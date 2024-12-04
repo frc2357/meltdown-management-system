@@ -12,17 +12,20 @@ import {
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import { EAssignmentActionType, ELogActionType, TEndgameScreenProps } from '../../../types';
+import { EAssignmentActionType, ELogActionType, TRootStackParamList } from '../../../types';
 import { TLog } from '../../../../common/types';
 import { TEvent, EEndgameLocation } from '../../../../common/types';
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const windowDimensions = Dimensions.get('window');
 
-export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
+export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
+
+export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
   const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation>(EEndgameLocation.none);
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
@@ -132,7 +135,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
       </HStack>
     </Box>
   );
-};
+}
 
 const styles = StyleSheet.create({
   autoContainer: {

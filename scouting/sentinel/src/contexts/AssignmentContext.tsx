@@ -23,9 +23,7 @@ export const useAssignmentDispatch: () => React.Dispatch<TAssignmentAction> =
     return useContext<React.Dispatch<TAssignmentAction>>(AssignmentDispatchContext);
   };
 
-export const AssignmentProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}: React.PropsWithChildren) => {
+export function AssignmentProvider({ children }: React.PropsWithChildren): React.JSX.Element {
   const [log, dispatch] = useReducer<React.Reducer<TAssignment, TAssignmentAction>>(
     assignmentReducer,
     assignmentDefault
@@ -38,7 +36,7 @@ export const AssignmentProvider: React.FC<React.PropsWithChildren> = ({
       </AssignmentDispatchContext.Provider>
     </AssignmentContext.Provider>
   );
-};
+}
 
 export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = (
   assignment: TAssignment,

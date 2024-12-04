@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Button, Divider, HStack, IconButton, Text } from '@react-native-material/core';
-import { TFileManager, TLogStructure, TMatchLogsProps } from '../../../types';
+import { TFileManager, TLogStructure, TRootStackParamList } from '../../../types';
 import { useFileManager } from '../../hooks/useFileManager';
 import { List } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
 import { ScrollView } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const MatchLogs: React.FC<TMatchLogsProps> = ({
-  navigation,
-}: TMatchLogsProps): React.ReactNode => {
+export type PMatchLogsProps = NativeStackScreenProps<TRootStackParamList, 'MatchLogs'>;
+
+export function MatchLogs({ navigation }: PMatchLogsProps): React.JSX.Element {
   const [logStructure, setLogStructure] = useState<TLogStructure>({});
   const [isLoading, setIsLoading] = useState(true);
   const fileManager: TFileManager = useFileManager();
@@ -97,4 +98,4 @@ export const MatchLogs: React.FC<TMatchLogsProps> = ({
       </Box>
     </LoadingWrapper>
   );
-};
+}

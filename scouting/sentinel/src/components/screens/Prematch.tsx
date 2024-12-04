@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import { ELogActionType, ERobotState, TLogAction } from '../../../types';
+import { ELogActionType, ERobotState, TLogAction, TRootStackParamList } from '../../../types';
 import { EStartLocation } from '../../../../common/types';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import { TPrematchScreenProps } from '../../../types';
 import autoFieldImage from '../../../assets/autoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
 import { useLogDispatch } from '../../contexts/LogContext';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { useTimer } from '../../contexts/TimerContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
+export type PPrematchScreen = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
+
+export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
   const locations: EStartLocation[] = Object.values(EStartLocation);
 
   const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
@@ -95,7 +97,7 @@ export const Prematch: React.FC<TPrematchScreenProps> = ({ navigation }) => {
       <Button title="START" variant="contained" style={styles.confirm} onPress={onConfirm} />
     </Box>
   );
-};
+}
 
 const autoAreaLeft = 12;
 const autoAreaTop = 280;

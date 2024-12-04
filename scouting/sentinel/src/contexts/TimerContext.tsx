@@ -29,10 +29,8 @@ export const useTimer = () => {
   };
 };
 
-export const TimerProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}: React.PropsWithChildren): React.ReactNode => {
+export function TimerProvider({ children }: React.PropsWithChildren): React.JSX.Element {
   const [time, setTime] = useState(0);
 
   return <TimerContext.Provider value={[time, setTime]}>{children}</TimerContext.Provider>;
-};
+}

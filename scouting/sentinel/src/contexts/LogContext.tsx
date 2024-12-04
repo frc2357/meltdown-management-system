@@ -24,9 +24,7 @@ export const useLogDispatch: () => React.Dispatch<TLogAction> = (): React.Dispat
   return useContext<React.Dispatch<TLogAction>>(LogDispatchContext);
 };
 
-export const LogProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}: React.PropsWithChildren) => {
+export function LogProvider({ children }: React.PropsWithChildren) {
   const [log, dispatch] = useReducer<React.Reducer<TLog, TLogAction>>(logReducer, logDefault);
 
   return (
@@ -34,7 +32,7 @@ export const LogProvider: React.FC<React.PropsWithChildren> = ({
       <LogDispatchContext.Provider value={dispatch}>{children}</LogDispatchContext.Provider>
     </LogContext.Provider>
   );
-};
+}
 
 export const logReducer: React.Reducer<TLog, TLogAction> = (
   log: TLog,

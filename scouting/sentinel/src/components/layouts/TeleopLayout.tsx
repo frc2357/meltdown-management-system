@@ -7,7 +7,7 @@ import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotState } from '../../../types/ERobotState';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
-import { ELogActionType, TLogAction, TTeleopLayoutProps } from '../../../types';
+import { ELogActionType, TLogAction, TRootStackParamList } from '../../../types';
 import { TAssignment } from '../../../../common/types';
 import { EPickupLocation, EScoreLocation, TEvent } from '../../../../common/types';
 import scoringImage from '../../../assets/scoring.png';
@@ -17,16 +17,19 @@ import floorImage from '../../../assets/floor.png';
 import { useLogDispatch } from '../../contexts/LogContext';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { ViewTimer } from '../basics/ViewTimer';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const pickupStationNames: EPickupLocation[] = Object.values(EPickupLocation);
 const numPickupStations: number = pickupStationNames.length;
 
-export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
+export type PTeleopLayout = NativeStackScreenProps<TRootStackParamList, 'TeleopLayout'>;
+
+export function TeleopLayout({
   route: {
     params: { initialRobotState },
   },
   navigation,
-}: TTeleopLayoutProps): React.ReactNode => {
+}: PTeleopLayout): React.JSX.Element {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
   const [lastPickup, setLastPickup] = useState<TEvent>();
@@ -244,7 +247,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
       </Box>
     </Box>
   );
-};
+}
 
 const baseStyles = StyleSheet.create({
   gamepiece: {

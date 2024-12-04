@@ -6,7 +6,7 @@ import { Text } from '@react-native-material/core';
 import { StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-export const AssignmentTable: React.FC = () => {
+export function AssignmentTable(): React.JSX.Element {
   const [currentMatchNum, setCurrentMatchNum] = useState<number>(-1);
 
   const assignment: TAssignment = useAssignment();
@@ -61,7 +61,7 @@ export const AssignmentTable: React.FC = () => {
       </DataTable.Row>
     </DataTable>
   );
-};
+}
 
 const styles = StyleSheet.create({
   dataTable: {
