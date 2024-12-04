@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { EAssignmentActionType, TAssignmentAction } from '../../types';
-import { TAssignment, TAssignmentMatch, TInputAssignment } from '../../../common/types';
+import { TAssignment, TAssignmentMatch, TTabletAssignment } from '../../../common/types';
 
 const assignmentDefault: TAssignment = {
   alliance: '',
@@ -44,7 +44,7 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
 ): TAssignment => {
   switch (action.type) {
     case EAssignmentActionType.load:
-      const inputAssignment: TInputAssignment = JSON.parse(action.loadData ?? '');
+      const inputAssignment: TTabletAssignment = JSON.parse(action.loadData ?? '');
 
       const newAssignment: TAssignment = {
         event: inputAssignment.e,

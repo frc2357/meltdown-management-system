@@ -5,8 +5,8 @@ import { EScoreLocation } from './EScoreLocation';
 import { EStartLocation } from './EStartLocation';
 
 export type TEvent = {
-  type: EEventTypes;
-  timestamp: number;
+  type?: EEventTypes;
+  timestamp?: number;
   location?: EStartLocation | EPickupLocation | EScoreLocation | EEndgameLocation;
   x?: number;
   y?: number;

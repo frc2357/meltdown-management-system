@@ -1,4 +1,5 @@
-import { TLog, TLogStructure } from '.';
+import { TLogStructure } from '.';
+import { TLog } from '../../common/types';
 
 export type TFileManager = {
   createBaseDirs: () => Promise<void>;

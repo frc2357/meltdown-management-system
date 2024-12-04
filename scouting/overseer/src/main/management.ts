@@ -1,7 +1,8 @@
 import { app, dialog, ipcMain, IpcMainInvokeEvent, SaveDialogReturnValue } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { TDenseEvent, TDenseLog, TEvent, TLog, TTabletAssignment, EApi } from '../types';
+import { TTabletAssignment, TDenseEvent, TDenseLog, TEvent, TLog } from '../../../common/types';
+import { EApi } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { WriteStream } from 'node:original-fs';
 
