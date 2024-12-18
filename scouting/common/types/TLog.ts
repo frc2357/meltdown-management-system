@@ -1,9 +1,8 @@
 import { TAssignmentBase } from '.';
-import { TEvent } from '.';
 
-export type TLog = {
+export type TLog<event> = {
   teamNum: number;
   matchNum: number;
-  events: TEvent[];
+  events: Partial<event>[];
   scouter: string;
 } & TAssignmentBase;

@@ -20,6 +20,7 @@ import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { TEvent2024 } from '../../../../common/types/2024';
 
 const windowDimensions = Dimensions.get('window');
 
@@ -34,7 +35,7 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
 
   const fileManager = useFileManager();
 
-  const log: TLog = useLog();
+  const log: TLog<TEvent2024> = useLog();
   const logDispatch = useLogDispatch();
   const eventCreator = useEventCreator();
 

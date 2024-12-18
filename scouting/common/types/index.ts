@@ -3,7 +3,6 @@ export * from './EEndgameLocation';
 export * from './EPickupLocation';
 export * from './EScoreLocation';
 export * from './EStartLocation';
-export * from './TDenseEvent';
 export * from './TDenseLog';
 export * from './TEvent';
 export * from './TAssignment';

@@ -1,10 +1,11 @@
 import { app, dialog, ipcMain, IpcMainInvokeEvent, SaveDialogReturnValue } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { TTabletAssignment, TDenseEvent, TDenseLog, TEvent, TLog } from '../../../common/types';
+import { TTabletAssignment, TDenseLog, TLog, TEvent } from '../../../common/types';
 import { EApi } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { WriteStream } from 'node:original-fs';
+import { denseToEventKey2024, TEvent2024 } from '../../../common/types/2024';
 
 export function management() {
   let eventName: string = '';
@@ -24,13 +25,13 @@ export function management() {
 
     const fileNames: string[] = fs.readdirSync(matchLogPath);
 
-    const matches: TLog[] = fileNames.map((fileName: string): TLog => {
+    const matches: TLog<TEvent2024>[] = fileNames.map((fileName: string): TLog<TEvent2024> => {
       const jsonBuffer: Buffer = fs.readFileSync(path.resolve(matchLogPath, fileName));
       const jsonString: string = jsonBuffer.toString();
       return JSON.parse(jsonString);
     });
 
-    matches.sort((a: TLog, b: TLog): number => {
+    matches.sort((a: TLog<TEvent2024>, b: TLog<TEvent2024>): number => {
       if (a.matchNum > b.matchNum) {
         return 1;
       }
@@ -58,7 +59,12 @@ export function management() {
       return 0;
     });
 
-    const repetitiveHeaders: Array<keyof TLog> = ['matchNum', 'alliance', 'alliancePos', 'teamNum'];
+    const repetitiveHeaders: Array<keyof TLog<TEvent2024>> = [
+      'matchNum',
+      'alliance',
+      'alliancePos',
+      'teamNum',
+    ];
     const eventHeaders: Array<keyof TEvent> = [
       'type',
       'timestamp',
@@ -78,11 +84,13 @@ export function management() {
 
     stream.write(headers.join(',') + '\n');
 
-    matches.forEach((match: TLog) => {
+    matches.forEach((match: TLog<TEvent2024>) => {
       match.events.forEach((event: TEvent): void => {
         const row: unknown[] = [];
 
-        repetitiveHeaders.forEach((header: keyof TLog): number => row.push(match[header] ?? ''));
+        repetitiveHeaders.forEach((header: keyof TLog<TEvent2024>): number =>
+          row.push(match[header] ?? '')
+        );
 
         eventHeaders.forEach((header: keyof TEvent): number => row.push(event[header] ?? ''));
 
@@ -115,7 +123,8 @@ export function management() {
 
   ipcMain.handle(
     EApi.handleScan,
-    async (event: IpcMainInvokeEvent, { b64 }: { b64: string }): Promise<boolean> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async <eventType>(event: IpcMainInvokeEvent, { b64 }: { b64: string }): Promise<boolean> => {
       try {
         const zip = new AdmZip(Buffer.from(b64, 'base64'));
         const entries: IZipEntry[] = zip.getEntries();
@@ -124,7 +133,7 @@ export function management() {
           const text: string = zip.readAsText(entry);
 
           const denseLog: TDenseLog = JSON.parse(text);
-          const log: TLog = {
+          const log: TLog<eventType> = {
             teamNum: denseLog.t,
             matchNum: denseLog.m,
             events: [],
@@ -133,48 +142,19 @@ export function management() {
             alliancePos: denseLog.p,
           };
 
-          log.events = denseLog.e.map((denseEvent: TDenseEvent): TEvent => {
-            const event: TEvent = {};
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          log.events = denseLog.e.map(
+            (denseEvent: Record<string, keyof eventType>): Partial<eventType> => {
+              const event: eventType = {} as eventType;
 
-            for (const prop in denseEvent) {
-              switch (prop) {
-                case 't':
-                  event.type = denseEvent.t;
-                  break;
-                case 'c':
-                  event.timestamp = denseEvent.c;
-                  break;
-                case 'l':
-                  event.location = denseEvent.l;
-                  break;
-                case 'x':
-                  event.x = denseEvent.x;
-                  break;
-                case 'y':
-                  event.y = denseEvent.y;
-                  break;
-                case 'o':
-                  event.leave = denseEvent.o;
-                  break;
-                case 'n':
-                  event.notes = denseEvent.n;
-                  break;
-                case 'h':
-                  event.harmony = denseEvent.h;
-                  break;
-                case 's':
-                  event.spotlit = denseEvent.s;
-                  break;
-                case 'r':
-                  event.trap = denseEvent.r;
-                  break;
-                case 'm':
-                  event.miss = denseEvent.m;
-                  break;
+              for (const key in denseEvent) {
+                const val = denseToEventKey2024[key];
+                // @ts-expect-error I don't know how to fix this
+                event[val] = denseEvent.key;
               }
+              return event;
             }
-            return event;
-          });
+          );
 
           const logString: string = JSON.stringify(log);
           const filePath: string = path.resolve(matchLogPath, `${entry.name}.json`);

@@ -2,8 +2,9 @@ import fs, { ReadDirItem } from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
 import { TFileManager, TLogStructure } from '../../types';
 import { TLog } from '../../../common/types';
-import { TDenseEvent, TDenseLog, TEvent } from '../../../common/types';
+import { TDenseLog } from '../../../common/types';
 import { useAssignment } from '../contexts/AssignmentContext';
+import { TEvent2024, eventKeyToDense2024 } from '../../../common/types/2024';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {
   const { event } = useAssignment();
@@ -23,7 +24,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await Promise.all(promises);
   };
 
-  const saveLog: TFileManager['saveLog'] = async (log: TLog): Promise<string> => {
+  const saveLog: TFileManager['saveLog'] = async (log: TLog<TEvent2024>): Promise<string> => {
     let denseLog: TDenseLog = {
       t: log.teamNum, // teamNum
       m: log.matchNum, // matchNum
@@ -33,45 +34,13 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       p: log.alliancePos, // alliancePos
     };
 
-    denseLog.e = log.events.map((event: TEvent): TDenseEvent => {
-      let denseEvent: TDenseEvent = {};
-      for (const prop in event) {
-        switch (prop) {
-          case 'type':
-            denseEvent.t = event.type;
-            break;
-          case 'timestamp':
-            denseEvent.c = event.timestamp;
-            break;
-          case 'location':
-            denseEvent.l = event.location;
-            break;
-          case 'x':
-            denseEvent.x = event.x;
-            break;
-          case 'y':
-            denseEvent.y = event.y;
-            break;
-          case 'leave':
-            denseEvent.o = event.leave;
-            break;
-          case 'notes':
-            denseEvent.n = event.notes;
-            break;
-          case 'harmony':
-            denseEvent.h = event.harmony;
-            break;
-          case 'spotlit':
-            denseEvent.s = event.spotlit;
-            break;
-          case 'trap':
-            denseEvent.r = event.trap;
-            break;
-          case 'miss':
-            denseEvent.m = event.miss;
-            break;
-        }
+    denseLog.e = log.events.map((event: TEvent2024): Record<string, any> => {
+      let denseEvent: Record<string, any> = {};
+
+      for (const key in event) {
+        denseEvent[eventKeyToDense2024[key]] = event[key];
       }
+
       return denseEvent;
     });
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
