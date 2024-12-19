@@ -37,9 +37,13 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     denseLog.e = log.events.map((event: TEvent2024): Record<string, any> => {
       let denseEvent: Record<string, any> = {};
 
+      console.log(eventKeyToDense2024);
+
       for (const key in event) {
         denseEvent[eventKeyToDense2024[key]] = event[key];
       }
+
+      // console.log(denseEvent);
 
       return denseEvent;
     });
