@@ -4,7 +4,8 @@ import { TFileManager, TLogStructure } from '../../types';
 import { TLog } from '../../../common/types';
 import { TDenseLog } from '../../../common/types';
 import { useAssignment } from '../contexts/AssignmentContext';
-import { TEvent2024, eventKeyToDense2024 } from '../../../common/types/2024';
+import { yearConfig } from '../../../common/helpers';
+import DeviceInfo from 'react-native-device-info';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {
   const { event } = useAssignment();
@@ -24,7 +25,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await Promise.all(promises);
   };
 
-  const saveLog: TFileManager['saveLog'] = async (log: TLog<TEvent2024>): Promise<string> => {
+  const saveLog: TFileManager['saveLog'] = async <eventType>(log: TLog<eventType>): Promise<string> => {
     let denseLog: TDenseLog = {
       t: log.teamNum, // teamNum
       m: log.matchNum, // matchNum
@@ -34,11 +35,13 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       p: log.alliancePos, // alliancePos
     };
 
-    denseLog.e = log.events.map((event: TEvent2024): Record<string, any> => {
+    const eventKeyToDense = yearConfig(DeviceInfo.getVersion()).eventKeyToDense;
+
+    denseLog.e = log.events.map((event: eventType): Record<string, any> => {
       let denseEvent: Record<string, any> = {};
 
       for (const key in event) {
-        denseEvent[eventKeyToDense2024[key]] = event[key];
+        denseEvent[eventKeyToDense[key]] = event[key];
       }
 
       console.log(denseEvent);

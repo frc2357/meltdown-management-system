@@ -17,9 +17,9 @@ class ClassEvent2024 {
 
 export interface TEvent2024 extends ClassEvent2024 {}
 
-type TEventArray2024 = Array<keyof TEvent2024>;
+export type TEventArray2024 = Array<keyof TEvent2024>;
 
-const eventKeys2024: TEventArray2024 = Object.keys(new ClassEvent2024()) as TEventArray2024;
+export const eventKeys2024: TEventArray2024 = Object.keys(new ClassEvent2024()) as TEventArray2024;
 
 export let eventKeyToDense2024: Partial<Record<keyof TEvent2024, string>> = {};
 eventKeys2024.forEach((key: keyof TEvent2024, index: number) => {

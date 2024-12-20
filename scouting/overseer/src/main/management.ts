@@ -1,17 +1,17 @@
 import { app, dialog, ipcMain, IpcMainInvokeEvent, SaveDialogReturnValue } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { TTabletAssignment, TDenseLog, TLog, TEvent } from '../../../common/types';
+import { TTabletAssignment, TDenseLog, TLog } from '../../../common/types';
+import { yearConfig } from '../../../common/helpers';
 import { EApi } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { WriteStream } from 'node:original-fs';
-import { denseToEventKey2024, TEvent2024 } from '../../../common/types/2024';
 
 export function management() {
   let eventName: string = '';
   let matchLogPath: string = '';
 
-  ipcMain.handle(EApi.exportMatches, async (): Promise<void> => {
+  ipcMain.handle(EApi.exportMatches, async <eventType>(): Promise<void> => {
     const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
       title: 'Download File',
       defaultPath: `${app.getPath('documents')}/${eventName}`,
@@ -25,13 +25,13 @@ export function management() {
 
     const fileNames: string[] = fs.readdirSync(matchLogPath);
 
-    const matches: TLog<TEvent2024>[] = fileNames.map((fileName: string): TLog<TEvent2024> => {
+    const matches: TLog<eventType>[] = fileNames.map((fileName: string): TLog<eventType> => {
       const jsonBuffer: Buffer = fs.readFileSync(path.resolve(matchLogPath, fileName));
       const jsonString: string = jsonBuffer.toString();
       return JSON.parse(jsonString);
     });
 
-    matches.sort((a: TLog<TEvent2024>, b: TLog<TEvent2024>): number => {
+    matches.sort((a: TLog<eventType>, b: TLog<eventType>): number => {
       if (a.matchNum > b.matchNum) {
         return 1;
       }
@@ -59,40 +59,30 @@ export function management() {
       return 0;
     });
 
-    const repetitiveHeaders: Array<keyof TLog<TEvent2024>> = [
+    const repetitiveHeaders: Array<keyof TLog<{}>> = [
       'matchNum',
       'alliance',
       'alliancePos',
       'teamNum',
     ];
-    const eventHeaders: Array<keyof TEvent> = [
-      'type',
-      'timestamp',
-      'location',
-      'x',
-      'y',
-      'leave',
-      'notes',
-      'harmony',
-      'spotlit',
-      'trap',
-      'miss',
-    ];
-    const headers: string[] = (repetitiveHeaders as string[]).concat(eventHeaders as string[]);
+
+    const eventHeaders: string[] = yearConfig(app.getVersion()).eventKeys;
+
+    const headers: string[] = (repetitiveHeaders as string[]).concat(eventHeaders);
 
     const stream: WriteStream = fs.createWriteStream(savePath);
 
     stream.write(headers.join(',') + '\n');
 
-    matches.forEach((match: TLog<TEvent2024>) => {
-      match.events.forEach((event: TEvent): void => {
+    matches.forEach((match: TLog<eventType>) => {
+      match.events.forEach((event: Partial<eventType>): void => {
         const row: unknown[] = [];
 
-        repetitiveHeaders.forEach((header: keyof TLog<TEvent2024>): number =>
+        repetitiveHeaders.forEach((header: keyof TLog<eventType>): number =>
           row.push(match[header] ?? '')
         );
 
-        eventHeaders.forEach((header: keyof TEvent): number => row.push(event[header] ?? ''));
+        eventHeaders.forEach((header): number => row.push(event[header as keyof eventType] ?? ''));
 
         stream.write(row.join(',') + '\n');
       });
@@ -141,13 +131,15 @@ export function management() {
             alliancePos: denseLog.p,
           };
 
+          const denseToEventKey = yearConfig(app.getVersion()).denseToEventKey;
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           log.events = denseLog.e.map(
             (denseEvent: Record<string, keyof eventType>): Partial<eventType> => {
               const event: eventType = {} as eventType;
 
               for (const key in denseEvent) {
-                const val = denseToEventKey2024[key];
+                const val = denseToEventKey[key];
                 // @ts-expect-error I don't know how to fix this
                 event[val] = denseEvent[key];
               }
