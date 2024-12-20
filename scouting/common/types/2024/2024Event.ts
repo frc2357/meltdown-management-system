@@ -1,17 +1,18 @@
 import { EEndgameLocation, EEventTypes, EPickupLocation, EStartLocation, EScoreLocation } from '..';
 
 class ClassEvent2024 {
-  type?: EEventTypes;
-  timestamp?: number;
-  location?: EStartLocation | EPickupLocation | EScoreLocation | EEndgameLocation;
-  x?: number;
-  y?: number;
-  leave?: boolean;
-  notes?: string;
-  harmony?: boolean;
-  spotlit?: boolean;
-  trap?: number;
-  miss?: boolean;
+  type?: EEventTypes = EEventTypes.start;
+  timestamp?: number = 0;
+  location?: EStartLocation | EPickupLocation | EScoreLocation | EEndgameLocation =
+    EStartLocation.center;
+  x?: number = 0;
+  y?: number = 0;
+  leave?: boolean = false;
+  notes?: string = '';
+  harmony?: boolean = false;
+  spotlit?: boolean = false;
+  trap?: number = 0;
+  miss?: boolean = false;
 }
 
 export interface TEvent2024 extends ClassEvent2024 {}
@@ -27,5 +28,5 @@ eventKeys2024.forEach((key: keyof TEvent2024, index: number) => {
 
 export let denseToEventKey2024: Record<string, keyof TEvent2024> = {};
 eventKeys2024.forEach((key: keyof TEvent2024, index: number) => {
-  eventKeyToDense2024[String.fromCharCode('a'.charCodeAt(0) + index)] = key;
+  denseToEventKey2024[String.fromCharCode('a'.charCodeAt(0) + index)] = key;
 });

@@ -37,13 +37,11 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     denseLog.e = log.events.map((event: TEvent2024): Record<string, any> => {
       let denseEvent: Record<string, any> = {};
 
-      console.log(eventKeyToDense2024);
-
       for (const key in event) {
         denseEvent[eventKeyToDense2024[key]] = event[key];
       }
 
-      // console.log(denseEvent);
+      console.log(denseEvent);
 
       return denseEvent;
     });
@@ -147,9 +145,6 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
     eventName: string
   ): Promise<number | undefined> => {
-    if ('') {
-      return -1;
-    }
     console.log(eventName);
 
     await fs.mkdir(`${logsRoot}/${eventName}/unzipped`);

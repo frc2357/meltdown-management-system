@@ -131,7 +131,6 @@ export function management() {
 
         entries.forEach((entry: IZipEntry): void => {
           const text: string = zip.readAsText(entry);
-
           const denseLog: TDenseLog = JSON.parse(text);
           const log: TLog<eventType> = {
             teamNum: denseLog.t,
@@ -150,12 +149,11 @@ export function management() {
               for (const key in denseEvent) {
                 const val = denseToEventKey2024[key];
                 // @ts-expect-error I don't know how to fix this
-                event[val] = denseEvent.key;
+                event[val] = denseEvent[key];
               }
               return event;
             }
           );
-
           const logString: string = JSON.stringify(log);
           const filePath: string = path.resolve(matchLogPath, `${entry.name}.json`);
           fs.writeFileSync(filePath, logString);
