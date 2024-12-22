@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import {
-  EAssignmentActionType,
-  TAssignment,
-  TAssignmentAction,
-  TAssignmentMatch,
-  TInputAssignment,
-} from '../../types';
+import { EAssignmentActionType, TAssignmentAction } from '../../types';
+import { TAssignment, TAssignmentMatch, TTabletAssignment } from '../../../common/types';
 
 const assignmentDefault: TAssignment = {
   alliance: '',
@@ -28,9 +23,7 @@ export const useAssignmentDispatch: () => React.Dispatch<TAssignmentAction> =
     return useContext<React.Dispatch<TAssignmentAction>>(AssignmentDispatchContext);
   };
 
-export const AssignmentProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}: React.PropsWithChildren) => {
+export function AssignmentProvider({ children }: React.PropsWithChildren): React.JSX.Element {
   const [log, dispatch] = useReducer<React.Reducer<TAssignment, TAssignmentAction>>(
     assignmentReducer,
     assignmentDefault
@@ -43,7 +36,7 @@ export const AssignmentProvider: React.FC<React.PropsWithChildren> = ({
       </AssignmentDispatchContext.Provider>
     </AssignmentContext.Provider>
   );
-};
+}
 
 export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = (
   assignment: TAssignment,
@@ -51,7 +44,7 @@ export const assignmentReducer: React.Reducer<TAssignment, TAssignmentAction> = 
 ): TAssignment => {
   switch (action.type) {
     case EAssignmentActionType.load:
-      const inputAssignment: TInputAssignment = JSON.parse(action.loadData ?? '');
+      const inputAssignment: TTabletAssignment = JSON.parse(action.loadData ?? '');
 
       const newAssignment: TAssignment = {
         event: inputAssignment.e,

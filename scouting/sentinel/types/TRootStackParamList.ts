@@ -1,4 +1,4 @@
-import { ERobotState, TLog } from '.';
+import { ERobotState } from '.';
 
 export type TRootStackParamList = {
   Startup: undefined;

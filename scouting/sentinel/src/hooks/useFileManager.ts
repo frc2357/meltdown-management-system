@@ -1,7 +1,11 @@
 import fs, { ReadDirItem } from 'react-native-fs';
 import { unzip, zip } from 'react-native-zip-archive';
-import { TDenseEvent, TDenseLog, TEvent, TFileManager, TLog, TLogStructure } from '../../types';
+import { TFileManager, TLogStructure } from '../../types';
+import { TLog } from '../../../common/types';
+import { TDenseLog } from '../../../common/types';
 import { useAssignment } from '../contexts/AssignmentContext';
+import { yearConfig } from '../../../common/helpers';
+import DeviceInfo from 'react-native-device-info';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {
   const { event } = useAssignment();
@@ -21,7 +25,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await Promise.all(promises);
   };
 
-  const saveLog: TFileManager['saveLog'] = async (log: TLog): Promise<string> => {
+  const saveLog: TFileManager['saveLog'] = async <eventType>(log: TLog<eventType>): Promise<string> => {
     let denseLog: TDenseLog = {
       t: log.teamNum, // teamNum
       m: log.matchNum, // matchNum
@@ -31,45 +35,17 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
       p: log.alliancePos, // alliancePos
     };
 
-    denseLog.e = log.events.map((event: TEvent): TDenseEvent => {
-      let denseEvent: TDenseEvent = {};
-      for (const prop in event) {
-        switch (prop) {
-          case 'type':
-            denseEvent.t = event.type;
-            break;
-          case 'timestamp':
-            denseEvent.c = event.timestamp;
-            break;
-          case 'location':
-            denseEvent.l = event.location;
-            break;
-          case 'x':
-            denseEvent.x = event.x;
-            break;
-          case 'y':
-            denseEvent.y = event.y;
-            break;
-          case 'leave':
-            denseEvent.o = event.leave;
-            break;
-          case 'notes':
-            denseEvent.n = event.notes;
-            break;
-          case 'harmony':
-            denseEvent.h = event.harmony;
-            break;
-          case 'spotlit':
-            denseEvent.s = event.spotlit;
-            break;
-          case 'trap':
-            denseEvent.r = event.trap;
-            break;
-          case 'miss':
-            denseEvent.m = event.miss;
-            break;
-        }
+    const eventKeyToDense = yearConfig(DeviceInfo.getVersion()).eventKeyToDense;
+
+    denseLog.e = log.events.map((event: eventType): Record<string, any> => {
+      let denseEvent: Record<string, any> = {};
+
+      for (const key in event) {
+        denseEvent[eventKeyToDense[key]] = event[key];
       }
+
+      console.log(denseEvent);
+
       return denseEvent;
     });
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
@@ -100,9 +76,24 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     fileName: string
   ): Promise<string> => {
     const tempZip: string = `${tempPath}/t.zip`;
-    await fs.writeFile(tempZip, inputB64, 'base64');
-    await unzip(tempZip, outFilePath, 'US-ASCII');
-    await fs.unlink(tempZip);
+
+    try {
+      await fs.writeFile(tempZip, inputB64, 'base64');
+    } catch (e) {
+      console.log('Unable to write file: ', e);
+    }
+
+    try {
+      await unzip(tempZip, outFilePath, 'US-ASCII');
+    } catch (e) {
+      console.log('Unable to unzip file: ', e);
+    }
+
+    try {
+      await fs.unlink(tempZip);
+    } catch (e) {
+      console.log('Deleting zip file failed: ', e);
+    }
 
     const output: string = await fs.readFile(`${outFilePath}/${fileName}`);
 
@@ -156,16 +147,13 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
 
   const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
     eventName: string
-  ): Promise<number> => {
-    if ('') {
-      return -1;
-    }
+  ): Promise<number | undefined> => {
     console.log(eventName);
 
     await fs.mkdir(`${logsRoot}/${eventName}/unzipped`);
     await fs.mkdir(`${logsRoot}/${eventName}/zipped`);
     const logInfo: TLogStructure['event'] = await getEventLogInfo(eventName);
-    const lastMatchNum = logInfo
+    const lastMatchNum: number | undefined = logInfo
       .map((x): number => {
         return parseInt(x.name.split('-')[3], 10);
       })

@@ -1,4 +1,4 @@
-export enum EStartLocation {
+export enum EStartLocation2024 {
   left = 'left',
   center = 'center',
   right = 'right',

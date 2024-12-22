@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import path from 'node:path';
 import isDev from 'electron-is-dev';
 import electronSquirrelStartup from 'electron-squirrel-startup';
@@ -18,6 +18,8 @@ function createWindow(): void {
     },
     icon: path.join(__dirname, './assets/logo.png'),
   });
+
+  nativeTheme.themeSource = 'light'; 
 
   // Vite dev server URL
 

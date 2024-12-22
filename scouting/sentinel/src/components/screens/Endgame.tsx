@@ -12,23 +12,21 @@ import {
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
-import {
-  EAssignmentActionType,
-  EEndgameLocation,
-  ELogActionType,
-  TEndgameScreenProps,
-  TEvent,
-  TLog,
-} from '../../../types';
+import { EAssignmentActionType, ELogActionType, TRootStackParamList } from '../../../types';
+import { TLog } from '../../../../common/types';
+import { EEndgameLocation2024, TEvent2024 } from '../../../../common/types/2024';
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const windowDimensions = Dimensions.get('window');
 
-export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
-  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation>(EEndgameLocation.none);
+export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
+
+export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
+  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2024>(EEndgameLocation2024.none);
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
   const [trap, setTrap] = useState<number>(0);
@@ -36,14 +34,14 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
 
   const fileManager = useFileManager();
 
-  const log: TLog = useLog();
+  const log: TLog<TEvent2024> = useLog();
   const logDispatch = useLogDispatch();
   const eventCreator = useEventCreator();
 
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    const endgameEvent: TEvent = eventCreator.createEndgame(
+    const endgameEvent: TEvent2024 = eventCreator.createEndgame(
       endgameLocation,
       `\"${notes}\"`,
       harmony === 'checked',
@@ -71,10 +69,10 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
       <VStack>
         <Text variant="h6">Stage:</Text>
         <RadioButtonList
-          labels={Object.values(EEndgameLocation)}
+          labels={Object.values(EEndgameLocation2024)}
           direction="row"
           selected={endgameLocation}
-          setSelected={(value: EEndgameLocation) => {
+          setSelected={(value: EEndgameLocation2024) => {
             setEndgameLocation(value);
           }}
         />
@@ -137,7 +135,7 @@ export const Endgame: React.FC<TEndgameScreenProps> = ({ navigation }) => {
       </HStack>
     </Box>
   );
-};
+}
 
 const styles = StyleSheet.create({
   autoContainer: {

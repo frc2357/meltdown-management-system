@@ -7,21 +7,26 @@ import {
   Code,
   CameraDevice,
 } from 'react-native-vision-camera';
-import React, { Dispatch, useState } from 'react';
-import { EAssignmentActionType, TAssignmentAction, TQRCaptureProps } from '../../../types';
+import React, { Dispatch, useRef, useState } from 'react';
+import { EAssignmentActionType, TAssignmentAction, TRootStackParamList } from '../../../types';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
+export type PQRCapture = NativeStackScreenProps<TRootStackParamList, 'QRCapture'>;
+
+export function QRCapture({ navigation }: PQRCapture): React.JSX.Element {
   const { hasPermission, requestPermission } = useCameraPermission();
   const dispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
   const [isLoading, setLoading] = useState<boolean>(false);
   const fileManager = useFileManager();
+  const isCaptured = useRef<boolean>(false);
   const device: CameraDevice = useCameraDevice('back');
 
   const advance: (codes: Code[]) => Promise<void> = async (codes: Code[]): Promise<void> => {
-    if (!codes[0].value) return;
+    if (!codes[0].value || isCaptured.current) return;
 
+    isCaptured.current = true;
     setLoading(true);
 
     const assignmentTxt: string = await fileManager.unzipAssignment(codes[0].value);
@@ -63,4 +68,4 @@ export const QRCapture: React.FC<TQRCaptureProps> = ({ navigation }) => {
     );
 
   return <Box>{cam}</Box>;
-};
+}

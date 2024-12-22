@@ -1,6 +1,5 @@
 import { ELogActionType } from './ELogActionType';
-import { TAssignmentBase } from './TAssignmentBase';
-import { TEvent } from './TEvent';
+import { TAssignmentBase, TEvent } from '../../common/types';
 
 export type TLogAction = {
   type: ELogActionType;

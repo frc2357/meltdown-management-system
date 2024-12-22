@@ -5,8 +5,8 @@ import {
   EScoreLocation,
   EStartLocation,
   TEvent,
-} from '../../types';
-import { EEventTypes } from '../../types/EEventTypes';
+} from '../../../common/types';
+import { EEventTypes } from '../../../common/types';
 import { useTimer } from '../contexts/TimerContext';
 
 export const useEventCreator = () => {

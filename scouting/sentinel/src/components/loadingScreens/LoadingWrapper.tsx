@@ -1,16 +1,14 @@
 import React from 'react';
 import { LoadingScreen } from './LoadingScreen';
 
-export const LoadingWrapper: React.FC<
-  React.PropsWithChildren<{ message: string; isLoading: boolean }>
-> = ({
+export function LoadingWrapper({
   children,
   message,
   isLoading,
-}: React.PropsWithChildren<{ message: string; isLoading: boolean }>) => {
+}: React.PropsWithChildren<{ message: string; isLoading: boolean }>): React.JSX.Element {
   if (isLoading) {
     return <LoadingScreen message={message} />;
   }
 
   return <>{children}</>;
-};
+}

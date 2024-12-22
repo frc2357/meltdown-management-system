@@ -1,11 +1,12 @@
 import { Box, VStack, Button, Text } from '@react-native-material/core';
 import React, { useEffect } from 'react';
-import { TFileManager, TStartupProps } from '../../../types';
+import { TFileManager, TRootStackParamList } from '../../../types';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const Startup: React.FC<TStartupProps> = ({
-  navigation,
-}: TStartupProps): React.ReactNode => {
+export type PStartup = NativeStackScreenProps<TRootStackParamList, 'Startup'>;
+
+export function Startup({ navigation }: PStartup): React.JSX.Element {
   const fileManager: TFileManager = useFileManager();
 
   useEffect((): void => {
@@ -33,4 +34,4 @@ export const Startup: React.FC<TStartupProps> = ({
       </VStack>
     </Box>
   );
-};
+}

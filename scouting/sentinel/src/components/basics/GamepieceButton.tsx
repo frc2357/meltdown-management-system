@@ -2,15 +2,22 @@ import React from 'react';
 import { Pressable } from '@react-native-material/core';
 import { Image } from 'react-native';
 import { ImageStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-import { TGamepieceButtonProps } from '../../../types';
 
-export const GamepieceButton: React.FC<TGamepieceButtonProps> = ({
+export type PGamepieceButton = {
+  gamePieceSrc: number;
+  isHidden: boolean;
+  setHidden: (isHidden: boolean) => void;
+  style: Object;
+  imageStyle: Object;
+};
+
+export function GamepieceButton({
   gamePieceSrc,
   isHidden,
   setHidden,
   style = {},
   imageStyle,
-}) => {
+}: PGamepieceButton): React.JSX.Element {
   const renderImage = () => {
     return isHidden ? (
       <></>
@@ -40,4 +47,4 @@ export const GamepieceButton: React.FC<TGamepieceButtonProps> = ({
       {renderImage()}
     </Pressable>
   );
-};
+}

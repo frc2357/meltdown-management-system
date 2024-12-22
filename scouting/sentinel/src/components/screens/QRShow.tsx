@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import { Box, Button, HStack } from '@react-native-material/core';
-import { TQRShowProps } from '../../../types';
+import { TRootStackParamList } from '../../../types';
 import { LoadingWrapper } from '../loadingScreens/LoadingWrapper';
 import { useFileManager } from '../../hooks/useFileManager';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const QRShow: React.FC<TQRShowProps> = ({
+export type PQRShow = NativeStackScreenProps<TRootStackParamList, 'QRShow'>;
+
+export function QRShow({
   navigation,
   route: {
     params: { routeName, path },
   },
-}: TQRShowProps): React.ReactNode => {
+}: PQRShow): React.JSX.Element {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [qrContent, setQrContent] = useState<string>('a');
   const fileManager = useFileManager();
@@ -49,4 +52,4 @@ export const QRShow: React.FC<TQRShowProps> = ({
       </HStack>
     </LoadingWrapper>
   );
-};
+}

@@ -7,15 +7,9 @@ import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotState } from '../../../types/ERobotState';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
-import {
-  ELogActionType,
-  EPickupLocation,
-  EScoreLocation,
-  TAssignment,
-  TEvent,
-  TLogAction,
-  TTeleopLayoutProps,
-} from '../../../types';
+import { ELogActionType, TLogAction, TRootStackParamList } from '../../../types';
+import { TAssignment } from '../../../../common/types';
+import { EPickupLocation2024, EScoreLocation2024, TEvent2024 } from '../../../../common/types/2024';
 import scoringImage from '../../../assets/scoring.png';
 import scoringMirroredImage from '../../../assets/scoringMirrored.png';
 import sourceImage from '../../../assets/source.png';
@@ -23,20 +17,23 @@ import floorImage from '../../../assets/floor.png';
 import { useLogDispatch } from '../../contexts/LogContext';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { ViewTimer } from '../basics/ViewTimer';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const pickupStationNames: EPickupLocation[] = Object.values(EPickupLocation);
+const pickupStationNames: EPickupLocation2024[] = Object.values(EPickupLocation2024);
 const numPickupStations: number = pickupStationNames.length;
 
-export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
+export type PTeleopLayout = NativeStackScreenProps<TRootStackParamList, 'TeleopLayout'>;
+
+export function TeleopLayout({
   route: {
     params: { initialRobotState },
   },
   navigation,
-}: TTeleopLayoutProps): React.ReactNode => {
+}: PTeleopLayout): React.JSX.Element {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
-  const [lastPickup, setLastPickup] = useState<TEvent>();
-  const [lastScore, setLastScore] = useState<TEvent>();
+  const [lastPickup, setLastPickup] = useState<TEvent2024>();
+  const [lastScore, setLastScore] = useState<TEvent2024>();
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(ERobotState.empty)
   );
@@ -71,7 +68,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     setRobotState(ERobotState.empty);
   };
 
-  const onEvent: (event: TEvent) => void = (event: TEvent): void => {
+  const onEvent: (event: TEvent2024) => void = (event: TEvent2024): void => {
     if (lastPickup) {
       logDispatch({
         type: ELogActionType.addEvent,
@@ -96,12 +93,12 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
     onEvent(missScore);
   };
 
-  const onScore: (location: EScoreLocation, x: number, y: number) => void = (
-    location: EScoreLocation,
+  const onScore: (location: EScoreLocation2024, x: number, y: number) => void = (
+    location: EScoreLocation2024,
     x: number,
     y: number
   ): void => {
-    const lastScore: TEvent = eventCreator.createScore(location, false, x, y);
+    const lastScore: TEvent2024 = eventCreator.createScore(location, false, x, y);
     setLastScore(lastScore);
     clearRobotStateAndPickup();
   };
@@ -215,7 +212,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
             const x: number = event.nativeEvent.locationX;
             const y: number = event.nativeEvent.locationY;
             showNoteIcon(x - 25, y - 25);
-            onScore(EScoreLocation.speaker, x, y);
+            onScore(EScoreLocation2024.speaker, x, y);
           }}
           pressEffect={'none'}
         />
@@ -231,7 +228,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
               return;
             }
             showNoteIcon(570, 15);
-            onScore(EScoreLocation.amp, 0, 0);
+            onScore(EScoreLocation2024.amp, 0, 0);
           }}
           disabled={robotState === ERobotState.empty}
         />
@@ -250,7 +247,7 @@ export const TeleopLayout: React.FC<TTeleopLayoutProps> = ({
       </Box>
     </Box>
   );
-};
+}
 
 const baseStyles = StyleSheet.create({
   gamepiece: {
