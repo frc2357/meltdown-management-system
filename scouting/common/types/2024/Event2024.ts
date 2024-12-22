@@ -1,10 +1,14 @@
-import { EEndgameLocation, EEventTypes, EPickupLocation, EStartLocation, EScoreLocation } from '..';
+import { EEventTypes } from '..';
+import { EEndgameLocation2024 } from './EEndgameLocation2024';
+import { EPickupLocation2024 } from './EPickupLocation2024';
+import { EScoreLocation2024 } from './EScoreLocation2024';
+import { EStartLocation2024 } from './EStartLocation2024';
 
 class ClassEvent2024 {
   type?: EEventTypes = EEventTypes.start;
   timestamp?: number = 0;
-  location?: EStartLocation | EPickupLocation | EScoreLocation | EEndgameLocation =
-    EStartLocation.center;
+  location?: EStartLocation2024 | EPickupLocation2024 | EScoreLocation2024 | EEndgameLocation2024 =
+    EStartLocation2024.center;
   x?: number = 0;
   y?: number = 0;
   leave?: boolean = false;

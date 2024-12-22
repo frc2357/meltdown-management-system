@@ -3,7 +3,7 @@ import { Box, Text, Button, Pressable, HStack } from '@react-native-material/cor
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { ELogActionType, ERobotState, TLogAction, TRootStackParamList } from '../../../types';
-import { EStartLocation } from '../../../../common/types';
+import { EStartLocation2024 } from '../../../../common/types/2024';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import autoFieldImage from '../../../assets/autoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
@@ -15,7 +15,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export type PPrematchScreen = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
 
 export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
-  const locations: EStartLocation[] = Object.values(EStartLocation);
+  const locations: EStartLocation2024[] = Object.values(EStartLocation2024);
 
   const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
   const [preload, setPreload] = useState(ERobotState.empty);
@@ -25,7 +25,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
   const timer = useTimer();
 
   const onConfirm = () => {
-    let startPos: EStartLocation = EStartLocation.center;
+    let startPos: EStartLocation2024 = EStartLocation2024.center;
 
     locations.forEach((location, i) => {
       if (startPosPressed[i]) {

@@ -14,20 +14,19 @@ import { RadioButtonList } from '../basics/RadioButtonList';
 import { useEventCreator } from '../../hooks/useEventCreator';
 import { EAssignmentActionType, ELogActionType, TRootStackParamList } from '../../../types';
 import { TLog } from '../../../../common/types';
-import { TEvent, EEndgameLocation } from '../../../../common/types';
+import { EEndgameLocation2024, TEvent2024 } from '../../../../common/types/2024';
 import { RadioButton } from 'react-native-paper';
 import { useLog, useLogDispatch } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { useFileManager } from '../../hooks/useFileManager';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { TEvent2024 } from '../../../../common/types/2024';
 
 const windowDimensions = Dimensions.get('window');
 
 export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
 
 export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
-  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation>(EEndgameLocation.none);
+  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2024>(EEndgameLocation2024.none);
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
   const [trap, setTrap] = useState<number>(0);
@@ -42,7 +41,7 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    const endgameEvent: TEvent = eventCreator.createEndgame(
+    const endgameEvent: TEvent2024 = eventCreator.createEndgame(
       endgameLocation,
       `\"${notes}\"`,
       harmony === 'checked',
@@ -70,10 +69,10 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
       <VStack>
         <Text variant="h6">Stage:</Text>
         <RadioButtonList
-          labels={Object.values(EEndgameLocation)}
+          labels={Object.values(EEndgameLocation2024)}
           direction="row"
           selected={endgameLocation}
-          setSelected={(value: EEndgameLocation) => {
+          setSelected={(value: EEndgameLocation2024) => {
             setEndgameLocation(value);
           }}
         />
