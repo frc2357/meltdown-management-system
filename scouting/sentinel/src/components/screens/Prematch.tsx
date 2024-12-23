@@ -32,7 +32,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
 
     log.addStartEvent(startPos);
 
-    navigation.navigate('TeleopLayout', { initialRobotState: preload });
+    navigation.navigate('Teleop', { initialRobotState: preload });
   };
 
   return (

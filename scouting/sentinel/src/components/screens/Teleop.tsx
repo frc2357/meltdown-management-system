@@ -21,14 +21,14 @@ import { useLog } from '../../contexts/LogContext';
 const pickupStationNames: EPickupLocation2024[] = Object.values(EPickupLocation2024);
 const numPickupStations: number = pickupStationNames.length;
 
-export type PTeleopLayout = NativeStackScreenProps<TRootStackParamList, 'TeleopLayout'>;
+export type PTeleop = NativeStackScreenProps<TRootStackParamList, 'Teleop'>;
 
-export function TeleopLayout({
+export function Teleop({
   route: {
     params: { initialRobotState },
   },
   navigation,
-}: PTeleopLayout): React.JSX.Element {
+}: PTeleop): React.JSX.Element {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
   const [missable, setMissable] = useState<boolean>(false);

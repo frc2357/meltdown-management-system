@@ -1,5 +1,5 @@
 import React from 'react';
-import { TeleopLayout } from './src/components/layouts/TeleopLayout';
+import { Teleop } from './src/components/screens/Teleop';
 import { Prematch } from './src/components/screens/Prematch';
 import { Endgame } from './src/components/screens/Endgame';
 import { NavigationContainer } from '@react-navigation/native';
@@ -46,8 +46,8 @@ function App() {
                   options={{ headerShown: false }}
                 />
                 <NavStack.Screen
-                  name="TeleopLayout"
-                  component={TeleopLayout}
+                  name="Teleop"
+                  component={Teleop}
                   options={{ headerShown: false }}
                   initialParams={{ initialRobotState: ERobotState.empty }}
                 />

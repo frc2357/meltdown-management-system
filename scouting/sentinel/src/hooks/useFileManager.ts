@@ -44,8 +44,6 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
         denseEvent[eventKeyToDense[key]] = event[key];
       }
 
-      console.log(denseEvent);
-
       return denseEvent;
     });
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
@@ -148,7 +146,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   const getLastMatchNumber: TFileManager['getLastMatchNumber'] = async (
     eventName: string
   ): Promise<number | undefined> => {
-    console.log(eventName);
+    console.log(`Loading event ${eventName}`);
 
     await fs.mkdir(`${logsRoot}/${eventName}/unzipped`);
     await fs.mkdir(`${logsRoot}/${eventName}/zipped`);
@@ -158,7 +156,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
         return parseInt(x.name.split('-')[3], 10);
       })
       .sort((a: number, b: number): number => b - a)[0];
-    console.log(lastMatchNum);
+    console.log(`Starting ${eventName} from match ${lastMatchNum}`);
     return lastMatchNum;
   };
 
