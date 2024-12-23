@@ -4,7 +4,6 @@ import { Animated, Easing, Image, View, StyleSheet } from 'react-native';
 export function LoadingSymbol(): React.JSX.Element {
   const spinValue = new Animated.Value(0);
 
-  // First set up animation
   Animated.loop(
     Animated.timing(spinValue, {
       toValue: 1,

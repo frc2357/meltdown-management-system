@@ -11,14 +11,11 @@ import {
 } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import { useEventCreator } from '../../hooks/useEventCreator';
-import { EAssignmentActionType, ELogActionType, TRootStackParamList } from '../../../types';
-import { TLog } from '../../../../common/types';
+import { EAssignmentActionType, TRootStackParamList } from '../../../types';
 import { EEndgameLocation2024, TEvent2024 } from '../../../../common/types/2024';
 import { RadioButton } from 'react-native-paper';
-import { useLog, useLogDispatch } from '../../contexts/LogContext';
+import { useLog, useSaveLog } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
-import { useFileManager } from '../../hooks/useFileManager';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const windowDimensions = Dimensions.get('window');
@@ -26,39 +23,33 @@ const windowDimensions = Dimensions.get('window');
 export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
 
 export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
-  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2024>(EEndgameLocation2024.none);
+  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2024>(
+    EEndgameLocation2024.none
+  );
   const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
   const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
   const [trap, setTrap] = useState<number>(0);
   const [notes, setNotes] = useState('');
 
-  const fileManager = useFileManager();
-
-  const log: TLog<TEvent2024> = useLog();
-  const logDispatch = useLogDispatch();
-  const eventCreator = useEventCreator();
+  const log = useLog();
+  const saveLog = useSaveLog();
 
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    const endgameEvent: TEvent2024 = eventCreator.createEndgame(
+    log.addEndgameEvent(
       endgameLocation,
       `\"${notes}\"`,
       harmony === 'checked',
       trap,
       spotlit === 'checked'
     );
-    logDispatch({
-      type: ELogActionType.addEvent,
-      event: endgameEvent,
-    });
 
     assignmentDispatch({
       type: EAssignmentActionType.nextMatch,
     });
 
-    log.events.push(endgameEvent);
-    fileManager.saveLog(log).then((path) => {
+    saveLog().then((path) => {
       navigation.navigate('QRShow', { routeName: 'Prematch', path });
     });
   };

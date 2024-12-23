@@ -41,4 +41,5 @@ Repository for various tools used at competition
 - Change version in `scouting/sentinel/package.json`, `scouting/sentinel/app.json`, `scouting/overseer/package.json` to 2025.0.1
 - In `scouting/common/types`, create a `2025` folder. In the folder, copy in contents from `scouting/common/types/2024`
 - Update type names to 2025, update event structure and enum values as needed.
+- Update `scouting/common/helpers/yearConfig` to have a case for 2025.
 - At this point the **Overseer** application is updated for 2025, **Sentinel** will require significant re-work for the 2025 game

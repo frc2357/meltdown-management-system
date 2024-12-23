@@ -17,7 +17,7 @@ export type PQRCapture = NativeStackScreenProps<TRootStackParamList, 'QRCapture'
 
 export function QRCapture({ navigation }: PQRCapture): React.JSX.Element {
   const { hasPermission, requestPermission } = useCameraPermission();
-  const dispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
+  const assignmentDispatch: Dispatch<TAssignmentAction> = useAssignmentDispatch();
   const [isLoading, setLoading] = useState<boolean>(false);
   const fileManager = useFileManager();
   const isCaptured = useRef<boolean>(false);
@@ -39,7 +39,7 @@ export function QRCapture({ navigation }: PQRCapture): React.JSX.Element {
       matchNum: nextMatchNum,
     };
 
-    dispatch(action);
+    assignmentDispatch(action);
 
     setLoading(false);
     navigation.navigate<'Prematch'>('Prematch');

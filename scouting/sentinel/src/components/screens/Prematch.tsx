@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { Box, Text, Button, Pressable, HStack } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
-import { ELogActionType, ERobotState, TLogAction, TRootStackParamList } from '../../../types';
+import { ERobotState, TRootStackParamList } from '../../../types';
 import { EStartLocation2024 } from '../../../../common/types/2024';
-import { useEventCreator } from '../../hooks/useEventCreator';
 import autoFieldImage from '../../../assets/autoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
-import { useLogDispatch } from '../../contexts/LogContext';
-import { useAssignment } from '../../contexts/AssignmentContext';
-import { useTimer } from '../../contexts/TimerContext';
+import { useLog } from '../../contexts/LogContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type PPrematchScreen = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
@@ -19,10 +16,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
 
   const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
   const [preload, setPreload] = useState(ERobotState.empty);
-  const logDispatch = useLogDispatch();
-  const assignment = useAssignment();
-  const eventCreator = useEventCreator();
-  const timer = useTimer();
+  const log = useLog();
 
   const onConfirm = () => {
     let startPos: EStartLocation2024 = EStartLocation2024.center;
@@ -36,25 +30,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
     setStartPosPressed(new Array(locations.length).fill(false));
     setPreload(ERobotState.empty);
 
-    const initLog: TLogAction = {
-      type: ELogActionType.initLog,
-      assignment: {
-        teamNum: assignment?.currentMatch.teamNum ?? 0,
-        scouter: assignment?.currentMatch.scouter ?? '',
-        matchNum: assignment?.currentMatch.matchNum ?? 0,
-        alliance: assignment.alliance,
-        alliancePos: assignment.alliancePos,
-      },
-    };
-    logDispatch(initLog);
-
-    timer.start();
-
-    const startEvent: TLogAction = {
-      type: ELogActionType.addEvent,
-      event: eventCreator.createStart(startPos),
-    };
-    logDispatch(startEvent);
+    log.addStartEvent(startPos);
 
     navigation.navigate('TeleopLayout', { initialRobotState: preload });
   };
