@@ -1,47 +1,44 @@
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, HStack, Pressable, Text } from '@react-native-material/core';
 import { GestureResponderEvent, Image, StyleSheet } from 'react-native';
 import noteImage from '../../../assets/note.png';
 import emptyImage from '../../../assets/empty.png';
 import { GamepieceButton } from '../basics/GamepieceButton';
 import { ERobotState } from '../../../types/ERobotState';
-import { useEventCreator } from '../../hooks/useEventCreator';
 import { RadioButton } from 'react-native-paper';
-import { ELogActionType, TLogAction, TRootStackParamList } from '../../../types';
+import { TLogActions, TRootStackParamList } from '../../../types';
 import { TAssignment } from '../../../../common/types';
 import { EPickupLocation2024, EScoreLocation2024, TEvent2024 } from '../../../../common/types/2024';
 import scoringImage from '../../../assets/scoring.png';
 import scoringMirroredImage from '../../../assets/scoringMirrored.png';
 import sourceImage from '../../../assets/source.png';
 import floorImage from '../../../assets/floor.png';
-import { useLogDispatch } from '../../contexts/LogContext';
 import { useAssignment } from '../../contexts/AssignmentContext';
 import { ViewTimer } from '../basics/ViewTimer';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useLog } from '../../contexts/LogContext';
 
 const pickupStationNames: EPickupLocation2024[] = Object.values(EPickupLocation2024);
 const numPickupStations: number = pickupStationNames.length;
 
-export type PTeleopLayout = NativeStackScreenProps<TRootStackParamList, 'TeleopLayout'>;
+export type PTeleop = NativeStackScreenProps<TRootStackParamList, 'Teleop'>;
 
-export function TeleopLayout({
+export function Teleop({
   route: {
     params: { initialRobotState },
   },
   navigation,
-}: PTeleopLayout): React.JSX.Element {
+}: PTeleop): React.JSX.Element {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
   const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
-  const [lastPickup, setLastPickup] = useState<TEvent2024>();
-  const [lastScore, setLastScore] = useState<TEvent2024>();
+  const [missable, setMissable] = useState<boolean>(false);
   const [pickupStates, setPickupStates] = useState(
     new Array(numPickupStations).fill(ERobotState.empty)
   );
   const [noteIconVisible, setNoteIconVisible] = useState(false);
   const [noteIconCoords, setNoteIconCoords] = useState({ x: 0, y: 0 });
-  const eventCreator = useEventCreator();
-  const logDispatch: Dispatch<TLogAction> = useLogDispatch();
   const assignment: TAssignment = useAssignment();
+  const log: TLogActions = useLog();
 
   const robotStateToImage: (state: ERobotState) => number = (state: ERobotState): number => {
     switch (state) {
@@ -68,29 +65,16 @@ export function TeleopLayout({
     setRobotState(ERobotState.empty);
   };
 
-  const onEvent: (event: TEvent2024) => void = (event: TEvent2024): void => {
-    if (lastPickup) {
-      logDispatch({
-        type: ELogActionType.addEvent,
-        event: lastPickup,
-      });
-    }
-    logDispatch({
-      type: ELogActionType.addEvent,
-      event: event,
-    });
-    clearRobotStateAndPickup();
-    setLastScore(null);
-    setLastPickup(null);
-  };
-
   const onDrop: () => void = (): void => {
-    onEvent(eventCreator.createDrop());
+    log.addDropEvent();
+    setMissable(false);
+    clearRobotStateAndPickup();
   };
 
   const onMiss: () => void = (): void => {
-    const missScore = { ...lastScore, miss: true };
-    onEvent(missScore);
+    log.missedLastScore();
+    setMissable(false);
+    clearRobotStateAndPickup();
   };
 
   const onScore: (location: EScoreLocation2024, x: number, y: number) => void = (
@@ -98,38 +82,13 @@ export function TeleopLayout({
     x: number,
     y: number
   ): void => {
-    const lastScore: TEvent2024 = eventCreator.createScore(location, false, x, y);
-    setLastScore(lastScore);
+    log.addScoreEvent(location, x, y);
+    setMissable(true);
     clearRobotStateAndPickup();
   };
 
-  const confirmScore: () => void = (): void => {
-    if (lastScore) {
-      onEvent(lastScore);
-    }
-  };
-
   const toEndgame: () => void = (): void => {
-    logDispatch({
-      type: ELogActionType.addEvent,
-      event: eventCreator.createAuto(leave === 'checked'),
-    });
-
-    if (lastPickup) {
-      logDispatch({
-        type: ELogActionType.addEvent,
-        event: lastPickup,
-      });
-      setLastPickup(null);
-    }
-
-    if (lastScore) {
-      logDispatch({
-        type: ELogActionType.addEvent,
-        event: lastScore,
-      });
-      setLastScore(null);
-    }
+    log.addAutoEvent(leave === 'checked');
 
     navigation.navigate('Endgame');
   };
@@ -152,12 +111,14 @@ export function TeleopLayout({
 
             newPickupStates[i] = ERobotState.note;
 
-            confirmScore();
+            if(robotState === ERobotState.note) {
+              log.modifyLastPickupEvent(pickupStationNames[i]);
+            } else {
+            log.addPickupEvent(pickupStationNames[i]);
+            }
 
-            setLastPickup(eventCreator.createPickup(pickupStationNames[i]));
-
+            setMissable(false);
             setRobotState(newPickupStates[i]);
-
             setPickupStates(newPickupStates);
           }
         }}
@@ -182,7 +143,7 @@ export function TeleopLayout({
           title="Miss"
           onPress={onMiss}
           style={styles.button}
-          disabled={!lastScore}
+          disabled={!missable}
         />
         <Button
           variant="contained"
