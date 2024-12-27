@@ -1,6 +1,6 @@
 ### How to setup and run this project:
 1. Install NVM (Node Version Manager) at (hopefully) this github page https://github.com/coreybutler/nvm-windows (you don't need yarn)
-2. Install Node version 18.16.0 by running 'nvm install 18.16.0' in the terminal, then run 'nvm use 18.16.0'
+2. Install Node version 20 by running 'nvm install 18.16.0' in the terminal, then run 'nvm use 20.18.1'
 3. cd into both sentinel and overseer, run npm install on both of them
 
 
