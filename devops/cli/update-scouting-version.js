@@ -6,7 +6,7 @@ const {setPackageJsonVersion, setExpoAppVersion} = require("../modules/version.j
 const getConfiguration = async () => {
   const gitRoot = getGitRoot();
   const optionDefinitions = [
-    { name: "version", type: String, multiple: true, defaultOption: true },
+    { name: "version", type: String, defaultOption: true },
   ];
 
   const options = commandLineArgs(optionDefinitions);
