@@ -8,15 +8,15 @@ export type PGamepieceButton = {
   isHidden: boolean;
   setHidden: (isHidden: boolean) => void;
   style: Object;
-  imageStyle: Object;
+  imageStyle?: Object;
 };
 
 export function GamepieceButton({
   gamePieceSrc,
   isHidden,
   setHidden,
-  style = {},
-  imageStyle,
+  style,
+  imageStyle = {},
 }: PGamepieceButton): React.JSX.Element {
   const renderImage = () => {
     return isHidden ? (

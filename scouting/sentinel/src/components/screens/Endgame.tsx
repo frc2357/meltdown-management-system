@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
-import {
-  VStack,
-  TextInput,
-  HStack,
-  Text,
-  Button,
-  Box,
-  Divider,
-  Spacer,
-} from '@react-native-material/core';
+import { VStack, TextInput, HStack, Text, Button, Box, Divider } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { EAssignmentActionType, TRootStackParamList } from '../../../types';
 import { EEndgameLocation2025 } from '../../../../common/types/2025';
-import { RadioButton } from 'react-native-paper';
 import { useLog, useSaveLog } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -22,13 +12,15 @@ const windowDimensions = Dimensions.get('window');
 
 export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
 
-export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
+export function Endgame({
+  route: {
+    params: { canClearAlgae },
+  },
+  navigation,
+}: PEndgameScreenProps): React.JSX.Element {
   const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2025>(
     EEndgameLocation2025.none
   );
-  const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
-  const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
-  const [trap, setTrap] = useState<number>(0);
   const [notes, setNotes] = useState('');
 
   const log = useLog();
@@ -37,11 +29,7 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    log.addEndgameEvent(
-      endgameLocation,
-      `\"${notes}\"`,
-      true, // TODO: Implement algae
-    );
+    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, canClearAlgae);
 
     assignmentDispatch({
       type: EAssignmentActionType.nextMatch,

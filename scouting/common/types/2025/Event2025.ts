@@ -1,4 +1,5 @@
 import { EEventTypes } from '..';
+import { ERobotState } from '../../../sentinel/types';
 import { EEndgameLocation2025 } from './EEndgameLocation2025';
 import { EPickupLocation2025 } from './EPickupLocation2025';
 import { EScoreLocation2025 } from './EScoreLocation2025';
@@ -12,6 +13,7 @@ class ClassEvent2025 {
   leave?: boolean = false;
   notes?: string = '';
   clearAlgae?: boolean = false;
+  gamepiece?: ERobotState = ERobotState.empty;
 }
 
 export interface TEvent2025 extends ClassEvent2025 {}

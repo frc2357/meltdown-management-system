@@ -25,7 +25,9 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await Promise.all(promises);
   };
 
-  const saveLog: TFileManager['saveLog'] = async <eventType>(log: TLog<eventType>): Promise<string> => {
+  const saveLog: TFileManager['saveLog'] = async <eventType>(
+    log: TLog<eventType>
+  ): Promise<string> => {
     let denseLog: TDenseLog = {
       t: log.teamNum, // teamNum
       m: log.matchNum, // matchNum

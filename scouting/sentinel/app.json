@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "['**/*']"
-    ],
+    "assetBundlePatterns": ["['**/*']"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -27,9 +25,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.frc2357.sentinel",
-      "permissions": [
-        "android.permission.CAMERA"
-      ]
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/logo.png"

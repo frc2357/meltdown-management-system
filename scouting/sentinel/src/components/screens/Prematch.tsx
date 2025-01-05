@@ -44,7 +44,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={["Coral", "Emppty"]}
+            labels={['Coral', 'Emppty']}
             selected={preload}
             setSelected={(value: ERobotState) => setPreload(value)}
           />
@@ -104,14 +104,14 @@ const styles = StyleSheet.create({
   },
   center: {
     height: 225,
-    left: autoAreaLeft + 220 + 185,
+    left: autoAreaLeft + 333,
     position: 'absolute',
     top: autoAreaTop,
     width: 220,
   },
   right: {
-    height: 120,
-    left: autoAreaLeft + 220,
+    height: 225,
+    left: autoAreaLeft + 666,
     position: 'absolute',
     top: autoAreaTop,
     width: 185,

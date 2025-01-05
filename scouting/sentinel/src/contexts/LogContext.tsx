@@ -1,4 +1,4 @@
-import React, { createContext, MutableRefObject, useContext, useReducer, useRef } from 'react';
+import React, { createContext, MutableRefObject, useContext, useRef } from 'react';
 import { EEventTypes, TLog } from '../../../common/types';
 import {
   EEndgameLocation2025,
@@ -9,7 +9,7 @@ import {
 } from '../../../common/types/2025';
 import { useTimer } from './TimerContext';
 import { useAssignment } from './AssignmentContext';
-import { TLogActions } from '../../types';
+import { ERobotState, TLogActions } from '../../types';
 import { useFileManager } from '../hooks/useFileManager';
 
 const logDefault: TLog<TEvent2025> = {
@@ -57,16 +57,17 @@ export const useLog: () => TLogActions = (): TLogActions => {
 
       timer.start();
     },
-    addPickupEvent: (location: EPickupLocation2025) => {
+    addPickupEvent: (location: EPickupLocation2025, gamepiece: ERobotState) => {
       log.current.events.push({
         type: EEventTypes.pickup,
         location,
+        gamepiece,
         timestamp: timer.getTimeSeconds(),
       });
     },
-    modifyLastPickupEvent: (location: EPickupLocation2025) => {
+    modifyLastPickupEvent: (location: EPickupLocation2025, gamepiece: ERobotState) => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.pickup);
-      if (idx !== -1) log.current.events[idx].location = location;
+      if (idx !== -1) log.current.events[idx] = { ...log.current.events[idx], location, gamepiece };
     },
     addDropEvent: () => {
       log.current.events.push({
@@ -74,7 +75,7 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    addScoreEvent: (location: EScoreLocation2025, x: number, y: number) => {
+    addScoreEvent: (location: EScoreLocation2025) => {
       log.current.events.push({
         type: EEventTypes.score,
         location,
@@ -92,11 +93,7 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    addEndgameEvent: (
-      location: EEndgameLocation2025,
-      notes: string,
-      clearAlgae: boolean
-    ) => {
+    addEndgameEvent: (location: EEndgameLocation2025, notes: string, clearAlgae: boolean) => {
       log.current.events.push({
         type: EEventTypes.endgame,
         location,
