@@ -1,4 +1,4 @@
 export enum EPickupLocation2025 {
-  source = 'source',
+  coralStation = 'coralStation',
   floor = 'floor',
 }

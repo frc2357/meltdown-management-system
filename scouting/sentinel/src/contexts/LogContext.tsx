@@ -1,18 +1,18 @@
 import React, { createContext, MutableRefObject, useContext, useReducer, useRef } from 'react';
 import { EEventTypes, TLog } from '../../../common/types';
 import {
-  EEndgameLocation2024,
-  EPickupLocation2024,
-  EScoreLocation2024,
-  EStartLocation2024,
-  TEvent2024,
-} from '../../../common/types/2024';
+  EEndgameLocation2025,
+  EPickupLocation2025,
+  EScoreLocation2025,
+  EStartLocation2025,
+  TEvent2025,
+} from '../../../common/types/2025';
 import { useTimer } from './TimerContext';
 import { useAssignment } from './AssignmentContext';
 import { TLogActions } from '../../types';
 import { useFileManager } from '../hooks/useFileManager';
 
-const logDefault: TLog<TEvent2024> = {
+const logDefault: TLog<TEvent2025> = {
   teamNum: 0,
   matchNum: 0,
   scouter: '',
@@ -21,25 +21,25 @@ const logDefault: TLog<TEvent2024> = {
   events: [],
 };
 
-const LogContext: React.Context<MutableRefObject<TLog<TEvent2024>>> =
-  createContext<MutableRefObject<TLog<TEvent2024>>>(null);
+const LogContext: React.Context<MutableRefObject<TLog<TEvent2025>>> =
+  createContext<MutableRefObject<TLog<TEvent2025>>>(null);
 
 export const useSaveLog: () => () => Promise<string> = (): (() => Promise<string>) => {
-  const log = useContext<MutableRefObject<TLog<TEvent2024>>>(LogContext);
+  const log = useContext<MutableRefObject<TLog<TEvent2025>>>(LogContext);
   const fileManager = useFileManager();
 
   return async () => {
-    return fileManager.saveLog<TEvent2024>(log.current);
+    return fileManager.saveLog<TEvent2025>(log.current);
   };
 };
 
 export const useLog: () => TLogActions = (): TLogActions => {
-  const log = useContext<MutableRefObject<TLog<TEvent2024>>>(LogContext);
+  const log = useContext<MutableRefObject<TLog<TEvent2025>>>(LogContext);
   const assignment = useAssignment();
   const timer = useTimer();
 
   return {
-    addStartEvent: (location: EStartLocation2024) => {
+    addStartEvent: (location: EStartLocation2025) => {
       log.current = {
         teamNum: assignment.currentMatch.teamNum,
         matchNum: assignment.currentMatch.matchNum,
@@ -57,14 +57,14 @@ export const useLog: () => TLogActions = (): TLogActions => {
 
       timer.start();
     },
-    addPickupEvent: (location: EPickupLocation2024) => {
+    addPickupEvent: (location: EPickupLocation2025) => {
       log.current.events.push({
         type: EEventTypes.pickup,
         location,
         timestamp: timer.getTimeSeconds(),
       });
     },
-    modifyLastPickupEvent: (location: EPickupLocation2024) => {
+    modifyLastPickupEvent: (location: EPickupLocation2025) => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.pickup);
       if (idx !== -1) log.current.events[idx].location = location;
     },
@@ -74,21 +74,16 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    addScoreEvent: (location: EScoreLocation2024, x: number, y: number) => {
-      x = Math.round(x + Number.EPSILON);
-      y = Math.round(y + Number.EPSILON);
+    addScoreEvent: (location: EScoreLocation2025, x: number, y: number) => {
       log.current.events.push({
         type: EEventTypes.score,
         location,
-        miss: false,
-        x,
-        y,
         timestamp: timer.getTimeSeconds(),
       });
     },
-    missedLastScore: () => {
+    undoLastScore: () => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.score);
-      if (idx !== -1) log.current.events[idx].miss = true;
+      if (idx !== -1) log.current.events.splice(idx, 1);
     },
     addAutoEvent: (leave: boolean) => {
       log.current.events.push({
@@ -98,19 +93,15 @@ export const useLog: () => TLogActions = (): TLogActions => {
       });
     },
     addEndgameEvent: (
-      location: EEndgameLocation2024,
+      location: EEndgameLocation2025,
       notes: string,
-      harmony: boolean,
-      trap: number,
-      spotlit: boolean
+      clearAlgae: boolean
     ) => {
       log.current.events.push({
         type: EEventTypes.endgame,
         location,
         notes,
-        harmony,
-        trap,
-        spotlit,
+        clearAlgae,
         timestamp: timer.getTimeSeconds(),
       });
     },
@@ -118,7 +109,7 @@ export const useLog: () => TLogActions = (): TLogActions => {
 };
 
 export function LogProvider({ children }: React.PropsWithChildren) {
-  const log = useRef<TLog<TEvent2024>>(logDefault);
+  const log = useRef<TLog<TEvent2025>>(logDefault);
 
   return <LogContext.Provider value={log}>{children}</LogContext.Provider>;
 }

@@ -72,7 +72,7 @@ export function Teleop({
   };
 
   const onMiss: () => void = (): void => {
-    log.missedLastScore();
+    log.undoLastScore();
     setMissable(false);
     clearRobotStateAndPickup();
   };

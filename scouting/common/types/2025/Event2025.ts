@@ -9,14 +9,9 @@ class ClassEvent2025 {
   timestamp?: number = 0;
   location?: EStartLocation2025 | EPickupLocation2025 | EScoreLocation2025 | EEndgameLocation2025 =
     EStartLocation2025.center;
-  x?: number = 0;
-  y?: number = 0;
   leave?: boolean = false;
   notes?: string = '';
-  harmony?: boolean = false;
-  spotlit?: boolean = false;
-  trap?: number = 0;
-  miss?: boolean = false;
+  clearAlgae?: boolean = false;
 }
 
 export interface TEvent2025 extends ClassEvent2025 {}
