@@ -22,10 +22,13 @@ import bargeImage from '../../../assets/barge.png';
 import processorImage from '../../../assets/processor.png';
 import angledCoralImage from '../../../assets/angledCoral.png';
 
-const pickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025);
-const numPickupStations: number = pickupStationNames.length;
+const coralPickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025).filter((x: EPickupLocation2025) => x.includes('reef'));
+const numCoralPickupStations: number = coralPickupStationNames.length;
+const numCoralScoreLocations: number = 7;
 
-const numScoreLocations: number = 7;
+const algaePickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025).filter((x: EPickupLocation2025) => !x.includes('reef'));
+const numAlgaePickupStations: number = coralPickupStationNames.length;
+const numAlgaeScoreLocations: number = 2;
 
 export type PTeleop = NativeStackScreenProps<TRootStackParamList, 'Teleop'>;
 
@@ -36,15 +39,21 @@ export function Teleop({
   navigation,
 }: PTeleop): React.JSX.Element {
   const [leave, setLeave] = useState<'checked' | 'unchecked'>('unchecked');
-  const [robotState, setRobotState] = useState<ERobotState>(initialRobotState);
+  const [coralState, setCoralState] = useState<ERobotState>(initialRobotState);
+  const [algaeState, setAlgaeState] = useState<ERobotState>(ERobotState.empty);
+
   const [missable, setMissable] = useState<boolean>(false);
-  const [pickupStates, setPickupStates] = useState(
-    new Array(numPickupStations).fill(ERobotState.empty)
+  const [coralPickupStates, setCoralPickupStates] = useState<boolean[]>(
+    new Array(numCoralPickupStations).fill(false)
   );
+
+  const [hasAlgae, setHasAlgae] = useState<boolean>(false);
   const [isGamepieceVisible, setGamepieceVisible] = useState(
-    new Array(numScoreLocations).fill(false)
+    new Array(numCoralScoreLocations).fill(false)
   );
+
   const [canClearAlgae, setCanClearAlgae] = useState<boolean>(false);
+  
   const assignment: TAssignment = useAssignment();
   const log: TLogActions = useLog();
 
@@ -71,12 +80,16 @@ export function Teleop({
         return angledCoralImage;
       case EScoreLocation2025.reefL4:
         return topCoralImage;
+      case EScoreLocation2025.processor:
+        return algaeImage
+      case EScoreLocation2025.net:
+        return algaeImage;
     }
   };
 
   const clearRobotStateAndPickup: () => void = (): void => {
-    setPickupStates(new Array(numPickupStations).fill(ERobotState.empty));
-    setRobotState(ERobotState.empty);
+    setCoralPickupStates(new Array(numCoralPickupStations).fill(ERobotState.empty));
+    setCoralState(ERobotState.empty);
   };
 
   const onDrop: () => void = (): void => {
@@ -103,43 +116,57 @@ export function Teleop({
     navigation.navigate('Endgame');
   };
 
-  const pickupStationStyles = [buttonStyles.coralStationPressable, buttonStyles.floorPressable];
-  const gamepieceStyles = [buttonStyles.coralStationImage, buttonStyles.floorImage];
+  const pickupStationStyles = [buttonStyles.coralStationPressable, buttonStyles.coralFloorPressable];
+  const gamepieceStyles = [buttonStyles.coralStationImage, buttonStyles.coralFloorImage];
   const pickupStations: any[] = [];
 
-  for (let i: number = 0; i < numPickupStations; i++) {
+  for (let i: number = 0; i < numCoralPickupStations; i++) {
     pickupStations.push(
       <GamepieceButton
-        key={pickupStationNames[i]}
+        key={coralPickupStationNames[i]}
         style={pickupStationStyles[i]}
         imageStyle={gamepieceStyles[i]}
-        gamePieceSrc={robotStateToImage(pickupStates[i])}
-        isHidden={pickupStates[i] === ERobotState.empty}
+        gamePieceSrc={robotStateToImage(ERobotState.coral)}
+        isHidden={coralPickupStates[i]}
         setHidden={(isHidden) => {
           if (!isHidden) {
-            const newPickupStates: ERobotState[] = new Array(numPickupStations).fill(
-              ERobotState.empty
+            const newCoralPickupStates: boolean[] = new Array(numCoralPickupStations).fill(
+              false
             );
 
-            newPickupStates[i] =
-              pickupStationNames[i] === EPickupLocation2025.floor && ERobotState.coral
-                ? ERobotState.algae
-                : ERobotState.coral;
+            newCoralPickupStates[i] = true;
 
-            if (robotState !== ERobotState.empty) {
-              log.modifyLastPickupEvent(pickupStationNames[i], newPickupStates[i]);
+            if (coralState !== ERobotState.empty) {
+              log.modifyLastPickupEvent(coralPickupStationNames[i]);
             } else {
-              log.addPickupEvent(pickupStationNames[i], newPickupStates[i]);
+              log.addPickupEvent(coralPickupStationNames[i], ERobotState.coral);
             }
 
             setMissable(false);
-            setRobotState(newPickupStates[i]);
-            setPickupStates(newPickupStates);
+            setCoralState(ERobotState.coral);
+            setCoralPickupStates(newCoralPickupStates);
           }
         }}
       />
     );
   }
+
+  pickupStations.push(<GamepieceButton
+    key={"Algae pickup"}
+    style={buttonStyles.algeaFloorPressable}
+    imageStyle={buttonStyles.algaeFloorImage}
+    gamePieceSrc={robotStateToImage(ERobotState.algae)}
+    isHidden={hasAlgae}
+    setHidden={(isHidden) => {
+      if (!isHidden) {
+        log.addPickupEvent(EPickupLocation2025.floor, ERobotState.algae);
+      
+        setMissable(false);
+        setAlgaeState(ERobotState.algae);
+        setHasAlgae(true);
+      }
+    }}
+  />)
 
   const levelOrder = [
     EScoreLocation2025.reefL1,
@@ -154,18 +181,18 @@ export function Teleop({
   ];
 
   const gamepieceButtons = [];
-  for (let i = 0; i < numScoreLocations; i++) {
+  for (let i = 0; i < numCoralScoreLocations; i++) {
     gamepieceButtons.push(
       <GamepieceButton
         key={i}
-        style={buttonStyles['gamepieceButton' + (i + 1)]}
+        style={buttonStyles[`gamepieceButton${(i + 1)}`]}
         gamePieceSrc={scoreLocationToGamepieceImage(levelOrder[i])}
-        isHidden={!isGamepieceVisible[i]}
+        isHidden={false}
         setHidden={(isHidden) => {
           if (
             !isHidden ||
-            (robotState === ERobotState.coral && i < 7) ||
-            (robotState === ERobotState.algae && i >= 7)
+            (coralState === ERobotState.coral && i < 7) ||
+            (coralState === ERobotState.algae && i >= 7)
           ) {
             onScore(levelOrder[i]);
             const newIsGamepieceVisible = [...isGamepieceVisible];
@@ -204,13 +231,14 @@ export function Teleop({
         />
         <Button
           variant="contained"
-          title="Pass"
+          title="Drop"
           onPress={onDrop}
           style={styles.button}
-          disabled={robotState === ERobotState.empty}
+          disabled={coralState === ERobotState.empty}
         />
         <Button variant="contained" title="Endgame" onPress={toEndgame} style={styles.button} />
-        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(robotState)} />
+        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(coralState)} />
+        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(algaeState)} />
         <ViewTimer />
       </HStack>
       <Box style={styles.images}>
@@ -269,21 +297,21 @@ const styles = StyleSheet.create({
     height: 235,
     left: 705,
     position: 'absolute',
-    top: 261,
+    top: 258.5,
     width: 325,
   },
   barge: {
-    height: 200,
-    left: 400,
+    height: 256,
+    left: 402.5,
     position: 'absolute',
     top: 0,
     width: 300,
   },
   processor: {
-    height: 200,
-    left: 700,
+    height: 237.5,
+    left: 402.5,
     position: 'absolute',
-    top: 205,
+    top: 258.5,
     width: 300,
   },
   images: {
@@ -305,75 +333,87 @@ const styles = StyleSheet.create({
 
 const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
-  button1: {
+  gamepieceButton1: {
     // ReefL1
     ...baseStyles.gamepiece,
-    left: 13,
-    top: 130,
+    left: 170,
+    top: 400,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button2: {
+  gamepieceButton2: {
     // ReefL2A
     ...baseStyles.gamepiece,
-    left: 90,
-    top: 150,
+    left: 100,
+    top: 0,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button3: {
+  gamepieceButton3: {
     // ReefL2B
     ...baseStyles.gamepiece,
-    left: 170,
-    top: 150,
+    left: 100,
+    top: 100,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button4: {
+  gamepieceButton4: {
     // ReefL3A
     ...baseStyles.gamepiece,
     left: 245,
     top: 170,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button5: {
+  gamepieceButton5: {
     // ReefL3B
     ...baseStyles.gamepiece,
     left: 325,
     top: 190,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button6: {
+  gamepieceButton6: {
     // ReefL4A
     ...baseStyles.gamepiece,
     left: 405,
     top: 190,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button7: {
+  gamepieceButton7: {
     // ReefL4B
     ...baseStyles.gamepiece,
     left: 480,
     top: 200,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button8: {
+  gamepieceButton8: {
     // Net
     ...baseStyles.gamepiece,
-    left: 480,
-    top: 200,
+    left: 0,
+    top: 0,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  button9: {
+  gamepieceButton9: {
     // Processor
     ...baseStyles.gamepiece,
-    left: 480,
-    top: 200,
+    left: 100,
+    top: 0,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   coralStationPressable: {
     ...styles.coralStation,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  floorPressable: {
-    ...styles.floor,
+  coralFloorPressable: {
+    height: 235,
+    left: 867.5,
+    position: 'absolute',
+    top: 258.5,
+    width: 162.5,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  algeaFloorPressable: {
+    height: 235,
+    left: 705,
+    position: 'absolute',
+    top: 258.5,
+    width: 162.5,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   coralStationImage: {
@@ -382,9 +422,15 @@ const buttonStyles = StyleSheet.create({
     top: 110,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  floorImage: {
+  coralFloorImage: {
     ...baseStyles.gamepiece,
-    left: 135,
+    left: 60,
     top: 90,
   },
+  // eslint-disable-next-line react-native/no-unused-styles
+  algaeFloorImage: {
+    ...baseStyles.gamepiece,
+    left: 60,
+    top: 90,
+  }
 });

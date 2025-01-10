@@ -9,7 +9,7 @@ import { ERobotState } from './ERobotState';
 export type TLogActions = {
   addStartEvent: (location: EStartLocation2025) => void;
   addPickupEvent: (location: EPickupLocation2025, gamepiece: ERobotState) => void;
-  modifyLastPickupEvent: (location: EPickupLocation2025, gamepiece: ERobotState) => void;
+  modifyLastPickupEvent: (location: EPickupLocation2025) => void;
   addDropEvent: () => void;
   addScoreEvent: (location: EScoreLocation2025) => void;
   undoLastScore: () => void;

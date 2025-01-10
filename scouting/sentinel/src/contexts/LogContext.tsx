@@ -65,9 +65,9 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    modifyLastPickupEvent: (location: EPickupLocation2025, gamepiece: ERobotState) => {
+    modifyLastPickupEvent: (location: EPickupLocation2025) => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.pickup);
-      if (idx !== -1) log.current.events[idx] = { ...log.current.events[idx], location, gamepiece };
+      if (idx !== -1) log.current.events[idx] = { ...log.current.events[idx], location};
     },
     addDropEvent: () => {
       log.current.events.push({
