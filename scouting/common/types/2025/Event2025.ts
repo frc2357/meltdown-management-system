@@ -10,10 +10,11 @@ class ClassEvent2025 {
   timestamp?: number = 0;
   location?: EStartLocation2025 | EPickupLocation2025 | EScoreLocation2025 | EEndgameLocation2025 =
     EStartLocation2025.center;
+  gamepiece?: ERobotState = ERobotState.empty;
   leave?: boolean = false;
   notes?: string = '';
-  clearAlgae?: boolean = false;
-  gamepiece?: ERobotState = ERobotState.empty;
+  clearAlgae?: number = 0;
+  defenseRating?: number = 0;
 }
 
 export interface TEvent2025 extends ClassEvent2025 {}

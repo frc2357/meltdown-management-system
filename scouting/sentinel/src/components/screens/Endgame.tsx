@@ -21,6 +21,10 @@ export function Endgame({
   const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2025>(
     EEndgameLocation2025.none
   );
+  const [defenseRating, setDefenseRating] = useState<string>(
+    "0"
+  );
+
   const [notes, setNotes] = useState('');
 
   const log = useLog();
@@ -29,7 +33,7 @@ export function Endgame({
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, canClearAlgae);
+    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, canClearAlgae, +defenseRating);
 
     assignmentDispatch({
       type: EAssignmentActionType.nextMatch,
@@ -44,13 +48,23 @@ export function Endgame({
     <Box style={styles.autoContainer}>
       <Text variant="h4">Endgame</Text>
       <VStack>
-        <Text variant="h6">Stage:</Text>
+        <Text variant="h6">Barge:</Text>
         <RadioButtonList
           labels={Object.values(EEndgameLocation2025)}
           direction="row"
           selected={endgameLocation}
           setSelected={(value: EEndgameLocation2025) => {
             setEndgameLocation(value);
+          }}
+        />
+        <Divider />
+        <Text variant="h6">Defense Rating:</Text>
+        <RadioButtonList
+          labels={Array.from({length: 6}, (_, i) => `${i}` )}
+          direction="row"
+          selected={defenseRating}
+          setSelected={(value: string) => {
+            setDefenseRating(value);
           }}
         />
         <Divider />
@@ -92,6 +106,6 @@ const styles = StyleSheet.create({
   textInput: {
     height: 180,
     margin: 4,
-    width: 400,
+    width: 450,
   },
 });

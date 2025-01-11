@@ -67,11 +67,12 @@ export const useLog: () => TLogActions = (): TLogActions => {
     },
     modifyLastPickupEvent: (location: EPickupLocation2025) => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.pickup);
-      if (idx !== -1) log.current.events[idx] = { ...log.current.events[idx], location};
+      if (idx !== -1) log.current.events[idx] = { ...log.current.events[idx], location };
     },
-    addDropEvent: () => {
+    addDropEvent: (gamepiece: ERobotState) => {
       log.current.events.push({
         type: EEventTypes.drop,
+        gamepiece,
         timestamp: timer.getTimeSeconds(),
       });
     },
@@ -93,12 +94,18 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    addEndgameEvent: (location: EEndgameLocation2025, notes: string, clearAlgae: boolean) => {
+    addEndgameEvent: (
+      location: EEndgameLocation2025,
+      notes: string,
+      clearAlgae: number,
+      defenseRating
+    ) => {
       log.current.events.push({
         type: EEventTypes.endgame,
         location,
         notes,
         clearAlgae,
+        defenseRating,
         timestamp: timer.getTimeSeconds(),
       });
     },

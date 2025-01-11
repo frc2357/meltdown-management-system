@@ -21,13 +21,17 @@ import { useLog } from '../../contexts/LogContext';
 import bargeImage from '../../../assets/barge.png';
 import processorImage from '../../../assets/processor.png';
 import angledCoralImage from '../../../assets/angledCoral.png';
+import floorCoralImage from '../../../assets/floorCoral.png';
+import { RobotState } from '../basics/RobotState';
 
-const coralPickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025).filter((x: EPickupLocation2025) => x.includes('reef'));
+const coralPickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025);
 const numCoralPickupStations: number = coralPickupStationNames.length;
 const numCoralScoreLocations: number = 7;
 
-const algaePickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025).filter((x: EPickupLocation2025) => !x.includes('reef'));
-const numAlgaePickupStations: number = coralPickupStationNames.length;
+const algaeScoreOrder: EScoreLocation2025[] = [
+  EScoreLocation2025.net,
+  EScoreLocation2025.processor,
+];
 const numAlgaeScoreLocations: number = 2;
 
 export type PTeleop = NativeStackScreenProps<TRootStackParamList, 'Teleop'>;
@@ -47,20 +51,23 @@ export function Teleop({
     new Array(numCoralPickupStations).fill(false)
   );
 
-  const [hasAlgae, setHasAlgae] = useState<boolean>(false);
-  const [isGamepieceVisible, setGamepieceVisible] = useState(
+  const [isCoralVisible, setIsCoralVisible] = useState(
     new Array(numCoralScoreLocations).fill(false)
   );
 
-  const [canClearAlgae, setCanClearAlgae] = useState<boolean>(false);
-  
+  const [isAlgaeVisible, setIsAlgaeVisible] = useState(
+    new Array(numAlgaeScoreLocations).fill(false)
+  );
+
+  const [clearAlgae, setClearAlgae] = useState<number>(0);
+
   const assignment: TAssignment = useAssignment();
   const log: TLogActions = useLog();
 
   const robotStateToImage: (state: ERobotState) => number = (state: ERobotState): number => {
     switch (state) {
       case ERobotState.coral:
-        return bottomCoralImage;
+        return floorCoralImage;
       case ERobotState.algae:
         return algaeImage;
       default:
@@ -68,7 +75,7 @@ export function Teleop({
     }
   };
 
-  const scoreLocationToGamepieceImage: (location: EScoreLocation2025) => number = (
+  const coralToGamepieceImage: (location: EScoreLocation2025) => number = (
     location: EScoreLocation2025
   ): number => {
     switch (location) {
@@ -80,43 +87,59 @@ export function Teleop({
         return angledCoralImage;
       case EScoreLocation2025.reefL4:
         return topCoralImage;
-      case EScoreLocation2025.processor:
-        return algaeImage
-      case EScoreLocation2025.net:
-        return algaeImage;
     }
   };
 
-  const clearRobotStateAndPickup: () => void = (): void => {
-    setCoralPickupStates(new Array(numCoralPickupStations).fill(ERobotState.empty));
+  const clearCoralStateAndPickup: () => void = (): void => {
+    setCoralPickupStates(new Array(numCoralPickupStations).fill(false));
     setCoralState(ERobotState.empty);
   };
 
-  const onDrop: () => void = (): void => {
-    log.addDropEvent();
-    setMissable(false);
-    clearRobotStateAndPickup();
+  const onDropCoral: () => void = (): void => {
+    log.addDropEvent(ERobotState.coral);
+    clearCoralStateAndPickup();
+  };
+
+  const onDropAlgae: () => void = (): void => {
+    log.addDropEvent(ERobotState.algae);
+    setAlgaeState(ERobotState.empty);
   };
 
   const onMiss: () => void = (): void => {
     log.undoLastScore();
     setMissable(false);
-    clearRobotStateAndPickup();
+    clearCoralStateAndPickup();
   };
 
   const onScore: (location: EScoreLocation2025) => void = (location: EScoreLocation2025): void => {
     log.addScoreEvent(location);
     setMissable(true);
-    clearRobotStateAndPickup();
+  };
+
+  const onScoreCoral: (location: EScoreLocation2025) => void = (
+    location: EScoreLocation2025
+  ): void => {
+    onScore(location);
+    clearCoralStateAndPickup();
+  };
+
+  const onScoreAlgae: (location: EScoreLocation2025) => void = (
+    location: EScoreLocation2025
+  ): void => {
+    onScore(location);
+    setAlgaeState(ERobotState.empty);
   };
 
   const toEndgame: () => void = (): void => {
     log.addAutoEvent(leave === 'checked');
 
-    navigation.navigate('Endgame');
+    navigation.navigate('Endgame', { clearAlgae });
   };
 
-  const pickupStationStyles = [buttonStyles.coralStationPressable, buttonStyles.coralFloorPressable];
+  const pickupStationStyles = [
+    buttonStyles.coralStationPressable,
+    buttonStyles.coralFloorPressable,
+  ];
   const gamepieceStyles = [buttonStyles.coralStationImage, buttonStyles.coralFloorImage];
   const pickupStations: any[] = [];
 
@@ -124,15 +147,13 @@ export function Teleop({
     pickupStations.push(
       <GamepieceButton
         key={coralPickupStationNames[i]}
-        style={pickupStationStyles[i]}
+        pressableStyle={pickupStationStyles[i]}
         imageStyle={gamepieceStyles[i]}
         gamePieceSrc={robotStateToImage(ERobotState.coral)}
         isHidden={coralPickupStates[i]}
         setHidden={(isHidden) => {
           if (!isHidden) {
-            const newCoralPickupStates: boolean[] = new Array(numCoralPickupStations).fill(
-              false
-            );
+            const newCoralPickupStates: boolean[] = new Array(numCoralPickupStations).fill(false);
 
             newCoralPickupStates[i] = true;
 
@@ -151,24 +172,25 @@ export function Teleop({
     );
   }
 
-  pickupStations.push(<GamepieceButton
-    key={"Algae pickup"}
-    style={buttonStyles.algeaFloorPressable}
-    imageStyle={buttonStyles.algaeFloorImage}
-    gamePieceSrc={robotStateToImage(ERobotState.algae)}
-    isHidden={hasAlgae}
-    setHidden={(isHidden) => {
-      if (!isHidden) {
-        log.addPickupEvent(EPickupLocation2025.floor, ERobotState.algae);
-      
-        setMissable(false);
-        setAlgaeState(ERobotState.algae);
-        setHasAlgae(true);
-      }
-    }}
-  />)
+  pickupStations.push(
+    <GamepieceButton
+      key={'Algae pickup'}
+      pressableStyle={buttonStyles.algeaFloorPressable}
+      imageStyle={buttonStyles.algaeFloorImage}
+      gamePieceSrc={robotStateToImage(ERobotState.algae)}
+      isHidden={algaeState === ERobotState.algae}
+      setHidden={(isHidden) => {
+        if (!isHidden) {
+          log.addPickupEvent(EPickupLocation2025.floor, ERobotState.algae);
 
-  const levelOrder = [
+          setMissable(false);
+          setAlgaeState(ERobotState.algae);
+        }
+      }}
+    />
+  );
+
+  const reefLevelOrder = [
     EScoreLocation2025.reefL1,
     EScoreLocation2025.reefL2,
     EScoreLocation2025.reefL2,
@@ -176,8 +198,6 @@ export function Teleop({
     EScoreLocation2025.reefL3,
     EScoreLocation2025.reefL4,
     EScoreLocation2025.reefL4,
-    EScoreLocation2025.net,
-    EScoreLocation2025.processor,
   ];
 
   const gamepieceButtons = [];
@@ -185,24 +205,48 @@ export function Teleop({
     gamepieceButtons.push(
       <GamepieceButton
         key={i}
-        style={buttonStyles[`gamepieceButton${(i + 1)}`]}
-        gamePieceSrc={scoreLocationToGamepieceImage(levelOrder[i])}
-        isHidden={false}
+        imageStyle={styles.reef}
+        pressableStyle={coralGamepieceStyles[`${i + 1}`]}
+        gamePieceSrc={coralToGamepieceImage(reefLevelOrder[i])}
+        isHidden={!isCoralVisible[i]}
         setHidden={(isHidden) => {
-          if (
-            !isHidden ||
-            (coralState === ERobotState.coral && i < 7) ||
-            (coralState === ERobotState.algae && i >= 7)
-          ) {
-            onScore(levelOrder[i]);
-            const newIsGamepieceVisible = [...isGamepieceVisible];
-            newIsGamepieceVisible[i] = true;
-            setGamepieceVisible(newIsGamepieceVisible);
+          if (!isHidden && coralState === ERobotState.coral) {
+            onScoreCoral(reefLevelOrder[i]);
+            const newIsCoralVisible = [...isCoralVisible];
+            newIsCoralVisible[i] = true;
+            setIsCoralVisible(newIsCoralVisible);
 
             setTimeout((): void => {
-              const newIsGamepieceVisible = [...isGamepieceVisible];
-              newIsGamepieceVisible[i] = false;
-              setGamepieceVisible(newIsGamepieceVisible);
+              const newCoralVisible = [...isCoralVisible];
+              newCoralVisible[i] = false;
+              setIsCoralVisible(newCoralVisible);
+            }, 500);
+          }
+        }}
+      />
+    );
+  }
+
+  const algaeImageStyles = [styles.barge, styles.processor];
+  for (let i = 0; i < numAlgaeScoreLocations; i++) {
+    gamepieceButtons.push(
+      <GamepieceButton
+        key={i + numCoralScoreLocations}
+        imageStyle={algaeGamepieceStyles[`${i + 1}`]}
+        pressableStyle={algaeImageStyles[i]}
+        gamePieceSrc={algaeImage}
+        isHidden={!isAlgaeVisible[i]}
+        setHidden={(isHidden) => {
+          if (!isHidden && algaeState === ERobotState.algae) {
+            onScoreAlgae(algaeScoreOrder[i]);
+            const newIsAlgaeVisible = [...isAlgaeVisible];
+            newIsAlgaeVisible[i] = true;
+            setIsAlgaeVisible(newIsAlgaeVisible);
+
+            setTimeout((): void => {
+              const newIsAlgaeVisible = [...isAlgaeVisible];
+              newIsAlgaeVisible[i] = false;
+              setIsAlgaeVisible(newIsAlgaeVisible);
             }, 500);
           }
         }}
@@ -222,6 +266,7 @@ export function Teleop({
             setLeave(leave === 'unchecked' ? 'checked' : 'unchecked');
           }}
         />
+        <Button variant="contained" title="Endgame" onPress={toEndgame} style={styles.button} />
         <Button
           variant="contained"
           title="Miss"
@@ -229,34 +274,40 @@ export function Teleop({
           style={styles.button}
           disabled={!missable}
         />
-        <Button
-          variant="contained"
-          title="Drop"
-          onPress={onDrop}
-          style={styles.button}
-          disabled={coralState === ERobotState.empty}
+        <RobotState
+          style={styles.coralRobotState}
+          stateSrc={robotStateToImage(coralState)}
+          onDrop={onDropCoral}
+          isDroppable={coralState !== ERobotState.empty}
         />
-        <Button variant="contained" title="Endgame" onPress={toEndgame} style={styles.button} />
-        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(coralState)} />
-        <Image style={styles.robotState} alt="robotState" source={robotStateToImage(algaeState)} />
+        <RobotState
+          style={styles.algaeRobotState}
+          stateSrc={robotStateToImage(algaeState)}
+          onDrop={onDropAlgae}
+          isDroppable={algaeState !== ERobotState.empty}
+        />
         <ViewTimer />
       </HStack>
       <Box style={styles.images}>
         <Image alt="Reef" source={reefImage} style={styles.reef} />
-        <Button
-          title="Clear Algae"
-          onPress={() => setCanClearAlgae(!canClearAlgae)}
-          style={{
-            ...styles.clearAlgaeButton,
-            backgroundColor: canClearAlgae ? 'rgba(255, 0, 0, 0)' : 'rgba(-, 255, 0, 0)',
-          }}
-        ></Button>
         <Image alt="Barge" source={bargeImage} style={styles.barge} />
         <Image alt="Processor" source={processorImage} style={styles.processor} />
         <Image alt="Coral Station" source={coralStationImage} style={styles.coralStation} />
         <Image alt="Floor Intake" source={floorImage} style={styles.floor} />
         {pickupStations}
         {gamepieceButtons}
+        <Button
+          title={`Algae Cleared: ${clearAlgae}`}
+          onPress={() => {
+            let newClearAlgae: number = clearAlgae + 1;
+            if (newClearAlgae >= 7) newClearAlgae = 0;
+            setClearAlgae(newClearAlgae);
+          }}
+          style={{
+            ...styles.clearAlgaeButton,
+            backgroundColor: clearAlgae === 0 ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 255, 0, 1)',
+          }}
+        />
       </Box>
     </Box>
   );
@@ -277,8 +328,8 @@ const styles = StyleSheet.create({
   },
   clearAlgaeButton: {
     width: 120,
-    left: 100,
-    top: 500,
+    left: 10,
+    top: 0,
   },
   buttonStack: {
     alignItems: 'center',
@@ -317,7 +368,12 @@ const styles = StyleSheet.create({
   images: {
     marginTop: 10,
   },
-  robotState: {
+  coralRobotState: {
+    height: 50,
+    width: 100,
+    marginTop: 8,
+  },
+  algaeRobotState: {
     height: 50,
     width: 50,
     marginTop: 8,
@@ -331,70 +387,76 @@ const styles = StyleSheet.create({
   },
 });
 
-const buttonStyles = StyleSheet.create({
+const coralGamepieceStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton1: {
+  1: {
     // ReefL1
     ...baseStyles.gamepiece,
     left: 170,
     top: 400,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton2: {
+  2: {
     // ReefL2A
     ...baseStyles.gamepiece,
     left: 100,
-    top: 0,
+    top: 300,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton3: {
+  3: {
     // ReefL2B
     ...baseStyles.gamepiece,
-    left: 100,
-    top: 100,
+    left: 200,
+    top: 300,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton4: {
+  4: {
     // ReefL3A
     ...baseStyles.gamepiece,
-    left: 245,
-    top: 170,
-  },
-  // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton5: {
-    // ReefL3B
-    ...baseStyles.gamepiece,
-    left: 325,
-    top: 190,
-  },
-  // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton6: {
-    // ReefL4A
-    ...baseStyles.gamepiece,
-    left: 405,
-    top: 190,
-  },
-  // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton7: {
-    // ReefL4B
-    ...baseStyles.gamepiece,
-    left: 480,
+    left: 100,
     top: 200,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton8: {
-    // Net
+  5: {
+    // ReefL3B
     ...baseStyles.gamepiece,
-    left: 0,
-    top: 0,
+    left: 200,
+    top: 190,
   },
   // eslint-disable-next-line react-native/no-unused-styles
-  gamepieceButton9: {
-    // Processor
+  6: {
+    // ReefL4A
     ...baseStyles.gamepiece,
     left: 100,
-    top: 0,
+    top: 50,
   },
+  // eslint-disable-next-line react-native/no-unused-styles
+  7: {
+    // ReefL4B
+    ...baseStyles.gamepiece,
+    left: 200,
+    top: 20,
+  },
+});
+
+const algaeGamepieceStyles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-unused-styles
+  1: {
+    // Net
+    ...baseStyles.gamepiece,
+    left: 500,
+    top: 80,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  2: {
+    // Processor
+    ...baseStyles.gamepiece,
+    left: 510,
+    top: 390,
+  },
+});
+
+const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   coralStationPressable: {
     ...styles.coralStation,
@@ -417,20 +479,24 @@ const buttonStyles = StyleSheet.create({
   },
   // eslint-disable-next-line react-native/no-unused-styles
   coralStationImage: {
-    ...baseStyles.gamepiece,
-    left: 120,
-    top: 110,
+    position: 'absolute',
+    height: 45,
+    width: 100,
+    left: 800,
+    top: 80,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   coralFloorImage: {
-    ...baseStyles.gamepiece,
-    left: 60,
-    top: 90,
+    position: 'absolute',
+    height: 45,
+    width: 100,
+    left: 900,
+    top: 330,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   algaeFloorImage: {
     ...baseStyles.gamepiece,
-    left: 60,
-    top: 90,
-  }
+    left: 750,
+    top: 330,
+  },
 });
