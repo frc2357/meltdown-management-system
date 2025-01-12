@@ -29,7 +29,7 @@
         "buildType": "apk",
         "distribution": "internal",
         "gradleCommand": ":app:assembleRelease",
-        "node": "20.15.1"
+        "node": "18.16.0"
       },
       "ios": {
         "distribution": "internal"
