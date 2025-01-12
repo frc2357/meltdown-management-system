@@ -1,4 +1,5 @@
 import { EEventTypes } from '..';
+import { ERobotState } from '../../../sentinel/types';
 import { EEndgameLocation2025 } from './EEndgameLocation2025';
 import { EPickupLocation2025 } from './EPickupLocation2025';
 import { EScoreLocation2025 } from './EScoreLocation2025';
@@ -9,14 +10,12 @@ class ClassEvent2025 {
   timestamp?: number = 0;
   location?: EStartLocation2025 | EPickupLocation2025 | EScoreLocation2025 | EEndgameLocation2025 =
     EStartLocation2025.center;
-  x?: number = 0;
-  y?: number = 0;
+  gamepiece?: ERobotState = ERobotState.empty;
+  miss?: boolean = false;
   leave?: boolean = false;
   notes?: string = '';
-  harmony?: boolean = false;
-  spotlit?: boolean = false;
-  trap?: number = 0;
-  miss?: boolean = false;
+  clearAlgae?: number = 0;
+  defenseRating?: number = 0;
 }
 
 export interface TEvent2025 extends ClassEvent2025 {}

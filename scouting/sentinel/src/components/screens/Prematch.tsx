@@ -3,7 +3,7 @@ import { Box, Text, Button, Pressable, HStack } from '@react-native-material/cor
 import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { ERobotState, TRootStackParamList } from '../../../types';
-import { EStartLocation2024 } from '../../../../common/types/2024';
+import { EStartLocation2025 } from '../../../../common/types/2025';
 import autoFieldImage from '../../../assets/autoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
 import { useLog } from '../../contexts/LogContext';
@@ -12,14 +12,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export type PPrematchScreen = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
 
 export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
-  const locations: EStartLocation2024[] = Object.values(EStartLocation2024);
+  const locations: EStartLocation2025[] = Object.values(EStartLocation2025);
 
   const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
   const [preload, setPreload] = useState(ERobotState.empty);
   const log = useLog();
 
   const onConfirm = () => {
-    let startPos: EStartLocation2024 = EStartLocation2024.center;
+    let startPos: EStartLocation2025 = EStartLocation2025.center;
 
     locations.forEach((location, i) => {
       if (startPosPressed[i]) {
@@ -44,7 +44,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
           <Text variant="h6">Pre-Load:</Text>
           <RadioButtonList
             direction="row"
-            labels={Object.values(ERobotState)}
+            labels={[ERobotState.coral, ERobotState.empty]}
             selected={preload}
             setSelected={(value: ERobotState) => setPreload(value)}
           />
@@ -63,7 +63,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
               backgroundColor: startPosPressed[i] ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
             }}
             onPress={() => {
-              const newArr = new Array(4).fill(false);
+              const newArr = new Array(3).fill(false);
               newArr[i] = true;
               setStartPosPressed(newArr);
             }}
@@ -95,33 +95,26 @@ const styles = StyleSheet.create({
     marginLeft: 150,
     marginTop: 120,
   },
-  posFour: {
-    height: 225,
-    left: autoAreaLeft + 220 + 185 + 220,
-    position: 'absolute',
-    top: autoAreaTop,
-    width: 375,
-  },
-  posOne: {
+  left: {
     height: 225,
     left: autoAreaLeft,
     position: 'absolute',
     top: autoAreaTop,
-    width: 220,
+    width: 333,
   },
-  posThree: {
+  center: {
     height: 225,
-    left: autoAreaLeft + 220 + 185,
+    left: autoAreaLeft + 333,
     position: 'absolute',
     top: autoAreaTop,
-    width: 220,
+    width: 333,
   },
-  posTwo: {
-    height: 120,
-    left: autoAreaLeft + 220,
+  right: {
+    height: 225,
+    left: autoAreaLeft + 666,
     position: 'absolute',
     top: autoAreaTop,
-    width: 185,
+    width: 333,
   },
 });
-const posStyles = [styles.posOne, styles.posTwo, styles.posThree, styles.posFour];
+const posStyles = [styles.left, styles.center, styles.right];

@@ -6,6 +6,6 @@ export type TRootStackParamList = {
   QRCapture: undefined;
   Prematch: undefined;
   Teleop: { initialRobotState: ERobotState };
-  Endgame: undefined;
+  Endgame: { clearAlgae: number };
   QRShow: { routeName: keyof TRootStackParamList; path: string };
 };

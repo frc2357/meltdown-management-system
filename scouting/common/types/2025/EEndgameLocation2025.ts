@@ -1,5 +1,6 @@
 export enum EEndgameLocation2025 {
   none = 'none',
   park = 'park',
-  onstage = 'onstage',
+  deep = 'deep',
+  shallow = 'shallow'
 }

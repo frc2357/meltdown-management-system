@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
-import {
-  VStack,
-  TextInput,
-  HStack,
-  Text,
-  Button,
-  Box,
-  Divider,
-  Spacer,
-} from '@react-native-material/core';
+import { VStack, TextInput, HStack, Text, Button, Box, Divider } from '@react-native-material/core';
 import { StyleSheet, Dimensions } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { EAssignmentActionType, TRootStackParamList } from '../../../types';
-import { EEndgameLocation2024, TEvent2024 } from '../../../../common/types/2024';
-import { RadioButton } from 'react-native-paper';
+import { EEndgameLocation2025 } from '../../../../common/types/2025';
 import { useLog, useSaveLog } from '../../contexts/LogContext';
 import { useAssignmentDispatch } from '../../contexts/AssignmentContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -22,13 +12,17 @@ const windowDimensions = Dimensions.get('window');
 
 export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'Endgame'>;
 
-export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element {
-  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2024>(
-    EEndgameLocation2024.none
+export function Endgame({
+  route: {
+    params: { clearAlgae },
+  },
+  navigation,
+}: PEndgameScreenProps): React.JSX.Element {
+  const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2025>(
+    EEndgameLocation2025.none
   );
-  const [spotlit, setSpotlit] = useState<'checked' | 'unchecked'>('unchecked');
-  const [harmony, setHarmony] = useState<'checked' | 'unchecked'>('unchecked');
-  const [trap, setTrap] = useState<number>(0);
+  const [defenseRating, setDefenseRating] = useState<string>('0');
+
   const [notes, setNotes] = useState('');
 
   const log = useLog();
@@ -37,13 +31,7 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    log.addEndgameEvent(
-      endgameLocation,
-      `\"${notes}\"`,
-      harmony === 'checked',
-      trap,
-      spotlit === 'checked'
-    );
+    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, clearAlgae, +defenseRating);
 
     assignmentDispatch({
       type: EAssignmentActionType.nextMatch,
@@ -58,50 +46,25 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
     <Box style={styles.autoContainer}>
       <Text variant="h4">Endgame</Text>
       <VStack>
-        <Text variant="h6">Stage:</Text>
+        <Text variant="h6">Barge:</Text>
         <RadioButtonList
-          labels={Object.values(EEndgameLocation2024)}
+          labels={Object.values(EEndgameLocation2025)}
           direction="row"
           selected={endgameLocation}
-          setSelected={(value: EEndgameLocation2024) => {
+          setSelected={(value: EEndgameLocation2025) => {
             setEndgameLocation(value);
           }}
         />
         <Divider />
-        <RadioButton.Item
-          label="Spotlit"
-          value="Spotlit"
-          status={spotlit}
-          onPress={() => {
-            setSpotlit(spotlit === 'unchecked' ? 'checked' : 'unchecked');
+        <Text variant="h6">Defense Rating:</Text>
+        <RadioButtonList
+          labels={Array.from({ length: 6 }, (_, i) => `${i}`)}
+          direction="row"
+          selected={defenseRating}
+          setSelected={(value: string) => {
+            setDefenseRating(value);
           }}
         />
-        <Divider />
-        <RadioButton.Item
-          label="Harmony"
-          value="Harmony"
-          status={harmony}
-          onPress={() => {
-            setHarmony(harmony === 'unchecked' ? 'checked' : 'unchecked');
-          }}
-        />
-        <Divider />
-        <HStack
-          style={{ alignContent: 'center', alignItems: 'center', marginLeft: 13, marginRight: 10 }}
-        >
-          <Text>Trap</Text>
-          <Spacer />
-          <Button
-            title={trap.toString()}
-            compact
-            variant="outlined"
-            onPress={() => {
-              let newTrap: number = trap + 1;
-              if (newTrap >= 4) newTrap = 0;
-              setTrap(newTrap);
-            }}
-          />
-        </HStack>
         <Divider />
         <TextInput
           label="Notes"
@@ -114,7 +77,6 @@ export function Endgame({ navigation }: PEndgameScreenProps): React.JSX.Element 
           value={notes}
         />
       </VStack>
-
       <HStack>
         <Button
           title="Submit"
@@ -142,6 +104,6 @@ const styles = StyleSheet.create({
   textInput: {
     height: 180,
     margin: 4,
-    width: 400,
+    width: 450,
   },
 });
