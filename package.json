@@ -9,7 +9,6 @@
   },
   "workspaces": [
     "scouting/overseer",
-    "scouting/sentinel",
     "pitmanagementsystem/mechanic",
     "pitmanagementsystem/workshop",
     "devops"
