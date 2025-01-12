@@ -12,7 +12,7 @@ export type TLogActions = {
   modifyLastPickupEvent: (location: EPickupLocation2025) => void;
   addDropEvent: (gamepiece: ERobotState) => void;
   addScoreEvent: (location: EScoreLocation2025) => void;
-  undoLastScore: () => void;
+  miss: () => void;
   addAutoEvent: (leave: boolean) => void;
   addEndgameEvent: (
     location: EEndgameLocation2025,

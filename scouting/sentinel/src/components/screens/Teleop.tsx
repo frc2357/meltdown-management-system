@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack, Text } from '@react-native-material/core';
 import { Image, StyleSheet } from 'react-native';
-import topCoralImage from '../../../assets/topCoral.png';
-import bottomCoralImage from '../../../assets/bottomCoral.png';
 import algaeImage from '../../../assets/algae.png';
 import emptyImage from '../../../assets/empty.png';
 import { GamepieceButton } from '../basics/GamepieceButton';
@@ -20,7 +18,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useLog } from '../../contexts/LogContext';
 import bargeImage from '../../../assets/barge.png';
 import processorImage from '../../../assets/processor.png';
-import angledCoralImage from '../../../assets/angledCoral.png';
 import floorCoralImage from '../../../assets/floorCoral.png';
 import { RobotState } from '../basics/RobotState';
 import reefL1Image from '../../../assets/reefL1.png';
@@ -55,7 +52,7 @@ export function Teleop({
 
   const [missable, setMissable] = useState<boolean>(false);
   const [coralPickupStates, setCoralPickupStates] = useState<boolean[]>(
-    new Array(numCoralPickupStations).fill(false)
+    new Array(numCoralPickupStations).fill(initialRobotState === ERobotState.coral ? true : false)
   );
 
   const [isCoralVisible, setIsCoralVisible] = useState(
@@ -88,17 +85,21 @@ export function Teleop({
   };
 
   const onDropCoral: () => void = (): void => {
-    log.addDropEvent(ERobotState.coral);
-    clearCoralStateAndPickup();
+    if (coralState === ERobotState.coral) {
+      log.addDropEvent(ERobotState.coral);
+      clearCoralStateAndPickup();
+    }
   };
 
   const onDropAlgae: () => void = (): void => {
-    log.addDropEvent(ERobotState.algae);
-    setAlgaeState(ERobotState.empty);
+    if (algaeState === ERobotState.algae) {
+      log.addDropEvent(ERobotState.algae);
+      setAlgaeState(ERobotState.empty);
+    }
   };
 
   const onMiss: () => void = (): void => {
-    log.undoLastScore();
+    log.miss();
     setMissable(false);
     clearCoralStateAndPickup();
   };
@@ -328,9 +329,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   clearAlgaeButton: {
-    width: 120,
-    left: 10,
-    top: 0,
+    width: 170,
+    left: 220,
+    top: 420,
   },
   buttonStack: {
     alignItems: 'center',
@@ -392,51 +393,65 @@ const coralGamepieceStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   1: {
     // ReefL1
-    ...baseStyles.gamepiece,
-    left: 170,
-    top: 400,
+    position: 'absolute',
+    height: 70,
+    width: 270,
+    left: 65,
+    top: 300,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   2: {
     // ReefL2A
-    ...baseStyles.gamepiece,
-    left: 100,
-    top: 300,
+    position: 'absolute',
+    height: 80,
+    width: 100,
+    left: 115,
+    top: 220,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   3: {
     // ReefL2B
-    ...baseStyles.gamepiece,
-    left: 200,
-    top: 300,
+    position: 'absolute',
+    height: 80,
+    width: 100,
+    left: 215,
+    top: 200,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   4: {
     // ReefL3A
-    ...baseStyles.gamepiece,
-    left: 100,
-    top: 200,
+    position: 'absolute',
+    height: 90,
+    width: 100,
+    left: 115,
+    top: 130,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   5: {
     // ReefL3B
-    ...baseStyles.gamepiece,
-    left: 200,
-    top: 190,
+    position: 'absolute',
+    height: 100,
+    width: 100,
+    left: 215,
+    top: 100,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   6: {
     // ReefL4A
-    ...baseStyles.gamepiece,
-    left: 100,
-    top: 50,
+    position: 'absolute',
+    height: 100,
+    width: 105,
+    left: 120,
+    top: 30,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   7: {
     // ReefL4B
-    ...baseStyles.gamepiece,
-    left: 200,
-    top: 20,
+    position: 'absolute',
+    height: 85,
+    width: 100,
+    left: 225,
+    top: 15,
   },
 });
 

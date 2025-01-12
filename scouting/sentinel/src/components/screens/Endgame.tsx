@@ -14,16 +14,14 @@ export type PEndgameScreenProps = NativeStackScreenProps<TRootStackParamList, 'E
 
 export function Endgame({
   route: {
-    params: { canClearAlgae },
+    params: { clearAlgae },
   },
   navigation,
 }: PEndgameScreenProps): React.JSX.Element {
   const [endgameLocation, setEndgameLocation] = useState<EEndgameLocation2025>(
     EEndgameLocation2025.none
   );
-  const [defenseRating, setDefenseRating] = useState<string>(
-    "0"
-  );
+  const [defenseRating, setDefenseRating] = useState<string>('0');
 
   const [notes, setNotes] = useState('');
 
@@ -33,7 +31,7 @@ export function Endgame({
   const assignmentDispatch = useAssignmentDispatch();
 
   const onSubmit = () => {
-    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, canClearAlgae, +defenseRating);
+    log.addEndgameEvent(endgameLocation, `\"${notes}\"`, clearAlgae, +defenseRating);
 
     assignmentDispatch({
       type: EAssignmentActionType.nextMatch,
@@ -60,7 +58,7 @@ export function Endgame({
         <Divider />
         <Text variant="h6">Defense Rating:</Text>
         <RadioButtonList
-          labels={Array.from({length: 6}, (_, i) => `${i}` )}
+          labels={Array.from({ length: 6 }, (_, i) => `${i}`)}
           direction="row"
           selected={defenseRating}
           setSelected={(value: string) => {

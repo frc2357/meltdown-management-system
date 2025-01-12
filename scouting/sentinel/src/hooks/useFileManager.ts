@@ -38,6 +38,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     };
 
     const eventKeyToDense = yearConfig(DeviceInfo.getVersion()).eventKeyToDense;
+    console.log(eventKeyToDense);
 
     denseLog.e = log.events.map((event: eventType): Record<string, any> => {
       let denseEvent: Record<string, any> = {};
@@ -48,6 +49,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
 
       return denseEvent;
     });
+    console.log(denseLog);
     const fileName: string = `${log.alliance}-${log.alliancePos}-match-${log.matchNum}`;
     const logString: string = JSON.stringify(denseLog);
 

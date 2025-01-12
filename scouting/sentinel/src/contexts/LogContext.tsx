@@ -83,9 +83,9 @@ export const useLog: () => TLogActions = (): TLogActions => {
         timestamp: timer.getTimeSeconds(),
       });
     },
-    undoLastScore: () => {
+    miss: () => {
       const idx = log.current.events.findLastIndex((event) => event.type === EEventTypes.score);
-      if (idx !== -1) log.current.events.splice(idx, 1);
+      if (idx !== -1) log.current.events[idx].miss = true;
     },
     addAutoEvent: (leave: boolean) => {
       log.current.events.push({
@@ -98,7 +98,7 @@ export const useLog: () => TLogActions = (): TLogActions => {
       location: EEndgameLocation2025,
       notes: string,
       clearAlgae: number,
-      defenseRating
+      defenseRating: number
     ) => {
       log.current.events.push({
         type: EEventTypes.endgame,
@@ -108,6 +108,7 @@ export const useLog: () => TLogActions = (): TLogActions => {
         defenseRating,
         timestamp: timer.getTimeSeconds(),
       });
+      console.log(log.current);
     },
   };
 };

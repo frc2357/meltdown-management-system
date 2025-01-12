@@ -11,6 +11,7 @@ class ClassEvent2025 {
   location?: EStartLocation2025 | EPickupLocation2025 | EScoreLocation2025 | EEndgameLocation2025 =
     EStartLocation2025.center;
   gamepiece?: ERobotState = ERobotState.empty;
+  miss?: boolean = false;
   leave?: boolean = false;
   notes?: string = '';
   clearAlgae?: number = 0;
