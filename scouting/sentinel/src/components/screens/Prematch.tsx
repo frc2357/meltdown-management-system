@@ -4,10 +4,12 @@ import { Image, StyleSheet } from 'react-native';
 import { RadioButtonList } from '../basics/RadioButtonList';
 import { ERobotState, TRootStackParamList } from '../../../types';
 import { EStartLocation2025 } from '../../../../common/types/2025';
-import autoFieldImage from '../../../assets/autoField.png';
+import blueAutoFieldImage from '../../../assets/blueAutoField.png';
+import redAutoFieldImage from '../../../assets/redAutoField.png';
 import { AssignmentTable } from '../tables/AssignmentTable';
 import { useLog } from '../../contexts/LogContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useAssignment } from '../../contexts/AssignmentContext';
 
 export type PPrematchScreen = NativeStackScreenProps<TRootStackParamList, 'Prematch'>;
 
@@ -17,6 +19,7 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
   const [startPosPressed, setStartPosPressed] = useState(new Array(locations.length).fill(false));
   const [preload, setPreload] = useState(ERobotState.empty);
   const log = useLog();
+  const assignment = useAssignment();
 
   const onConfirm = () => {
     let startPos: EStartLocation2025 = EStartLocation2025.center;
@@ -51,7 +54,11 @@ export function Prematch({ navigation }: PPrematchScreen): React.JSX.Element {
           <Text variant="h5">Press start location:</Text>
         </Box>
       </HStack>
-      <Image alt="Starting position" source={autoFieldImage} style={styles.autoField} />
+      <Image
+        alt="Starting position"
+        source={assignment.alliance === 'BLUE' ? blueAutoFieldImage : redAutoFieldImage}
+        style={styles.autoField}
+      />
 
       {posStyles.map((style, i) => {
         return (
