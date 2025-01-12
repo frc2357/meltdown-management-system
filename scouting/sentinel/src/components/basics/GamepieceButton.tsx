@@ -46,7 +46,7 @@ export function GamepieceButton({
         }}
         pressEffect="none"
         // eslint-disable-next-line react-native/no-inline-styles, react-native/no-color-literals
-        style={{ ...pressableStyle, backgroundColor: 'rgba(255,0,0,0)' }}
+        style={{ ...pressableStyle, backgroundColor: 'rgba(255,0,0,0.5)' }}
       ></Pressable>
     </>
   );

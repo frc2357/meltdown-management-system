@@ -23,6 +23,13 @@ import processorImage from '../../../assets/processor.png';
 import angledCoralImage from '../../../assets/angledCoral.png';
 import floorCoralImage from '../../../assets/floorCoral.png';
 import { RobotState } from '../basics/RobotState';
+import reefL1Image from '../../../assets/reefL1.png';
+import reefL2AImage from '../../../assets/reefL2A.png';
+import reefL2BImage from '../../../assets/reefL2B.png';
+import reefL3AImage from '../../../assets/reefL3A.png';
+import reefL3BImage from '../../../assets/reefL3B.png';
+import reefL4AImage from '../../../assets/reefL4A.png';
+import reefL4BImage from '../../../assets/reefL4B.png';
 
 const coralPickupStationNames: EPickupLocation2025[] = Object.values(EPickupLocation2025);
 const numCoralPickupStations: number = coralPickupStationNames.length;
@@ -72,21 +79,6 @@ export function Teleop({
         return algaeImage;
       default:
         return emptyImage;
-    }
-  };
-
-  const coralToGamepieceImage: (location: EScoreLocation2025) => number = (
-    location: EScoreLocation2025
-  ): number => {
-    switch (location) {
-      case EScoreLocation2025.reefL1:
-        return bottomCoralImage;
-      case EScoreLocation2025.reefL2:
-        return angledCoralImage;
-      case EScoreLocation2025.reefL3:
-        return angledCoralImage;
-      case EScoreLocation2025.reefL4:
-        return topCoralImage;
     }
   };
 
@@ -199,6 +191,15 @@ export function Teleop({
     EScoreLocation2025.reefL4,
     EScoreLocation2025.reefL4,
   ];
+  const reefImages = [
+    reefL1Image,
+    reefL2AImage,
+    reefL2BImage,
+    reefL3AImage,
+    reefL3BImage,
+    reefL4AImage,
+    reefL4BImage,
+  ];
 
   const gamepieceButtons = [];
   for (let i = 0; i < numCoralScoreLocations; i++) {
@@ -207,7 +208,7 @@ export function Teleop({
         key={i}
         imageStyle={styles.reef}
         pressableStyle={coralGamepieceStyles[`${i + 1}`]}
-        gamePieceSrc={coralToGamepieceImage(reefLevelOrder[i])}
+        gamePieceSrc={reefImages[i]}
         isHidden={!isCoralVisible[i]}
         setHidden={(isHidden) => {
           if (!isHidden && coralState === ERobotState.coral) {
