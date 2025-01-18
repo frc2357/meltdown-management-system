@@ -41,7 +41,7 @@ export function QRCapture({ navigation }: PQRCapture): React.JSX.Element {
 
     assignmentDispatch(action);
 
-    setLoading(false);
+    await new Promise((res) => setTimeout(res, 500));
     navigation.navigate<'Prematch'>('Prematch');
   };
 

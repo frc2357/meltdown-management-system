@@ -2,7 +2,7 @@
   "expo": {
     "name": "scouting-sentinel",
     "slug": "scouting-sentinel",
-    "version": "2025.0.1",
+    "version": "2025.0.2",
     "orientation": "landscape",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["['**/*']"],
+    "assetBundlePatterns": [
+      "['**/*']"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -25,7 +27,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.frc2357.sentinel",
-      "permissions": ["android.permission.CAMERA"]
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/logo.png"
