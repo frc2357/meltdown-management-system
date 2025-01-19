@@ -480,10 +480,10 @@ const buttonStyles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-unused-styles
   coralFloorPressable: {
     height: 235,
-    left: 867.5,
+    left: 845,
     position: 'absolute',
     top: 258.5,
-    width: 162.5,
+    width: 180,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   algeaFloorPressable: {
@@ -491,7 +491,7 @@ const buttonStyles = StyleSheet.create({
     left: 705,
     position: 'absolute',
     top: 258.5,
-    width: 162.5,
+    width: 140,
   },
   // eslint-disable-next-line react-native/no-unused-styles
   coralStationImage: {
@@ -506,7 +506,7 @@ const buttonStyles = StyleSheet.create({
     position: 'absolute',
     height: 45,
     width: 100,
-    left: 900,
+    left: 850,
     top: 330,
   },
   // eslint-disable-next-line react-native/no-unused-styles
