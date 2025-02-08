@@ -1,7 +1,7 @@
-import git from "../modules/git.mjs";
+import git from "./modules/git.mjs";
 import commandLineArgs from "command-line-args";
 import path from "node:path";
-import version from "../modules/version.mjs";
+import version from "./modules/version.mjs";
 
 const getConfiguration = async () => {
   const gitRoot = git.getGitRoot();
