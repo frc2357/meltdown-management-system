@@ -1,6 +1,6 @@
-const childProcess = require("node:child_process");
+import childProcess from "node:child_process";
 
-module.exports = { 
+export default { 
   getGitRoot: () => {
     const stdout = (
       childProcess.execSync("git rev-parse --show-toplevel").toString() || ""

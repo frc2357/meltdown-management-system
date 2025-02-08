@@ -1,7 +1,7 @@
-const archiver = require("archiver");
-const fs = require("fs");
+import archiver from "archiver";
+import fs from "node:fs";
 
-module.exports = {
+export default {
   zipFolder: async (sourceFolder, outputFile, globPattern = "**/*") => {
     if (fs.existsSync(outputFile)) fs.rmSync(outputFile);
     const outputStream = fs.createWriteStream(outputFile, { autoClose: true });

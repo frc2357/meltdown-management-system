@@ -4,7 +4,7 @@ pushd .
 cd %mms_root%/devops/cli
 
 :node
-    node %1 %2 %3 %4 %5 %6 %7 %8
+    node %1.mjs %2 %3 %4 %5 %6 %7 %8
     goto exit
 
 :exit

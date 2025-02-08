@@ -2,7 +2,7 @@
   "name": "devops",
   "version": "0.0.1",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=9.0.0"

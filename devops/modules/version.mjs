@@ -1,7 +1,7 @@
-const fs = require("node:fs");
-const path = require("node:path");
+import fs from "node:fs";
+import path from "node:path";
 
-module.exports = {
+export default {
   setPackageJsonVersion: (projectPath, version) => {
     const packageJson = path.resolve(projectPath, "package.json");
     const json = fs.readFileSync(path.resolve(packageJson), "utf-8");
