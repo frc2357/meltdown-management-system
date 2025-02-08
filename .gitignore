@@ -39,3 +39,7 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+.terraform/
+.terraform.lock*
+.tfstate
