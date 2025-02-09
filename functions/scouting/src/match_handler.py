@@ -37,7 +37,7 @@ def load_match_data(object_name: str) -> dict:
       case "start":
         item["startLocation"] = line["location"]
       case "auto":
-        item["autoLeave"] = 1 if line["leave"] == "true" else 0
+        item["autoLeave"] = 1 if line["leave"] == "TRUE" else 0
       case "endgame":
         item["end"] = line["location"]
         item["defenseRating"] = line["defenseRating"]
@@ -62,10 +62,12 @@ def load_match_data(object_name: str) -> dict:
       case "score":
           prefix = "a" if isAuto(line["timestamp"]) else ""
           
-          if (line["miss"] == "true" and line["location"] in ["reefL1", "reefL2", "reefL3", "reefL4"]):
+          if (line["miss"] == "TRUE" and line["location"] in ["reefL1", "reefL2", "reefL3", "reefL4"]):
+            print(f"coralmiss on {line["location"]}: {key}-{line["timestamp"]}")
             item["coralMiss"] = item.get("coralMiss", 0) + 1
             continue
-          elif (line["miss"] == "true" and line["location"] in ["net", "processor"]):
+          elif (line["miss"] == "TRUE" and line["location"] in ["net", "processor"]):
+            print(f"algaeMiss on {line["location"]}: {key}-{line["timestamp"]}")
             item["algaeMiss"] = item.get("algaeMiss", 0) + 1
             continue
 
@@ -81,9 +83,7 @@ def load_match_data(object_name: str) -> dict:
             case "net":
               item["algaeBarge"] = item.get("algaeBarge", 0) + 1
             case "processor":
-              item["processor"] = item.get("processor", 0) + 1
-
-  print(items)
+              item["algaeProcessor"] = item.get("algaeProcessor", 0) + 1
 
   dynamodb = boto3.resource('dynamodb')
   table = dynamodb.Table(TABLE_NAME)
