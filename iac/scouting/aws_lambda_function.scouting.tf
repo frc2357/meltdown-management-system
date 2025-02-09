@@ -8,4 +8,10 @@ resource "aws_lambda_function" "scouting" {
 
   timeout     = 30
   memory_size = 128
+
+  environment {
+    variables = {
+      ENVIRONMENT = "${var.environment}"
+    }
+  }
 }
