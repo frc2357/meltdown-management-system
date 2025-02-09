@@ -37,7 +37,7 @@ def load_match_data(object_name: str) -> dict:
       case "start":
         item["startLocation"] = line["location"]
       case "auto":
-        item["autoLeave"] = 1 if line["leave"] else 0
+        item["autoLeave"] = 1 if line["leave"] == "true" else 0
       case "endgame":
         item["end"] = line["location"]
         item["defenseRating"] = line["defenseRating"]
@@ -60,13 +60,17 @@ def load_match_data(object_name: str) -> dict:
         else:
           item["algaeMiss"] = item.get("algaeMiss", 0) + 1
       case "score":
-        if(line["gamepiece"] == "coral"):
           prefix = "a" if isAuto(line["timestamp"]) else ""
-          if(line["miss"] == "true"):
+          
+          if (line["miss"] == "true" and line["location"] in ["reefL1", "reefL2", "reefL3", "reefL4"]):
             item["coralMiss"] = item.get("coralMiss", 0) + 1
             continue
+          elif (line["miss"] == "true" and line["location"] in ["net", "processor"]):
+            item["algaeMiss"] = item.get("algaeMiss", 0) + 1
+            continue
+
           match line["location"]:
-            case "reefL1":
+            case "reefL1":  
               item[f"{prefix}CoralL1"] = item.get(f"{prefix}CoralL1", 0) + 1
             case "reefL2":
               item[f"{prefix}CoralL2"] = item.get(f"{prefix}CoralL2", 0) + 1
@@ -74,13 +78,10 @@ def load_match_data(object_name: str) -> dict:
               item[f"{prefix}CoralL3"] = item.get(f"{prefix}CoralL3", 0) + 1
             case "reefL4":
               item[f"{prefix}CoralL4"] = item.get(f"{prefix}CoralL4", 0) + 1
-        else:
-          if(line["miss"] == "true"):
-            item["algaeMiss"] = item.get("algaeMiss", 0) + 1
-          elif (line["location"] == "net"):
-            item["algaeBarge"] = item.get("algaeBarge", 0) + 1
-          else:
-            item["processor"] = item.get("processor", 0) + 1
+            case "net":
+              item["algaeBarge"] = item.get("algaeBarge", 0) + 1
+            case "processor":
+              item["processor"] = item.get("processor", 0) + 1
 
   print(items)
 
