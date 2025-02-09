@@ -37,7 +37,7 @@ def load_match_data(object_name: str) -> dict:
       case "start":
         item["startLocation"] = line["location"]
       case "auto":
-        item["autoLeave"] = line["leave"]
+        item["autoLeave"] = 1 if line["leave"] else 0
       case "endgame":
         item["end"] = line["location"]
         item["defenseRating"] = line["defenseRating"]
