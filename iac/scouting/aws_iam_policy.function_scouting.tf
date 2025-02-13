@@ -12,13 +12,6 @@ resource "aws_iam_policy" "function_scouting" {
             "logs:PutLogEvents",
           ],
           Resource = "*"
-        },
-        {
-          Effect = "Allow",
-          Action = [
-            "dynamodb:*"
-          ],
-          Resource = "${aws_dynamodb_table.scouting.arn}"
         }
       ]
     }

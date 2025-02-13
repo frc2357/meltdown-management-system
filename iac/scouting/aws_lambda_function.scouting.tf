@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "scouting" {
   function_name = "${local.hidashNamePrefix}-scouting"
-  description   = "Lambda function to ETL match data into Dynamo"
+  description   = "Lambda function to ETL raw match data into csv files for S3"
   role          = aws_iam_role.function_scouting.arn
   filename      = "./_blank_function_code/blank.zip"
   handler       = "lambda_function.lambda_handler"
