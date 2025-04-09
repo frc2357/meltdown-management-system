@@ -20,6 +20,7 @@ jobs:
         working-directory: ./scouting/dashboard
         run: npm ci
       - name: Build
+        working-directory: ./scouting/dashboard
         run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
