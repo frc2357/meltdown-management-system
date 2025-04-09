@@ -33,8 +33,8 @@ resource "aws_s3_bucket_policy" "scouting_output" {
           Principal = "*",
           Action    = ["s3:GetObject", "s3:ListBucket"],
           Resource = [
-            "arn:aws:s3:::mms-dev-scouting-output/*",
-            "arn:aws:s3:::mms-dev-scouting-output"
+            "${aws_s3_bucket.scouting_output.arn}/*",
+            "${aws_s3_bucket.scouting_output.arn}"
           ]
         }
       ]
