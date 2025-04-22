@@ -93,7 +93,7 @@ function App() {
                   </MenuItem>
                 ))}
               </Select>
-              <img style={{ height: 40, width: 40, marginLeft: 'auto' }} src={logo} />
+              <img style={{ height: 40, width: 40, marginLeft: 'auto' }} src={logo} alt="logo" />
             </Toolbar>
           </AppBar>
           <Grid
