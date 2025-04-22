@@ -60,17 +60,31 @@ function App() {
   return (
     <Box>
       {isLoading ? (
-        <Stack spacing={2} direction="column">
+        <Box>
           <Skeleton variant="text" sx={{ fontSize: '5rem' }} />
-          <Stack spacing={1} direction="row">
-            <Skeleton variant="rounded" width={'40%'} height={200} />
-            <Skeleton variant="rounded" width={'60%'} height={200} />
-          </Stack>
-          <Stack spacing={1} direction="row">
-            <Skeleton variant="rounded" width={'60%'} height={200} />
-            <Skeleton variant="rounded" width={'40%'} height={200} />
-          </Stack>
-        </Stack>
+          <Grid
+            columnSpacing={2}
+            rowSpacing={2}
+            container
+            sx={{ margin: 1 }}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+              <Skeleton variant="rounded" sx={{ fontSize: '5rem' }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+              <Skeleton variant="rounded" sx={{ fontSize: '5rem' }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+              <Skeleton variant="rounded" sx={{ fontSize: '5rem' }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+              <Skeleton variant="rounded" sx={{ fontSize: '5rem' }} />
+            </Grid>
+          </Grid>
+        </Box>
       ) : (
         <Box>
           <AppBar position="sticky" sx={{ marginBottom: 2 }}>
@@ -105,16 +119,16 @@ function App() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid size={{ sm: 12, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
               <BarCard />
             </Grid>
-            <Grid size={{ sm: 12, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
               <BarCard />
             </Grid>
-            <Grid size={{ sm: 12, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
               <BarCard />
             </Grid>
-            <Grid size={{ sm: 12, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 6 }}>
               <BarCard />
             </Grid>
           </Grid>
