@@ -4,21 +4,25 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { BarChart } from '@mui/x-charts';
 
-const BarCard: React.FC = () => {
+export type TBarCardProps = {
+  title: string;
+  dataset: { value: number; label: string }[];
+};
+
+export function BarCard({ title, dataset }: TBarCardProps): React.JSX.Element {
   return (
     <Card>
       <CardContent>
         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          Super cool data
+          {title}
         </Typography>
         <BarChart
-          xAxis={[{ scaleType: 'band', data: ['group A', 'group B', 'group C'] }]}
-          series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
+          dataset={dataset}
+          xAxis={[{ scaleType: 'band', dataKey: 'label' }]}
+          series={[{ dataKey: 'value' }]}
           height={300}
         />
       </CardContent>
     </Card>
   );
-};
-
-export default BarCard;
+}

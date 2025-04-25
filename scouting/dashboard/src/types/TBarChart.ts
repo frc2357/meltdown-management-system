@@ -1,5 +1,5 @@
 export type TBarChart = {
   title: string;
-  labels: string[];
-  yAxisLabel: string;
+  type?: 'enum' | 'number';
+  aggregateKeys: { label: string; keys: string[] }[];
 };
