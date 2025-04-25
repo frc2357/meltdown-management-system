@@ -38,6 +38,8 @@ function App() {
     console.log(byTeam);
     setTeams(Object.keys(byTeam));
     setIsLoading(false);
+    setSelectedTeam(Object.keys(byTeam)[0]);
+    teamData.current = buildChartData(byTeam[Object.keys(byTeam)[0]]);
   }
 
   function buildChartData(teamData: any): TBarCardProps[] {
@@ -109,9 +111,6 @@ function App() {
               value={selectedTeam}
               onChange={handleSelectTeam}
             >
-              <MenuItem key="none" value="none">
-                None
-              </MenuItem>
               {teams.map((team) => (
                 <MenuItem key={team} value={team}>
                   {team}

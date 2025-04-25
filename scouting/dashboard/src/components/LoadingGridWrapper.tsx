@@ -22,7 +22,7 @@ export function LoadingGridWrapper({
         alignItems="center"
       >
         {new Array(numCharts).fill(0).map(() => (
-          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }} key={Math.random()}>
             <Skeleton variant="rounded" sx={{ fontSize: '5rem', height: 300 }} />
           </Grid>
         ))}
