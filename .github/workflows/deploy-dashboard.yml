@@ -4,8 +4,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'scouting/dashboard/**'
   workflow_dispatch:
-
+concurrency:
+  group: 'deploy-dashboard'
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
