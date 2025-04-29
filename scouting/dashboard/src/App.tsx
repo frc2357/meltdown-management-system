@@ -23,25 +23,6 @@ function App() {
   const [teams, setTeams] = React.useState<string[]>([]);
   const [selectedTeam, setSelectedTeam] = React.useState<string>('none');
 
-  function aggregateByTeam(rawData: any[]) {
-    const byTeam: any = rawData.reduce((acc: any, row: any) => {
-      const key = row['team-match'];
-      const team = key.split('-')[0];
-      if (!acc[team]) {
-        acc[team] = [];
-      }
-      acc[team].push(row);
-      return acc;
-    }, {});
-
-    fullData.current = byTeam;
-    console.log(byTeam);
-    setTeams(Object.keys(byTeam));
-    setIsLoading(false);
-    setSelectedTeam(Object.keys(byTeam)[0]);
-    teamData.current = buildChartData(byTeam[Object.keys(byTeam)[0]]);
-  }
-
   function buildChartData(teamData: any): TBarCardProps[] {
     const allChartData: TBarCardProps[] = [];
     for (const chart of outputStructure.charts) {
@@ -86,8 +67,24 @@ function App() {
           header: true,
           skipEmptyLines: true,
         });
-        aggregateByTeam(parsedData.data);
-      });
+        const rawData = parsedData.data
+        const byTeam: any = rawData.reduce((acc: any, row: any) => {
+          const key = row['team-match'];
+          const team = key.split('-')[0];
+          if (!acc[team]) {
+            acc[team] = [];
+          }
+          acc[team].push(row);
+          return acc;
+        }, {});
+    
+        fullData.current = byTeam;
+        console.log(byTeam);
+        setTeams(Object.keys(byTeam));
+        setIsLoading(false);
+        setSelectedTeam(Object.keys(byTeam)[0]);
+        teamData.current = buildChartData(byTeam[Object.keys(byTeam)[0]]);
+        });
   }, []);
 
   const handleSelectTeam = (event: SelectChangeEvent<string>) => {
