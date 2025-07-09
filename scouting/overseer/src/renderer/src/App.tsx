@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, CssBaseline, ThemeOptions } from '@mui/material';
 import React from 'react';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { Capturer } from './pages/Capturer';
@@ -46,6 +46,7 @@ const router = createHashRouter([
 export function App() {
   return (
     <ThemeProvider theme={appTheme}>
+      <CssBaseline enableColorScheme />
       <Box
         sx={{
           minHeight: 600,

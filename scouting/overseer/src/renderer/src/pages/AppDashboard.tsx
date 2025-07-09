@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useIsDev } from '../hooks/useIsDev';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 
 const cardStyle: SxProps = {
   height: 250,
@@ -43,6 +44,9 @@ export function AppDashboard() {
           >
             <CardContent>
               <Typography sx={{ textAlign: 'center' }}>Management System</Typography>
+              <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+                <QrCodeIcon fontSize="large" />
+              </Box>
             </CardContent>
           </CardActionArea>
         </Card>

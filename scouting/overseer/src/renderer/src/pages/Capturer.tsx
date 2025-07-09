@@ -6,10 +6,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  InputLabel,
   LinearProgress,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
 } from '@mui/material';
 import { QrScanner } from '@yudiel/react-qr-scanner';
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
@@ -55,37 +57,51 @@ export function Capturer(): ReactElement {
 
   const memoizedQrScanner = useMemo(() => {
     return (
-      <QrScanner
-        stopDecoding={isAlertOpen && !isProcessing} // Prevent decoding when alert is open and not processing
-        onDecode={handleScan}
-        onError={handleError}
-        deviceId={camera === 'default' ? undefined : camera}
-        audio={false}
-      />
+      <Box width={500}>
+        <QrScanner
+          stopDecoding={isAlertOpen && !isProcessing} // Prevent decoding when alert is open and not processing
+          onDecode={handleScan}
+          onError={handleError}
+          deviceId={camera === 'default' ? undefined : camera}
+          audio={false}
+        />
+      </Box>
     );
   }, [isAlertOpen, isProcessing, camera]);
 
   return (
-    <Box sx={{ marginLeft: '16px' }}>
-      {memoizedQrScanner}
-      <Button
-        sx={{ marginTop: '10px' }}
-        variant="contained"
-        component={Link}
-        to="/management/distributor"
-      >
-        Distributor
-      </Button>
-      <Select value={camera} label="Cameras" onChange={handleCameraSelect}>
-        <MenuItem value={'default'}>Default</MenuItem>
-        {allCameras.map((camera) => {
-          return (
-            <MenuItem key={camera.deviceId} value={camera.deviceId}>
-              {camera.label}
-            </MenuItem>
-          );
-        })}
-      </Select>
+    <Box
+      sx={{
+        marginLeft: '16px',
+        height: '100%',
+        width: '100%',
+        alignContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Stack direction="row">
+        {memoizedQrScanner}
+        <Stack direction="column" spacing={2} sx={{ marginLeft: '16px' }}>
+          <InputLabel id="camera-select-label">Camera:</InputLabel>
+          <Select
+            labelId="camera-select-label"
+            value={camera}
+            onChange={handleCameraSelect}
+            autoWidth={false}
+            sx={{ width: '200px' }}
+          >
+            <MenuItem value="default">Default</MenuItem>
+            {allCameras.map((camera) => (
+              <MenuItem key={camera.deviceId} value={camera.deviceId}>
+                {camera.label || 'Unnamed Camera'}
+              </MenuItem>
+            ))}
+          </Select>
+          <Button variant="contained" component={Link} to="/management/distributor">
+            Distributor
+          </Button>
+        </Stack>
+      </Stack>
       <Dialog
         open={isAlertOpen}
         onClose={handleClose}

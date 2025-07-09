@@ -1,10 +1,12 @@
-import { Box, Button, ButtonGroup, Stack } from '@mui/material';
+import { Box, Button, ButtonGroup, Skeleton, Stack, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TDownloadFunc } from '../../../types/TDownloadFunc';
 import { useDownloadFile } from '../hooks/useDownloadFile';
 import QRCode from 'react-qr-code';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export function Distributor(): ReactElement {
   const defaultStringTabletAssignments: string | null = sessionStorage.getItem('tabletAssignments');
@@ -24,11 +26,7 @@ export function Distributor(): ReactElement {
 
   const alliances: string[] = ['RED 1', 'RED 2', 'RED 3', 'BLUE 1', 'BLUE 2', 'BLUE 3'];
 
-  const qrShow = () => {
-    if (!tabletAssignments) {
-      return <Typography>No CSV Loaded</Typography>;
-    }
-
+  const qrShow = (tabletAssignments: string[]) => {
     const qrCodes: ReactElement[] = [];
 
     for (let i = 0; i < 6; i++) {
@@ -58,6 +56,41 @@ export function Distributor(): ReactElement {
     });
   };
 
+  const AllianceQrSkeleton = () => {
+    return (
+      <Tooltip title="Import CSV to Get Started" followCursor>
+        <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant="h6">
+              <Skeleton variant="text" width={200} sx={{ mx: 'auto' }} />
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              alignItems: 'center',
+              marginTop: '16px',
+              marginBottom: '16px',
+              height: '500px',
+              width: '500px',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Skeleton variant="rectangular" width={500} height={500} />
+          </Box>
+          <ButtonGroup variant="outlined" sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button startIcon={<ArrowBackIcon />} disabled>
+              Prev
+            </Button>
+            <Button endIcon={<ArrowForwardIcon />} disabled>
+              Next
+            </Button>
+          </ButtonGroup>
+        </Box>
+      </Tooltip>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -70,32 +103,33 @@ export function Distributor(): ReactElement {
     >
       <Stack direction="row">
         {tabletAssignments === null ? (
-          <Typography sx={{ color: 'red' }}>No CSV Loaded</Typography>
+          <AllianceQrSkeleton />
         ) : (
           <Box>
-            <Typography sx={{ color: assignmentIndex / 2 > 1 ? 'blue' : 'red' }} variant="h6">
-              {alliances[assignmentIndex]}
-            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ color: assignmentIndex / 2 > 1 ? 'blue' : 'red' }} variant="h6">
+                {alliances[assignmentIndex]}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 alignItems: 'center',
-                background: 'white',
-                paddingTop: '16px',
-                paddingRight: '16px',
-                paddingBottom: '16px',
+                marginTop: '16px',
+                marginBottom: '16px',
                 height: '500px',
                 width: '500px',
               }}
             >
-              {qrShow()}
+              {qrShow(tabletAssignments)}
             </Box>
-            <ButtonGroup variant="outlined">
+            <ButtonGroup variant="outlined" sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 onClick={(): void => {
                   let newIndex: number = assignmentIndex - 1;
                   if (newIndex < 0) newIndex = 5;
                   setAssignmentIndex(newIndex);
                 }}
+                startIcon={<ArrowBackIcon />}
               >
                 Prev
               </Button>
@@ -105,17 +139,14 @@ export function Distributor(): ReactElement {
                   if (newIndex > 5) newIndex = 0;
                   setAssignmentIndex(newIndex);
                 }}
+                endIcon={<ArrowForwardIcon />}
               >
                 Next
               </Button>
             </ButtonGroup>
           </Box>
         )}
-        <Stack
-          direction="column"
-          spacing={2}
-          sx={{ margin: 1, paddingTop: tabletAssignments === null ? 0 : 5 }}
-        >
+        <Stack direction="column" spacing={2} sx={{ margin: 1, paddingTop: 5, marginLeft: '16px' }}>
           <Button variant="contained" onClick={onImportCSV}>
             Import CSV
           </Button>
