@@ -1,4 +1,4 @@
-import { Box, CssBaseline, ThemeOptions } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import React from 'react';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { Capturer } from './pages/Capturer';
@@ -9,17 +9,18 @@ import { TemplateDashboard } from './pages/TemplateDashboard';
 import { TemplateEditor } from './pages/TemplateEditor';
 import { ThemeProvider } from '@emotion/react';
 import { appTheme } from './theme/appTheme';
+import { ErrorPage } from './pages/ErrorPage';
 
 const router = createHashRouter([
   {
     path: '/',
     element: <AppDashboard />,
-    errorElement: <></>,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/management',
     element: <Management />,
-    errorElement: <></>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: 'distributor',
@@ -34,12 +35,12 @@ const router = createHashRouter([
   {
     path: '/template',
     element: <TemplateDashboard />,
-    errorElement: <></>,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/template/:templateId',
     element: <TemplateEditor />,
-    errorElement: <></>,
+    errorElement: <ErrorPage />,
   },
 ]);
 
