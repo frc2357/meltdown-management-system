@@ -57,21 +57,23 @@ export function MatchLogs({ navigation }: PMatchLogsProps): React.JSX.Element {
     for (const eventName in logStructure) {
       events.push(
         <List.Accordion title={eventName} id={eventName} key={eventName}>
-          {logStructure[eventName].map((matchLog, index) => {
-            return (
-              <List.Item
-                key={matchLog.name}
-                title={matchLog.name}
-                right={() =>
-                  createLogButton(matchLog.path, () => {
-                    fileManager.deleteFile(matchLog.path);
-                    logStructure[eventName].splice(index, 1);
-                    setLogStructure({ ...logStructure });
-                  })
-                }
-              />
-            );
-          })}
+          {logStructure[eventName]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((matchLog, index) => {
+              return (
+                <List.Item
+                  key={matchLog.name}
+                  title={matchLog.name}
+                  right={() =>
+                    createLogButton(matchLog.path, () => {
+                      fileManager.deleteFile(matchLog.path);
+                      logStructure[eventName].splice(index, 1);
+                      setLogStructure({ ...logStructure });
+                    })
+                  }
+                />
+              );
+            })}
         </List.Accordion>
       );
     }
