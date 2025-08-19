@@ -1,5 +1,5 @@
 # Meltdown Management System
-Repository for various tools used at competition
+Repository for various tools for FRC teams to use at FRC Competitions
 
 
 ## Scouting
@@ -36,3 +36,6 @@ Repository for various tools used at competition
 - Press the event dropdown to see the matches for that event
 - Press the export icon to display a QR code to scan into with Overseer
 - Press the red trash can to delete a match from the tablet
+
+## For Developers
+- More comprehensive techinical documentation can be found in the `_documentation` folder
