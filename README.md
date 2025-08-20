@@ -39,3 +39,4 @@ Repository for various tools for FRC teams to use at FRC Competitions
 
 ## For Developers
 - More comprehensive techinical documentation can be found in the `_documentation` folder
+- The setup guide can be found [here](./_documentation/devSetup.md)
