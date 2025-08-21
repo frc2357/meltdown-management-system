@@ -14,10 +14,12 @@ jobs:
         with:
           app-id: frc-2357-test-app
           private-key: ${{ secrets.APP_KEY }}
+          owner: frc2357
+          repositories: FRC-2025
       - name: Use the token by checkout out other repo
         uses: actions/checkout@v4
         with:
           repository: frc2357/FRC-2025
           token: ${{ steps.generate-token.outputs.token }}
-          owner: frc2357
-          repositories: FRC-2025
+          path: frc-2025
+          persist-credentials: false
