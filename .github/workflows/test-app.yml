@@ -1,0 +1,23 @@
+name: test Github App
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+jobs:
+  demo_app_auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: frc-2357-test-app
+          private-key: ${{ secrets.APP_KEY }}
+      - name: Use the token by checkout out other repo
+        uses: actions/checkout@v4
+        with:
+          repository: frc2357/FRC-2025
+          token: ${{ steps.generate-token.outputs.token }}
+          owner: frc2357
+          repositories: FRC-2025
