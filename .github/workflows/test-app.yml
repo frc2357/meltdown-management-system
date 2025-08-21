@@ -12,7 +12,7 @@ jobs:
         id: generate-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: frc-2357-test-app
+          app-id: 1820457
           private-key: ${{ secrets.APP_KEY }}
           owner: frc2357
           repositories: FRC-2025
