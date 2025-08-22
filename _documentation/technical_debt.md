@@ -2,6 +2,8 @@
 
 ## What is Technical Debt
 
+Throughout this project you'll find code and decisions that seem 'not quite right' or you may think 'this could be done better'. You would be write, this project contains some of what is called technical debt.
+
 Technical debt, in software development, is like a credit card for your codebase: you can take shortcuts to deliver features quickly, but you'll have to pay it back later with interest. 
 
 Technical debt refers to the future costs associated with relying on shortcuts or suboptimal decisions made during software development.
@@ -30,4 +32,4 @@ Tech debt occurs for several reasons. And not necessarily bad reasons. Here is w
 
 Tech debt is riddled throughout "most" proffessional projects, learning to work in an older project with tech debt is an essential skill, and often harder then building net-new projects. This makes working in this project essential to preparing you to real-world projects.
 
-There is a lot of opportunity to discover new/better ways to solve issues in this project for you. There is in general, a lot of work to be done in just improving the quality of the existing projects.
+There is a lot of opportunity to discover new/better ways to solve issues in this project for you. There will be opporunities to refactor/restructure code. There is in general, a lot of work to be done in just improving the quality of the existing projects.
