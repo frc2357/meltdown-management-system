@@ -13,7 +13,7 @@ resource "aws_iam_role" "timeclock_dashboard_cicd" {
                 Condition = {
                     StringEquals = {
                         "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-                        "token.actions.githubusercontent.com:sub" = "repo:frc2357/pi-clock:ref/heads/main"
+                        "token.actions.githubusercontent.com:sub" = "repo:frc2357/pi-clock:ref:refs/heads/main"
                     }
                 }
             }
