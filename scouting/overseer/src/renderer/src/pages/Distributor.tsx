@@ -161,7 +161,15 @@ export function Distributor(): ReactElement {
                   window.api.exportMatches();
                 }}
               >
-                Export Data
+                Download Data
+              </Button>
+              <Button
+                variant="contained"
+                onClick={(): void => {
+                  window.api.exportMatches();
+                }}
+              >
+                Upload to S3
               </Button>
               <Button variant="contained" component={Link} to="/management/capturer">
                 Capturer

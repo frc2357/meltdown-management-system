@@ -3,7 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { TTabletAssignment, TDenseLog, TLog } from '../../../common/types';
 import { yearConfig } from '../../../common/helpers';
-import { EApi } from '../types';
+import { EApi, TSettings } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { WriteStream } from 'node:original-fs';
 
@@ -247,5 +247,32 @@ export function management() {
     );
 
     return JSON.stringify(zippedAssignments);
+  });
+
+  ipcMain.handle(
+    EApi.saveSettings,
+    async (event: IpcMainInvokeEvent, { settings }: { settings: TSettings }): Promise<void> => {
+      const settingsPath = path.resolve(app.getPath('userData'), 'userSettings.json');
+
+      fs.writeFileSync(settingsPath, JSON.stringify(settings));
+    }
+  );
+
+  ipcMain.handle(EApi.getSettings, async (): Promise<TSettings> => {
+    const settingsPath = path.resolve(app.getPath('userData'), 'userSettings.json');
+
+    if (!fs.existsSync(settingsPath)) {
+      return {
+        accessKeyId: '',
+        bucketName: '',
+        secretAccessKey: '',
+      };
+    }
+
+    const settingsBuffer = fs.readFileSync(settingsPath);
+    const settingsString = settingsBuffer.toString();
+    const settingsJson = JSON.parse(settingsString);
+
+    return settingsJson as TSettings;
   });
 }
