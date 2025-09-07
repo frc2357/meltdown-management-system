@@ -7,8 +7,9 @@ import {
   Button,
   Stack,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingGear } from './LoadingGear';
+import { TSettings } from '../../../types/TSettings';
 
 export type PCreateTemplate = {
   open: boolean;
@@ -17,27 +18,38 @@ export type PCreateTemplate = {
 
 export function SettingsDialog({ open, setOpen }: PCreateTemplate): React.JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
+  const [settings, setSettings] = useState<TSettings | null>();
+
+  useEffect(() => {
+    window.api.getSettings().then((settings: TSettings) => setSettings(settings));
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const createTemplate = (event: React.FormEvent<HTMLFormElement>) => {
+  const saveSettings = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    const name = formJson.name as string;
+    const name = formJson.bucketName as string;
 
     console.log(name);
 
+    const settings = {
+      accessKeyId: formJson.accessKeyId,
+      bucketName: formJson.bucketName,
+      secretAccessKey: formJson.secretAccessKey,
+    } as TSettings;
+
     setLoading(true);
 
-    const onSuccess = (success: boolean) => {
+    const onSuccess = () => {
       setLoading(false);
       setOpen(false);
     };
 
-    //window.api.createTemplate({ name }).then(onSuccess);
+    window.api.saveSettings({ settings }).then(onSuccess);
   };
 
   return (
@@ -47,7 +59,7 @@ export function SettingsDialog({ open, setOpen }: PCreateTemplate): React.JSX.El
         onClose={handleClose}
         PaperProps={{
           component: 'form',
-          onSubmit: createTemplate,
+          onSubmit: saveSettings,
         }}
         fullWidth
       >
@@ -58,12 +70,13 @@ export function SettingsDialog({ open, setOpen }: PCreateTemplate): React.JSX.El
               autoFocus={true}
               required
               margin="dense"
-              id="bucket"
-              name="bucket"
+              id="bucketName"
+              name="bucketName"
               label="S3 Bucket Name"
               type="text"
               fullWidth
               variant="filled"
+              defaultValue={settings?.bucketName ?? ''}
             />
             <TextField
               autoFocus={true}
@@ -75,6 +88,7 @@ export function SettingsDialog({ open, setOpen }: PCreateTemplate): React.JSX.El
               type="password"
               fullWidth
               variant="filled"
+              defaultValue={settings?.accessKeyId ?? ''}
             />
             <TextField
               autoFocus={true}
@@ -86,6 +100,7 @@ export function SettingsDialog({ open, setOpen }: PCreateTemplate): React.JSX.El
               type="password"
               fullWidth
               variant="filled"
+              defaultValue={settings?.secretAccessKey ?? ''}
             />
           </Stack>
         </DialogContent>

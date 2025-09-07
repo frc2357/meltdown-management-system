@@ -10,7 +10,7 @@ resource "aws_iam_user_policy" "overseer_uploader" {
           Action = [
             "s3:PutObject",
           ],
-          Resource = "${aws_s3_bucket.scouting_raw.arn}"
+          Resource = "${aws_s3_bucket.scouting_raw.arn}/*"
         }
       ]
     }

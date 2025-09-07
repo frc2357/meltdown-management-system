@@ -10,4 +10,5 @@ export enum EApi {
   copyTemplate = 'copyTemplate',
   saveSettings = 'saveSettings',
   getSettings = 'getSettings',
+  uploadToS3 = 'uploadToS3',
 }

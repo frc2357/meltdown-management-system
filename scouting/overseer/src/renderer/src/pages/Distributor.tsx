@@ -1,4 +1,14 @@
-import { Box, Button, ButtonGroup, Skeleton, Stack, Tooltip } from '@mui/material';
+import {
+  Alert,
+  AlertColor,
+  Box,
+  Button,
+  ButtonGroup,
+  Skeleton,
+  Snackbar,
+  Stack,
+  Tooltip,
+} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -20,6 +30,11 @@ export function Distributor(): ReactElement {
     defaultTabletAssignments
   );
   const [assignmentIndex, setAssignmentIndex] = useState(0);
+
+  const [uploadDisabled, setUploadDisabled] = useState<boolean>(false);
+  const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+  const [snackBarMessage, setSnackBarMessage] = useState<string>('');
+  const [snackBarSeverity, setSnackBarSeverity] = useState<AlertColor>('success');
 
   const template: string =
     'match,red1,scout,red2,scout,red3,scout,blue1,scout,blue2,scout,blue3,scout';
@@ -54,6 +69,20 @@ export function Distributor(): ReactElement {
       sessionStorage.setItem('tabletAssignments', zippedAssignments);
       setTabletAssignments(JSON.parse(zippedAssignments));
     });
+  };
+
+  const closeSnackBar: () => void = (): void => {
+    setOpenSnackBar(false);
+  };
+
+  const uploadToS3: () => Promise<void> = async (): Promise<void> => {
+    setUploadDisabled(true);
+    const result: { message: string; success: boolean } = await window.api.uploadToS3();
+
+    setSnackBarMessage(result.message);
+    setSnackBarSeverity(result.success ? 'success' : 'error');
+    setOpenSnackBar(true);
+    setUploadDisabled(false);
   };
 
   const AllianceQrSkeleton = () => {
@@ -163,12 +192,7 @@ export function Distributor(): ReactElement {
               >
                 Download Data
               </Button>
-              <Button
-                variant="contained"
-                onClick={(): void => {
-                  window.api.exportMatches();
-                }}
-              >
+              <Button variant="contained" onClick={uploadToS3} disabled={uploadDisabled}>
                 Upload to S3
               </Button>
               <Button variant="contained" component={Link} to="/management/capturer">
@@ -178,6 +202,21 @@ export function Distributor(): ReactElement {
           )}
         </Stack>
       </Stack>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={openSnackBar}
+        onClose={closeSnackBar}
+        autoHideDuration={6000}
+      >
+        <Alert
+          onClose={closeSnackBar}
+          severity={snackBarSeverity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
