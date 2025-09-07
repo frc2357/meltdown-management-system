@@ -1,3 +1,5 @@
+import { TSettings } from './TSettings';
+
 export type TApi = {
   exportMatches: () => Promise<void>;
   saveFile: (input: { fileName: string; fileContent: string }) => Promise<void>;
@@ -8,4 +10,7 @@ export type TApi = {
   createTemplate: (input: { name: string }) => Promise<boolean>;
   deleteTemplate: (input: { name: string }) => Promise<boolean>;
   copyTemplate: (input: { oldName: string; newName: string }) => Promise<boolean>;
+  saveSettings: (input: { settings: TSettings }) => Promise<void>;
+  getSettings: () => Promise<TSettings>;
+  uploadToS3: () => Promise<{ message: string; success: boolean }>;
 };

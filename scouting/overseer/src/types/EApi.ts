@@ -8,4 +8,7 @@ export enum EApi {
   createTemplate = 'createTemplate',
   deleteTemplate = 'deleteTemplate',
   copyTemplate = 'copyTemplate',
+  saveSettings = 'saveSettings',
+  getSettings = 'getSettings',
+  uploadToS3 = 'uploadToS3',
 }

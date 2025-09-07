@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { CreateTemplateCard } from '../components/templateCards/CreateTemplateCard';
 import { TemplatesContext } from '../context/TemplatesContext';
 import { TemplateCard } from '../components/templateCards/TemplateCard';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 

@@ -3,26 +3,17 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { TTabletAssignment, TDenseLog, TLog } from '../../../common/types';
 import { yearConfig } from '../../../common/helpers';
-import { EApi } from '../types';
+import { EApi, TSettings } from '../types';
 import AdmZip, { IZipEntry } from 'adm-zip';
 import { WriteStream } from 'node:original-fs';
+import { PutObjectCommand, S3Client, PutObjectCommandOutput } from '@aws-sdk/client-s3';
+import { tmpdir } from 'node:os';
 
 export function management() {
   let eventName: string = '';
   let matchLogPath: string = '';
 
-  ipcMain.handle(EApi.exportMatches, async <eventType>(): Promise<void> => {
-    const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
-      title: 'Download File',
-      defaultPath: `${app.getPath('documents')}/${eventName}`,
-      filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
-    });
-
-    const savePath: string | undefined = saveInfo.filePath;
-    if (saveInfo.canceled || savePath === undefined) {
-      return;
-    }
-
+  function generateMatchData<eventType>(savePath: string) {
     const fileNames: string[] = fs.readdirSync(matchLogPath);
 
     const matches: TLog<eventType>[] = fileNames.map((fileName: string): TLog<eventType> => {
@@ -89,6 +80,20 @@ export function management() {
     });
 
     stream.end();
+  }
+
+  ipcMain.handle(EApi.exportMatches, async <eventType>(): Promise<void> => {
+    const saveInfo: SaveDialogReturnValue = await dialog.showSaveDialog({
+      title: 'Download File',
+      defaultPath: `${app.getPath('documents')}/${eventName}`,
+      filters: [{ name: 'csv', extensions: ['csv', 'txt'] }],
+    });
+
+    const savePath: string | undefined = saveInfo.filePath;
+    if (saveInfo.canceled || savePath === undefined) {
+      return;
+    }
+    generateMatchData<eventType>(savePath);
   });
 
   ipcMain.handle(
@@ -247,5 +252,91 @@ export function management() {
     );
 
     return JSON.stringify(zippedAssignments);
+  });
+
+  ipcMain.handle(
+    EApi.saveSettings,
+    async (event: IpcMainInvokeEvent, { settings }: { settings: TSettings }): Promise<void> => {
+      const settingsPath = path.resolve(app.getPath('userData'), 'userSettings.json');
+
+      fs.writeFileSync(settingsPath, JSON.stringify(settings));
+    }
+  );
+
+  ipcMain.handle(EApi.getSettings, async (): Promise<TSettings> => {
+    const settingsPath = path.resolve(app.getPath('userData'), 'userSettings.json');
+
+    if (!fs.existsSync(settingsPath)) {
+      return {
+        accessKeyId: '',
+        bucketName: '',
+        secretAccessKey: '',
+      };
+    }
+
+    const settingsBuffer = fs.readFileSync(settingsPath);
+    const settingsString = settingsBuffer.toString();
+    const settingsJson = JSON.parse(settingsString);
+
+    return settingsJson as TSettings;
+  });
+
+  ipcMain.handle(EApi.uploadToS3, async <
+    eventType,
+  >(): Promise<{ message: string; success: boolean }> => {
+    try {
+      const settingsPath = path.resolve(app.getPath('userData'), 'userSettings.json');
+
+      if (!fs.existsSync(settingsPath)) {
+        return {
+          message: 'No AWS Credentials Found, Update Your Settings',
+          success: false,
+        };
+      }
+
+      const settingsBuffer = fs.readFileSync(settingsPath);
+      const settingsString = settingsBuffer.toString();
+      const settings = JSON.parse(settingsString);
+
+      if (!settings || !settings.accessKeyId || !settings.bucketName || !settings.secretAccessKey) {
+        return {
+          message: 'No AWS Credentials Found, Update Your Settings',
+          success: false,
+        };
+      }
+
+      const tempFile = path.resolve(tmpdir(), 'matchData.csv');
+
+      generateMatchData<eventType>(tempFile);
+
+      const client = new S3Client({
+        region: 'us-east-2',
+        credentials: {
+          accessKeyId: settings.accessKeyId,
+          secretAccessKey: settings.secretAccessKey,
+        },
+      });
+
+      await client.send(
+        new PutObjectCommand({
+          Bucket: settings.bucketName,
+          Key: `${eventName}.csv`,
+          Body: fs.readFileSync(tempFile),
+        })
+      );
+
+      fs.rmSync(tempFile);
+
+      return {
+        message: 'Successfully Uploaded to S3',
+        success: true,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        message: 'An error occured when uploading to S3, check your settings',
+        success: false,
+      };
+    }
   });
 }
