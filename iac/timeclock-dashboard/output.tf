@@ -1,4 +1,3 @@
-output "github_actions_iam_role_arn" {
-    value = aws_iam_role.timeclock_dashboard_cicd.arn
-    description = "The ARN of the IAM role for GitHub Actions to assume"
+output "timeclock_dashboard_frontend_url" {
+    value = aws_s3_bucket_website_configuration.website.website_endpoint
 }
