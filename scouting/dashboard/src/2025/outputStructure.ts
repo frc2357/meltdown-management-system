@@ -1,8 +1,8 @@
 import { TOutputStructure } from '../types';
 
 export const outputStructure: TOutputStructure = {
-  fileName: 'centralmo.csv',
-  event: 'Central Missouri',
+  fileName: '2025-omb.csv',
+  event: 'Ozark Mountain Brawl',
   charts: [
     {
       title: 'Coral By Level',
