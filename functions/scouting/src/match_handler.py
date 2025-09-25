@@ -9,6 +9,7 @@ TABLE_NAME = f"mms-{ENV}-scouting"
 
 def s3_iter(object_name: str):
   s3 = boto3.client('s3')
+  print(object_name)
   object_response = s3.get_object(Bucket=BUCKET_RAW_NAME, Key=object_name)
   line_iter = object_response["Body"].iter_lines()
   for line in line_iter:
@@ -39,7 +40,6 @@ def load_match_data(object_name: str) -> dict:
       "notes": "",
       "coralPickup": 0,
       "autoCoral": 0,
-      "coralPickup": 0,
       "coralFloor": 0,
       "coralStation": 0,
       "algaeFloor": 0,
@@ -67,7 +67,7 @@ def load_match_data(object_name: str) -> dict:
         item["end"] = line["location"]
         item["defenseRating"] = line["defenseRating"]
         item["algaeClear"] = line["clearAlgae"]
-        item["notes"] = line["notes"]
+        item["notes"] = f"\"{line["notes"]}\""
       case "pickup":
         if (isAuto(line["timestamp"]) and line["gamepiece"] == "coral"):
           item["autoCoral"] += 1
